@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dcf169a9cd26e8bcbd7c49a35b6d7fa, type: 3}
+  m_Name: Tracks preview
+  m_EditorClassIdentifier: 
+  label: Enable tracks preview
+  itemType: 0
+  style: 0
+  group: {fileID: 0}
+  platformRequirements:
+    requiresSteam: 0
+    requiresDiscord: 0
+    requiresFileSystemAccess: 0
+    hideInCloudManaged: 0
+  noResetButton: 0
+  dropdownType: 1
+  dropdownEnumType: 
+  dropdownList:
+  - NONE
+  - SMALL
+  - LARGE
+  sliderConfig:
+    minValue: 0
+    maxValue: 0
+    wholeNumbers: 0
+    textConfig:
+      decimalType: 4
+      multiplier: 0
+      suffix: 
+      ifMax: 
+      ifMin: 
+      minColor: {r: 0, g: 0, b: 0, a: 0}
+      maxColor: {r: 0, g: 0, b: 0, a: 0}
+  buttonLabel: 
+  sideNote: 
+  preferenceKey:
+    key: jukebox.enableTracksPreview
+    isLocal: 1
+  valueDisplayMultiplayer: 1
+  valueType: 2
+  combinationOptions: []
+  defaultCombination: 0

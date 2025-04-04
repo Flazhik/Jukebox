@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b6935c0a9d1305b77bda30673e499c0, type: 3}
+  m_Name: SettingsMenuAssets
+  m_EditorClassIdentifier:
+  itemPrefab: {fileID: -652605066860876360, guid: d404ae24afe2b694f82a77512f7b1126, type: 2}
+  categoryTitlePrefab: {fileID: 3103949636926315505, guid: e7504f1f95610454e93c467dbaf91a39, type: 2}
+  togglePrefab: {fileID: -6358862288194640190, guid: 94973be89999a024c8d49f85d045532a, type: 2}
+  dropdownPrefab: {fileID: 4773133722379110281, guid: d280eddca0af7004b9729b1e8cd2abc8, type: 2}
+  sliderPrefab: {fileID: 3153420741672318319, guid: b2f46e9563a04ec43a5da5f14f7a7ac7, type: 2}
+  actionButtonPrefab: {fileID: -999173708025988120, guid: f1a3e0751e5d88f45bcd9d39492c57e9, type: 2}
+  resetButtonPrefab: {fileID: -1492027219686276494, guid: f847e20dd450b054ab6c36670c7aad3c, type: 2}
+  smallResetButtonPrefab: {fileID: -7928949551117852085, guid: e8a21008c08b7ad45b9c18c65e519282, type: 2}

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9aaaa146cde671845bee5d392dc128c3, type: 3}
+  m_Name: Dancer in the Darkness
+  m_EditorClassIdentifier: 
+  reference:
+    m_AssetGUID: 1b5ee7ae7309522489b5d72a65d8dabb
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  calmVariationClips:
+  - m_AssetGUID: fe1147c4e4a578d4cbf1bcc08921c7f0
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
