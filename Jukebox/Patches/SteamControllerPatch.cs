@@ -5,7 +5,7 @@ using Steamworks;
 namespace Jukebox.Patches
 {
     [HarmonyPatch(typeof(SteamController))]
-    public class SteamControllerPatch
+    public static class SteamControllerPatch
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(SteamController), "UpdateWave")]

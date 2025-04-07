@@ -4,7 +4,7 @@ using Jukebox.Components;
 namespace Jukebox.Patches
 {
     [HarmonyPatch(typeof(ScreenZone))]
-    public class ScreenZonePatch
+    public static class ScreenZonePatch
     {
         private static PreviewHelper helper;
         private static ScreenZone cgTerminal;

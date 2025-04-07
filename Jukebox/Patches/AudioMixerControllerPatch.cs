@@ -4,7 +4,7 @@ using Jukebox.Components;
 namespace Jukebox.Patches
 {
     [HarmonyPatch(typeof(AudioMixerController))]
-    public class AudioMixerControllerPatch
+    public static class AudioMixerControllerPatch
     {
         [HarmonyPostfix]
         [HarmonyPatch(typeof(AudioMixerController), "Update")]

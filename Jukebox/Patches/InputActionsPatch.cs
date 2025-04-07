@@ -7,7 +7,7 @@ namespace Jukebox.Patches
 {
     [HarmonyPatch(typeof(InputActions))]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
-    public class InputActionsPatch
+    public static class InputActionsPatch
     {
         [HarmonyPostfix]
         [HarmonyPatch(MethodType.Constructor)]

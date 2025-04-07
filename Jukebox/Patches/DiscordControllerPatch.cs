@@ -6,7 +6,7 @@ using static Jukebox.Utils.ReflectionUtils;
 namespace Jukebox.Patches
 {
     [HarmonyPatch(typeof(DiscordController))]
-    public class DiscordControllerPatch
+    public static class DiscordControllerPatch
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(DiscordController), "UpdateWave")]

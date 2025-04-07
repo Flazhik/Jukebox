@@ -4,7 +4,7 @@ using Jukebox.Components;
 namespace Jukebox.Patches
 {
     [HarmonyPatch(typeof(FinalCyberRank))]
-    public class FinalCyberRankPatch
+    public static class FinalCyberRankPatch
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(FinalCyberRank), "GameOver")]
