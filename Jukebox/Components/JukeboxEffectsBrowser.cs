@@ -46,8 +46,7 @@ namespace Jukebox.Components
             return () => Destroy(go);
         }
 
-        public void OpenEffectsFolder() =>
-            Process.Start(new ProcessStartInfo("explorer", EffectsDirectory.FullName));
+        public void OpenEffectsFolder() => Application.OpenURL(new Uri(EffectsDirectory.FullName).AbsoluteUri);
 
         public override void Rebuild(bool setToPageZero = true)
         {

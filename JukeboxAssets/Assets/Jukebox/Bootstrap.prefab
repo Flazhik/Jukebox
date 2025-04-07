@@ -1708,7 +1708,7 @@ GameObject:
   - component: {fileID: 7899295055753782085}
   - component: {fileID: 3129215647365421215}
   - component: {fileID: 6681751580666718064}
-  - component: {fileID: 111735950223301711}
+  - component: {fileID: 135375285850700879}
   m_Layer: 5
   m_Name: You Died
   m_TagString: Untagged
@@ -1735,8 +1735,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 256, y: -132.5}
-  m_SizeDelta: {x: 512, y: 85}
+  m_AnchoredPosition: {x: 232, y: -132.5}
+  m_SizeDelta: {x: 464, y: 85}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5482493549175259599
 CanvasRenderer:
@@ -1854,7 +1854,7 @@ MonoBehaviour:
   onPressed:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8212876601295144293}
+      - m_Target: {fileID: 1172584979107401287}
         m_TargetAssemblyTypeName: Jukebox.Components.JukeboxEffectsBrowser, Jukebox
         m_MethodName: SetCurrentPrefKey
         m_Mode: 5
@@ -1888,7 +1888,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   dragThreshold: 0
---- !u!114 &111735950223301711
+--- !u!114 &135375285850700879
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1897,7 +1897,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 520877999200902180}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 824623164, guid: 46b7c0a186ecf514cb5949c7cbd57c67, type: 3}
+  m_Script: {fileID: 11500000, guid: 47e6798155f33f0429da2aa138aba1ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   prefsKey: jukebox.effects.aww
@@ -2340,7 +2340,7 @@ GameObject:
   - component: {fileID: 3353149711710382983}
   - component: {fileID: 1340438740312725027}
   - component: {fileID: 5178114661174570998}
-  - component: {fileID: 4205012298594393870}
+  - component: {fileID: 8172626239786247080}
   m_Layer: 5
   m_Name: Game Over
   m_TagString: Untagged
@@ -2367,8 +2367,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 773, y: -132.5}
-  m_SizeDelta: {x: 512, y: 85}
+  m_AnchoredPosition: {x: 701, y: -132.5}
+  m_SizeDelta: {x: 464, y: 85}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1196832730105371066
 CanvasRenderer:
@@ -2486,7 +2486,7 @@ MonoBehaviour:
   onPressed:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8212876601295144293}
+      - m_Target: {fileID: 1172584979107401287}
         m_TargetAssemblyTypeName: Jukebox.Components.JukeboxEffectsBrowser, Jukebox
         m_MethodName: SetCurrentPrefKey
         m_Mode: 5
@@ -2520,7 +2520,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   dragThreshold: 0
---- !u!114 &4205012298594393870
+--- !u!114 &8172626239786247080
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2529,7 +2529,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 797775093104367345}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 824623164, guid: 46b7c0a186ecf514cb5949c7cbd57c67, type: 3}
+  m_Script: {fileID: 11500000, guid: 47e6798155f33f0429da2aa138aba1ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   prefsKey: jukebox.effects.gameover
@@ -2580,7 +2580,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2804861024635495361}
-  - component: {fileID: 173738797618853769}
+  - component: {fileID: 9179148551285677448}
   m_Layer: 5
   m_Name: Contents
   m_TagString: Untagged
@@ -2613,7 +2613,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -22.5}
   m_SizeDelta: {x: -40, y: -85}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &173738797618853769
+--- !u!114 &9179148551285677448
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2622,7 +2622,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 849692505684669714}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 546074141, guid: 46b7c0a186ecf514cb5949c7cbd57c67, type: 3}
+  m_Script: {fileID: 11500000, guid: 563d8c87d0d212047a396dd96b927d54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
@@ -2633,7 +2633,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 160, y: 120}
+  m_CellSize: {x: 100, y: 120}
   m_Spacing: {x: 10, y: 10}
   m_Constraint: 1
   m_ConstraintCount: 3
@@ -3255,7 +3255,7 @@ MonoBehaviour:
   backButton: {fileID: 0}
   plusButton: {fileID: 4784540626960294921}
   pageText: {fileID: 1194234479902063552}
-  loader: {fileID: 2264421904500763304}
+  loader: {fileID: 1338903232756008259}
   browser: {fileID: 5897837449037353398}
   defaultIcon: {fileID: 21300000, guid: 370db6da321a87f4bac63ebaa505ba31, type: 3}
   loopSprite: {fileID: 21300000, guid: 382bac6e7c74b204dabce236ffa75e34, type: 3}
@@ -6830,7 +6830,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6048154945309080068
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12651,7 +12651,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 144859743094644633}
-  - component: {fileID: 8212876601295144293}
+  - component: {fileID: 1172584979107401287}
   m_Layer: 5
   m_Name: Effects Browser
   m_TagString: Untagged
@@ -12674,7 +12674,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6967925032825061296}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8212876601295144293
+--- !u!114 &1172584979107401287
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -12683,11 +12683,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3811222158930404919}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1010826392, guid: 46b7c0a186ecf514cb5949c7cbd57c67, type: 3}
+  m_Script: {fileID: -1010826392, guid: 6036481a0183241459d3d27b38b4f30d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   itemButtonTemplate: {fileID: 3523828518468430642}
-  folderButtonTemplate: {fileID: 6974868775622792005}
+  folderButtonTemplate: {fileID: 0}
   itemParent: {fileID: 2136653162949037713}
   backButton: {fileID: 7953905267237853975}
   plusButton: {fileID: 0}
@@ -13614,7 +13614,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 91011821663926035}
-  - component: {fileID: 2264421904500763304}
+  - component: {fileID: 1338903232756008259}
   m_Layer: 5
   m_Name: JukeboxSongsLoader
   m_TagString: Untagged
@@ -13641,7 +13641,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2264421904500763304
+--- !u!114 &1338903232756008259
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -13650,7 +13650,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4067986358911189895}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1449351557, guid: 46b7c0a186ecf514cb5949c7cbd57c67, type: 3}
+  m_Script: {fileID: 1449351557, guid: 6036481a0183241459d3d27b38b4f30d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4126224264673340988
@@ -13716,7 +13716,7 @@ MonoBehaviour:
   terminalPanel: {fileID: 8364981174995463125}
   musicLogic: {fileID: 3837528219658437693}
   musicChanger: {fileID: 6331501665922112007}
-  calmThemes: {fileID: 11400000, guid: 6abdcb9b787a1d6488ccedfb313541a3, type: 2}
+  calmThemes: {fileID: 11400000, guid: 406f38d62cf58654b9f0c37c29fcf73f, type: 2}
 --- !u!1 &4128558442218794394
 GameObject:
   m_ObjectHideFlags: 0
@@ -14208,7 +14208,7 @@ GameObject:
   - component: {fileID: 8678986516137792558}
   - component: {fileID: 2221150759350259012}
   - component: {fileID: 292017666348166414}
-  - component: {fileID: 3522310584498088677}
+  - component: {fileID: 5044208186569400597}
   m_Layer: 5
   m_Name: Menu Music
   m_TagString: Untagged
@@ -14235,8 +14235,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 256, y: -222.5}
-  m_SizeDelta: {x: 512, y: 85}
+  m_AnchoredPosition: {x: 232, y: -222.5}
+  m_SizeDelta: {x: 464, y: 85}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6743822073564985930
 CanvasRenderer:
@@ -14354,7 +14354,7 @@ MonoBehaviour:
   onPressed:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8212876601295144293}
+      - m_Target: {fileID: 1172584979107401287}
         m_TargetAssemblyTypeName: Jukebox.Components.JukeboxEffectsBrowser, Jukebox
         m_MethodName: SetCurrentPrefKey
         m_Mode: 5
@@ -14388,7 +14388,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   dragThreshold: 0
---- !u!114 &3522310584498088677
+--- !u!114 &5044208186569400597
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14397,7 +14397,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4315901646172254250}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 824623164, guid: 46b7c0a186ecf514cb5949c7cbd57c67, type: 3}
+  m_Script: {fileID: 11500000, guid: 47e6798155f33f0429da2aa138aba1ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   prefsKey: jukebox.effects.terminal-music
@@ -19344,8 +19344,8 @@ MonoBehaviour:
   onPressed:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8212876601295144293}
-        m_TargetAssemblyTypeName: DirectoryTreeBrowser`1[[System.IO.FileInfo, mscorlib
+      - m_Target: {fileID: 1172584979107401287}
+        m_TargetAssemblyTypeName: Jukebox.Components.JukeboxEffectsBrowser, Jukebox
         m_MethodName: NextPage
         m_Mode: 1
         m_Arguments:
@@ -21056,7 +21056,7 @@ MonoBehaviour:
   onPressed:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8212876601295144293}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Jukebox.Components.JukeboxEffectsBrowser, Jukebox
         m_MethodName: OpenEffectsFolder
         m_Mode: 1
@@ -21089,7 +21089,7 @@ GameObject:
   - component: {fileID: 596608856754631268}
   - component: {fileID: 4129716099954213558}
   - component: {fileID: 2202030807801836585}
-  - component: {fileID: 2325425151252366841}
+  - component: {fileID: 7266076399038010733}
   m_Layer: 5
   m_Name: MusicChanger
   m_TagString: Untagged
@@ -21127,8 +21127,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playlistEditor: {fileID: 1723790386800126758}
-  loader: {fileID: 2264421904500763304}
-  changer: {fileID: 2325425151252366841}
+  loader: {fileID: 1338903232756008259}
+  changer: {fileID: 7266076399038010733}
 --- !u!82 &2202030807801836585
 AudioSource:
   m_ObjectHideFlags: 0
@@ -21225,7 +21225,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &2325425151252366841
+--- !u!114 &7266076399038010733
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -21234,7 +21234,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6331501665922112007}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -915499019, guid: 46b7c0a186ecf514cb5949c7cbd57c67, type: 3}
+  m_Script: {fileID: -915499019, guid: 6036481a0183241459d3d27b38b4f30d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   clean: {fileID: 4510617306126041957}
@@ -21993,7 +21993,7 @@ GameObject:
   - component: {fileID: 6884143317992797583}
   - component: {fileID: 1511864456639998076}
   - component: {fileID: 1915144652317852090}
-  - component: {fileID: 6599661694900528478}
+  - component: {fileID: 5992698963682668943}
   m_Layer: 5
   m_Name: Long Cheering
   m_TagString: Untagged
@@ -22020,8 +22020,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 773, y: -42.5}
-  m_SizeDelta: {x: 512, y: 85}
+  m_AnchoredPosition: {x: 701, y: -42.5}
+  m_SizeDelta: {x: 464, y: 85}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6290617524611124759
 CanvasRenderer:
@@ -22139,7 +22139,7 @@ MonoBehaviour:
   onPressed:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8212876601295144293}
+      - m_Target: {fileID: 1172584979107401287}
         m_TargetAssemblyTypeName: Jukebox.Components.JukeboxEffectsBrowser, Jukebox
         m_MethodName: SetCurrentPrefKey
         m_Mode: 5
@@ -22173,7 +22173,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   dragThreshold: 0
---- !u!114 &6599661694900528478
+--- !u!114 &5992698963682668943
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -22182,7 +22182,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6750547306588695434}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 824623164, guid: 46b7c0a186ecf514cb5949c7cbd57c67, type: 3}
+  m_Script: {fileID: 11500000, guid: 47e6798155f33f0429da2aa138aba1ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   prefsKey: jukebox.effects.wavecomplete
@@ -22382,7 +22382,7 @@ GameObject:
   - component: {fileID: 6081761268622697216}
   - component: {fileID: 8249641336543774708}
   - component: {fileID: 3394469478160291521}
-  - component: {fileID: 4154739269051735582}
+  - component: {fileID: 7156867926583320968}
   m_Layer: 5
   m_Name: Parry Cheering
   m_TagString: Untagged
@@ -22409,8 +22409,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 256, y: -42.5}
-  m_SizeDelta: {x: 512, y: 85}
+  m_AnchoredPosition: {x: 232, y: -42.5}
+  m_SizeDelta: {x: 464, y: 85}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4545260586627448500
 CanvasRenderer:
@@ -22528,7 +22528,7 @@ MonoBehaviour:
   onPressed:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8212876601295144293}
+      - m_Target: {fileID: 1172584979107401287}
         m_TargetAssemblyTypeName: Jukebox.Components.JukeboxEffectsBrowser, Jukebox
         m_MethodName: SetCurrentPrefKey
         m_Mode: 5
@@ -22562,7 +22562,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   dragThreshold: 0
---- !u!114 &4154739269051735582
+--- !u!114 &7156867926583320968
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -22571,7 +22571,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6828919171207376587}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 824623164, guid: 46b7c0a186ecf514cb5949c7cbd57c67, type: 3}
+  m_Script: {fileID: 11500000, guid: 47e6798155f33f0429da2aa138aba1ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   prefsKey: jukebox.effects.parry
@@ -24933,7 +24933,7 @@ MonoBehaviour:
   onPressed:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8212876601295144293}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: DirectoryTreeBrowser`1[[System.IO.FileInfo, mscorlib
         m_MethodName: StepUp
         m_Mode: 1
@@ -25285,8 +25285,8 @@ MonoBehaviour:
   onPressed:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8212876601295144293}
-        m_TargetAssemblyTypeName: DirectoryTreeBrowser`1[[System.IO.FileInfo, mscorlib
+      - m_Target: {fileID: 1172584979107401287}
+        m_TargetAssemblyTypeName: Jukebox.Components.JukeboxEffectsBrowser, Jukebox
         m_MethodName: PreviousPage
         m_Mode: 1
         m_Arguments:
@@ -28147,8 +28147,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 437, y: 0}
-  m_SizeDelta: {x: 874, y: 62.5}
+  m_AnchoredPosition: {x: 389, y: 0}
+  m_SizeDelta: {x: 778, y: 62.5}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &7962660666486701285
 CanvasRenderer:
@@ -28266,7 +28266,7 @@ MonoBehaviour:
   onPressed:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8212876601295144293}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Jukebox.Components.JukeboxEffectsBrowser, Jukebox
         m_MethodName: ResetToDefault
         m_Mode: 1
@@ -28423,7 +28423,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 216
+      value: 287.33334
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_SizeDelta.y
@@ -28459,7 +28459,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 560
+      value: 728.3334
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -28560,7 +28560,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 216
+      value: 287.33334
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_SizeDelta.y
@@ -28596,7 +28596,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 334
+      value: 436
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -28697,7 +28697,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 216
+      value: 287.33334
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_SizeDelta.y
@@ -28733,7 +28733,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 108
+      value: 143.66667
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -28834,7 +28834,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 216
+      value: 287.33334
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_SizeDelta.y
@@ -28870,11 +28870,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 560
+      value: 728.3334
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -190
+      value: -185
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -28971,7 +28971,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 216
+      value: 287.33334
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_SizeDelta.y
@@ -29007,11 +29007,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 334
+      value: 436
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -190
+      value: -185
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -29252,6 +29252,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1565491048927143509, guid: bc14651c74238e842b95a71431ccb9ec, type: 3}
+    - {fileID: 6958519748151195742, guid: bc14651c74238e842b95a71431ccb9ec, type: 3}
+    - {fileID: 2380158913737745779, guid: bc14651c74238e842b95a71431ccb9ec, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -29312,7 +29314,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 216
+      value: 287.33334
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_SizeDelta.y
@@ -29348,11 +29350,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 108
+      value: 143.66667
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -190
+      value: -185
       objectReference: {fileID: 0}
     - target: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

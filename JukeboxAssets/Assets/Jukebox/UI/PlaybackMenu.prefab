@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 7330633107697001245}
   - component: {fileID: 4793368477246534698}
   - component: {fileID: 7766855354218907684}
-  - component: {fileID: 2583538903756576324}
   m_Layer: 5
   m_Name: Song Template (1)
   m_TagString: Untagged
@@ -124,25 +123,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   dragThreshold: 0
---- !u!114 &2583538903756576324
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 274234347572805168}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d20eddf429c7aef19a2df7ed7bc1b42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  button: {fileID: 0}
-  icon: {fileID: 4118511046483477}
-  iconInset: {fileID: 0}
-  border: {fileID: 7330633107697001245}
-  text: {fileID: 6521685294580781523}
-  costText: {fileID: 0}
-  objectsToActivateIfAvailable: []
 --- !u!1 &321998522231695798
 GameObject:
   m_ObjectHideFlags: 0
@@ -290,7 +270,6 @@ GameObject:
   - component: {fileID: 3211231098491386777}
   - component: {fileID: 4414502364472769121}
   - component: {fileID: 5048702136020169855}
-  - component: {fileID: 6119683653782881618}
   m_Layer: 5
   m_Name: Song Template (2)
   m_TagString: Untagged
@@ -401,25 +380,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   dragThreshold: 0
---- !u!114 &6119683653782881618
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 581022983666881998}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d20eddf429c7aef19a2df7ed7bc1b42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  button: {fileID: 0}
-  icon: {fileID: 365550793412953564}
-  iconInset: {fileID: 0}
-  border: {fileID: 3211231098491386777}
-  text: {fileID: 2039328230225382254}
-  costText: {fileID: 0}
-  objectsToActivateIfAvailable: []
 --- !u!1 &873386863902214445
 GameObject:
   m_ObjectHideFlags: 0
@@ -546,7 +506,6 @@ GameObject:
   - component: {fileID: 5450444162752777776}
   - component: {fileID: 1560119779116022035}
   - component: {fileID: 919665901451434597}
-  - component: {fileID: 7552087976943098347}
   m_Layer: 5
   m_Name: Song Template (3)
   m_TagString: Untagged
@@ -657,25 +616,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   dragThreshold: 0
---- !u!114 &7552087976943098347
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1242418371413688430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d20eddf429c7aef19a2df7ed7bc1b42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  button: {fileID: 0}
-  icon: {fileID: 7559111715160305140}
-  iconInset: {fileID: 0}
-  border: {fileID: 5450444162752777776}
-  text: {fileID: 8798894097531108032}
-  costText: {fileID: 0}
-  objectsToActivateIfAvailable: []
 --- !u!1 &1293558232078074582
 GameObject:
   m_ObjectHideFlags: 0
@@ -823,7 +763,6 @@ GameObject:
   - component: {fileID: 475848792739493529}
   - component: {fileID: 1724681945308798093}
   - component: {fileID: 7858246522929709792}
-  - component: {fileID: 128050872854762582}
   m_Layer: 5
   m_Name: Song Template
   m_TagString: Untagged
@@ -934,25 +873,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   dragThreshold: 0
---- !u!114 &128050872854762582
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1371616801341440879}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d20eddf429c7aef19a2df7ed7bc1b42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  button: {fileID: 0}
-  icon: {fileID: 3520033863582159694}
-  iconInset: {fileID: 0}
-  border: {fileID: 475848792739493529}
-  text: {fileID: 5894469821790681605}
-  costText: {fileID: 0}
-  objectsToActivateIfAvailable: []
 --- !u!1 &1389144585954959297
 GameObject:
   m_ObjectHideFlags: 0
@@ -1234,7 +1154,7 @@ GameObject:
   - component: {fileID: 5030668744858103604}
   - component: {fileID: 4338859235245041490}
   - component: {fileID: 8873090017324868114}
-  - component: {fileID: 6593417525462081894}
+  - component: {fileID: 6390269843204390779}
   m_Layer: 5
   m_Name: PlaybackMenu
   m_TagString: Untagged
@@ -1337,7 +1257,7 @@ MonoBehaviour:
   reverse: 0
   YFirst: 0
   dontUseScale: 0
---- !u!114 &6593417525462081894
+--- !u!114 &6390269843204390779
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1346,7 +1266,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1513931934174444360}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -393763050, guid: 46b7c0a186ecf514cb5949c7cbd57c67, type: 3}
+  m_Script: {fileID: 11500000, guid: d69df0b884e3417469749fb1d4d66817, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   itemButtonTemplate: {fileID: 4439669782344544951}
@@ -1555,9 +1475,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6593417525462081894}
-        m_TargetAssemblyTypeName: DirectoryTreeBrowser`1[[Playlist+SongIdentifier,
-          Assembly-CSharp
+      - m_Target: {fileID: 6390269843204390779}
+        m_TargetAssemblyTypeName: Jukebox.Components.JukeboxPlayback, Jukebox
         m_MethodName: PreviousPage
         m_Mode: 1
         m_Arguments:
@@ -1689,9 +1608,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6593417525462081894}
-        m_TargetAssemblyTypeName: DirectoryTreeBrowser`1[[Playlist+SongIdentifier,
-          Assembly-CSharp
+      - m_Target: {fileID: 6390269843204390779}
+        m_TargetAssemblyTypeName: Jukebox.Components.JukeboxPlayback, Jukebox
         m_MethodName: NextPage
         m_Mode: 1
         m_Arguments:
@@ -2868,7 +2786,6 @@ GameObject:
   - component: {fileID: 8803825666516362414}
   - component: {fileID: 720405845298847853}
   - component: {fileID: 3953535251728043260}
-  - component: {fileID: 3178370847515717332}
   m_Layer: 5
   m_Name: Song Template (4)
   m_TagString: Untagged
@@ -2979,25 +2896,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   dragThreshold: 0
---- !u!114 &3178370847515717332
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6062789864341235455}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d20eddf429c7aef19a2df7ed7bc1b42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  button: {fileID: 0}
-  icon: {fileID: 7321590125335168128}
-  iconInset: {fileID: 0}
-  border: {fileID: 8803825666516362414}
-  text: {fileID: 6373347519197760478}
-  costText: {fileID: 0}
-  objectsToActivateIfAvailable: []
 --- !u!1 &6841877866693374494
 GameObject:
   m_ObjectHideFlags: 0
@@ -3199,8 +3097,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: PLAYBACK
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 4883cfbb59316534da2f94828cbef8a9, type: 2}
-  m_sharedMaterial: {fileID: 5763084027481750259, guid: 4883cfbb59316534da2f94828cbef8a9, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c665f735df1f4db43a715b3cb44a57c0, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: b8a0c8e6a47071038ae73eb82f8ed52c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3504,7 +3402,6 @@ GameObject:
   - component: {fileID: 7025054292189265910}
   - component: {fileID: 6469017829337517709}
   - component: {fileID: 1348542276278900769}
-  - component: {fileID: 4833217338752272326}
   m_Layer: 5
   m_Name: Song Template (5)
   m_TagString: Untagged
@@ -3615,25 +3512,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   dragThreshold: 0
---- !u!114 &4833217338752272326
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7813893073156443600}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d20eddf429c7aef19a2df7ed7bc1b42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  button: {fileID: 0}
-  icon: {fileID: 7900210539838936449}
-  iconInset: {fileID: 0}
-  border: {fileID: 7025054292189265910}
-  text: {fileID: 1313211183452820328}
-  costText: {fileID: 0}
-  objectsToActivateIfAvailable: []
 --- !u!1 &8886986063763384006
 GameObject:
   m_ObjectHideFlags: 0

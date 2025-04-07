@@ -1,11 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.Globalization;
+using System.IO;
+using System.Reflection;
+using System.Threading;
 using BepInEx;
 using HarmonyLib;
 using Jukebox.Assets;
+using Jukebox.Components;
 using Jukebox.Input;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 
 namespace Jukebox
@@ -16,19 +21,29 @@ namespace Jukebox
     {
         [ExternalAsset("Assets/Jukebox/Bootstrap.prefab", typeof(GameObject))]
         private static GameObject bootstrap;
-        
+
+        public static string catalogDir;
         private static Harmony _harmony;
         private static bool motdShown;
+        private static bool init;
+
+        static JukeboxPlugin()
+        {
+            var assemblyDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            catalogDir = Path.Combine(assemblyDir!, "Assets");
+        }
 
         private void Awake()
         {
-            AssetsManager.Instance.LoadAssets();
-            AssetsManager.Instance.RegisterPrefabs();
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            
+            Addressables.InitializeAsync().WaitForCompletion();
+            Addressables.LoadContentCatalogAsync(Path.Combine(catalogDir, "catalog.json"), true).WaitForCompletion();
 
             _harmony = new Harmony(PluginInfo.GUID);
             Startup();
         }
-        
+
         private void Startup()
         {
             _harmony.PatchAll();
@@ -47,11 +62,21 @@ namespace Jukebox
                     SetDefaultPrefsValues();
                     break;
                 }
+                case "Main Menu":
+                {
+                    if (init)
+                        return;
+
+                    AssetsManager.Instance.LoadAssets();
+                    AssetsManager.Instance.RegisterPrefabs();
+                    init = true;
+                    break;
+                }
                 case "Endless":
                 {
-                    Instantiate(bootstrap);
+                    var o = Instantiate(bootstrap);
                     if (!motdShown)
-                        StartCoroutine(Motd());
+                        JukeboxManager.Instance.StartCoroutine(Motd());
                     break;
                 }
             }

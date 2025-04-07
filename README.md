@@ -127,7 +127,7 @@ If everything's been done correctly, it now should be displayed as a single trac
 
 Created by [Flazhik](https://github.com/Flazhik)
 
-Special thanks to [eternalUnion](https://github.com/eternalUnion) for VanityReprised
+Special thanks to [eternalUnion](https://github.com/eternalUnion) for VanityReprised + I borrowed an asset bundle from PluginConfigurator so UK addressables aren't messed up, hope you don't mind
 
 #### Jukebox uses following libraries:
 - [TagLibSharp](https://github.com/mono/taglib-sharp) - Licensed under [LGPL-2.1](https://github.com/mono/taglib-sharp/blob/main/COPYING)

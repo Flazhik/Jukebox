@@ -7,7 +7,7 @@ namespace Jukebox.Input
     {
         private InputActionMap jukeboxActionMap;
 
-        protected override void Awake()
+        protected void Awake()
         {
             jukeboxActionMap = InputManager.Instance.InputSource.Actions.asset.FindActionMap("Jukebox");
 

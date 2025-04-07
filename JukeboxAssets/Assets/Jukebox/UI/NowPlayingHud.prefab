@@ -711,7 +711,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 15, y: -85}
+  m_AnchoredPosition: {x: 15, y: -90}
   m_SizeDelta: {x: -70, y: 36}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &940225501318132666
@@ -1047,7 +1047,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5204911914598026841}
-  - component: {fileID: 3588167936528141562}
+  - component: {fileID: 2757934118007119208}
   m_Layer: 5
   m_Name: NowPlayingHud
   m_TagString: Untagged
@@ -1075,7 +1075,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1000, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3588167936528141562
+--- !u!114 &2757934118007119208
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1084,7 +1084,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8571569350270009185}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 943089650, guid: 46b7c0a186ecf514cb5949c7cbd57c67, type: 3}
+  m_Script: {fileID: 11500000, guid: 2d7c2bd6d073bb647ae65a53cf97afd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hud: {fileID: 6329733452086382535}
