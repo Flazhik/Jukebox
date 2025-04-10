@@ -9,6 +9,7 @@ using Jukebox.Utils;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
+using static Playlist.SongIdentifier;
 using Object = UnityEngine.Object;
 
 namespace Jukebox.Components
@@ -90,14 +91,16 @@ namespace Jukebox.Components
             JukeboxPlaylist deserializedPlaylist;
             using (var streamReader = new StreamReader(File.Open(JukeboxPlaylist.currentPath, FileMode.OpenOrCreate)))
                 deserializedPlaylist = JsonConvert.DeserializeObject<JukeboxPlaylist>(streamReader.ReadToEnd());
+
             if (deserializedPlaylist == null)
-            {
-                Debug.Log("No saved playlist found at " + JukeboxPlaylist.currentPath + ". Creating default...");
-                CreateDefaultPlaylist();
-            }
+                CreateEmpty();
             else
             {
-                playlist = deserializedPlaylist;
+                deserializedPlaylist.RemoveNonExisting();
+                if (deserializedPlaylist.ids.Count == 0)
+                    CreateEmpty();
+                else
+                    playlist = deserializedPlaylist;
                 currentDirectory = baseDirectory;
                 Rebuild();
             }
@@ -105,6 +108,12 @@ namespace Jukebox.Components
                 playlist.RemoveDuplicates();
             
             Rebuild();
+
+            void CreateEmpty()
+            {
+                Debug.Log("No saved playlist found at " + JukeboxPlaylist.currentPath + ". Creating default...");
+                CreateDefaultPlaylist();
+            }
         }
 
         public void Remove()
@@ -119,7 +128,7 @@ namespace Jukebox.Components
         {
             playlist.ids.Clear();
             var meganekoMyBeloved = browser.rootFolder[0];
-            playlist.Add(new Playlist.SongIdentifier(meganekoMyBeloved.AssetGUID, Playlist.SongIdentifier.IdentifierType.Addressable));
+            playlist.Add(new Playlist.SongIdentifier(meganekoMyBeloved.AssetGUID, IdentifierType.Addressable));
             Rebuild();
         }
 
@@ -297,7 +306,7 @@ namespace Jukebox.Components
         private void CreateDefaultPlaylist()
         {
             foreach (var assetReference in browser.rootFolder)
-                playlist.Add(new Playlist.SongIdentifier(assetReference.AssetGUID, Playlist.SongIdentifier.IdentifierType.Addressable));
+                playlist.Add(new Playlist.SongIdentifier(assetReference.AssetGUID, IdentifierType.Addressable));
         }
 
         private void OnPrefChange(string key, object value)
