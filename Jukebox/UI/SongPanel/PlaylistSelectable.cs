@@ -36,8 +36,9 @@ namespace Jukebox.UI.SongPanel
                     playlist = DeserializeObject<JukeboxPlaylist>(streamReader.ReadToEnd());
 
                 var ids = playlist != null ? playlist.ids : new List<SongIdentifier>();
-                return new FakeDirectoryTree<JukeboxSong>("Songs", ids.Select(id =>
-                    JukeboxSongsLoader.Instance.Load(id)));
+                return new FakeDirectoryTree<JukeboxSong>("Songs", ids
+                    .Where(id => id.type != SongIdentifier.IdentifierType.File || new FileInfo(id.path).Exists)
+                    .Select(id => JukeboxSongsLoader.Instance.Load(id)));
             }
         }
 

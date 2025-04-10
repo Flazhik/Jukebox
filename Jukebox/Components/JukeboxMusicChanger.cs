@@ -44,6 +44,9 @@ namespace Jukebox.Components
             if (updateRoutine != null)
                 StopCoroutine(updateRoutine);
             
+            battle.time = 0.0f;
+            clean.time = 0.0f;
+            
             clean.clip = calmTheme;
             battle.clip = battleTheme;
 

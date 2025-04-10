@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using static Playlist.SongIdentifier;
 namespace Jukebox.Core.Model.Song
 {
     public class JukeboxPlaylist: Playlist
@@ -29,6 +29,17 @@ namespace Jukebox.Core.Model.Song
             var distinct = ids.Distinct().ToList();
             ids.Clear();
             foreach (var id in distinct)
+                Add(id);
+        }
+
+        public void RemoveNonExisting()
+        {
+            var existing = ids
+                .Where(id => id.type == IdentifierType.Addressable || new FileInfo(id.path).Exists)
+                .ToList();
+            
+            ids.Clear();
+            foreach (var id in existing)
                 Add(id);
         }
     }

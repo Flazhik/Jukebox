@@ -28,9 +28,9 @@
    recommended to choose **BepInEx_x64** release unless you're certain you have a 32-bit system
 2. Extract the contents of **BepInEx** archive in your local **ULTRAKILL** folder. If you're not sure where this folder
    is located, find **ULTRAKILL** in your Steam Library > Right mouse click > **Properties** > **Local files** > **Browse**
-3. Download the Jukebox
-   archive [here](https://github.com/Flazhik/Jukebox/releases/download/v2.0.0/Jukebox.v2.0.0.zip), then
-   extract its contents at **ULTRAKILL/BepInEx/plugins** (create *plugins* folder manually in case it's missing)
+   3. Download the Jukebox
+      archive [here](https://github.com/Flazhik/Jukebox/releases/download/v2.0.7/Jukebox.v2.0.7.zip), then
+      extract its contents at **ULTRAKILL/BepInEx/plugins** (create *plugins* folder manually in case it's missing)
 
 You can also use r2modman for that
 ## Basics
