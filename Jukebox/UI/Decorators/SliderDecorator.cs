@@ -1,4 +1,4 @@
-using Jukebox.Assets;
+using JukeboxCore.Assets;
 using SettingsMenu.Components;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,7 +28,7 @@ namespace Jukebox.UI.Decorators
             slider.minValue = minValue;
             slider.maxValue = maxValue;
             
-            var sliderValueToText = (SliderValueToText)GetPrivate(GetComponentInChildren<SettingsSlider>(),
+            var sliderValueToText = GetPrivate<SliderValueToText>(GetComponentInChildren<SettingsSlider>(),
                 typeof(SettingsSlider), "sliderValueToText");
             sliderValueToText.ConfigureFrom(sliderConfig);
         }

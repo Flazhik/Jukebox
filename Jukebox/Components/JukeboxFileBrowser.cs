@@ -1,19 +1,17 @@
 using System;
-using System.IO;
 using System.Linq;
-using Jukebox.Core.Collections;
-using Jukebox.Core.Model.Song;
 using Jukebox.UI;
+using JukeboxCore.Collections;
+using JukeboxCore.Models.Song;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using static JukeboxCore.Utils.PathsUtils;
 
 namespace Jukebox.Components
 {
     public class JukeboxFileBrowser: DirectoryTreeBrowser<JukeboxSong>
     {
-        private static readonly string MusicPath =
-            Path.Combine(Directory.GetParent(Application.dataPath)!.FullName, "CyberGrind", "Music");
-        
         [SerializeField]
         private JukeboxTerminalPanel navigator;
 
@@ -32,6 +30,9 @@ namespace Jukebox.Components
         
         [SerializeField]
         private GameObject imADumbassButton;
+
+        [SerializeField]
+        private Sprite youtubeIcon;
 
         protected override int maxPageLength => 4;
 
@@ -69,6 +70,12 @@ namespace Jukebox.Components
             loadAllWarningText.text = $"Do you want to add <color=green>{currentDirectory.files.Count()}</color> tracks " +
                                       $"from the folder <color=yellow>{currentDirectory.name}</color> to your playlist?";
         }
+
+        public void Refresh()
+        {
+            baseDirectory.Refresh();
+            Rebuild();
+        }
         
         protected override Action BuildLeaf(JukeboxSong song, int indexInPage)
         {
@@ -97,6 +104,20 @@ namespace Jukebox.Components
                                               || metadata.Composite.GotCalmIntro);
             go.SetActive(true);
             return () => Destroy(go);
+        }
+        
+        protected override Action BuildDirectory(IDirectoryTree<JukeboxSong> folder, int indexInPage)
+        {
+            var btn = Instantiate(folderButtonTemplate, itemParent, false);
+            btn.GetComponent<Button>().onClick.RemoveAllListeners();
+            btn.GetComponent<Button>().onClick.AddListener(() => StepDown(folder));
+            btn.GetComponentInChildren<TMP_Text>().text = folder.name;
+            btn.SetActive(true);
+
+            if (folder.name == "YouTube" && folder.parent?.parent == null)
+                btn.transform.Find("Icon").GetComponent<Image>().sprite = youtubeIcon;
+            
+            return () => Destroy(btn);
         }
     }
 }

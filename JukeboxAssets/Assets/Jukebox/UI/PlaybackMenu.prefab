@@ -1231,7 +1231,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1513931934174444360}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87a7ae8e921472d4388df19143164273, type: 3}
+  m_Script: {fileID: 11500000, guid: d806e3be52499dc4bae7a01d65c1cb7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hotkey: {fileID: 8049235836741123196, guid: 7eeb560ccafde604690112475405bc40, type: 3}
@@ -1266,7 +1266,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1513931934174444360}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d69df0b884e3417469749fb1d4d66817, type: 3}
+  m_Script: {fileID: 11500000, guid: b2fa8cd70e720ba408339c3a899eca95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   itemButtonTemplate: {fileID: 4439669782344544951}

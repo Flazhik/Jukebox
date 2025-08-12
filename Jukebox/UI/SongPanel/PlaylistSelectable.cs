@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Jukebox.Components;
-using Jukebox.Core.Model.Song;
-using Newtonsoft.Json;
+using JukeboxCore.Components;
+using JukeboxCore.Models.Song;
 using UnityEngine;
 using UnityEngine.UI;
 using static Newtonsoft.Json.JsonConvert;
@@ -37,7 +37,7 @@ namespace Jukebox.UI.SongPanel
 
                 var ids = playlist != null ? playlist.ids : new List<SongIdentifier>();
                 return new FakeDirectoryTree<JukeboxSong>("Songs", ids
-                    .Where(id => id.type != SongIdentifier.IdentifierType.File || new FileInfo(id.path).Exists)
+                    .Where(id => id.type != SongIdentifier.IdentifierType.File || File.Exists(id.path))
                     .Select(id => JukeboxSongsLoader.Instance.Load(id)));
             }
         }

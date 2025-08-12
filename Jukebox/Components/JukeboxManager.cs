@@ -1,5 +1,3 @@
-using Jukebox.Core.Themes;
-using Jukebox.UI;
 using UnityEngine;
 using static UnityEngine.GameObject;
 using static UnityEngine.Resources;
@@ -14,9 +12,6 @@ namespace Jukebox.Components
         private const string PanelPath = "/FirstRoom/Room/Cybergrind Shop/Canvas/Background/Main Panel";
 
         [SerializeField]
-        public JukeboxUI ui;
-        
-        [SerializeField]
         public GameObject songPanel;
 
         [SerializeField]
@@ -24,12 +19,6 @@ namespace Jukebox.Components
         
         [SerializeField]
         public JukeboxMusicPlayer player;
-        
-        [SerializeField]
-        private JukeboxSoundtrackBrowser soundtrackBrowser;
-        
-        [SerializeField]
-        private JukeboxFileBrowser fileBrowser;
 
         [SerializeField]
         private GameObject terminalPanel;
@@ -40,9 +29,6 @@ namespace Jukebox.Components
         [SerializeField]
         private GameObject musicChanger;
 
-        [SerializeField]
-        public SoundtrackCalmThemes calmThemes;
-        
         protected new void Awake()
         {
             base.Awake();

@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Jukebox.Core.Model.Song;
 using Jukebox.Input;
+using JukeboxCore.Components;
+using JukeboxCore.Models.Song;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static Playlist.LoopMode;
@@ -12,7 +13,9 @@ namespace Jukebox.Components
 {
     public class JukeboxMusicPlayer : MonoBehaviour
     {
+        private static float VolumeBoostValue => PrefsManager.Instance.GetFloatLocal("jukebox.volumeBoost");
         private static bool AlwaysPlayIntro => PrefsManager.Instance.GetBoolLocal("jukebox.alwaysPlayIntro");
+        private static bool IndividualBoostPerTrack => PrefsManager.Instance.GetBoolLocal("jukebox.individualBoostPerTrack");
         
         [SerializeField]
         private JukeboxPlaylistEditor playlistEditor;
@@ -23,9 +26,9 @@ namespace Jukebox.Components
         [SerializeField]
         private JukeboxMusicChanger changer;
         
-        public static Action<JukeboxSong> onNextSong;
-        public static Action<IEnumerable<SongIdentifier>> onOrderChange;
-        public static Action onStop;
+        public static event Action<JukeboxSong> OnNextSong;
+        public static event Action<IEnumerable<SongIdentifier>> OnOrderChange;
+        public static event Action OnStop;
 
         public AudioSource Source => changer.battle;
         public static JukeboxSong CurrentSong { get; private set; }
@@ -40,7 +43,6 @@ namespace Jukebox.Components
         public void Awake()
         {
             changer = gameObject.GetComponent<JukeboxMusicChanger>();
-            onNextSong += OnNextSong;
             PrefsManager.onPrefChanged += OnPrefChanged;
             JukeboxInputs.Instance.DisablePlayer.performed += OnPlayerDisabled;
         }
@@ -48,7 +50,6 @@ namespace Jukebox.Components
         public void OnDestroy()
         {
             CurrentSong = null;
-            onNextSong -= OnNextSong;
             PrefsManager.onPrefChanged -= OnPrefChanged;
             JukeboxInputs.Instance.DisablePlayer.performed -= OnPlayerDisabled;
         }
@@ -103,7 +104,7 @@ namespace Jukebox.Components
                     deckShuffled.Reshuffle();
 
                 var currentOrder = shuffled.ToList();
-                onOrderChange.Invoke(currentOrder);
+                OnOrderChange?.Invoke(currentOrder);
                 CurrentSongIndex = playlist.loopMode == LoopOne
                     ? currentOrder.FindIndex(id => Equals(id, playlist.ids[playlist.selected]))
                     : 0;
@@ -113,7 +114,7 @@ namespace Jukebox.Components
                     forcedChange = false;
                     var id = currentOrder[CurrentSongIndex];
                     var song = loader.Load(id);
-                    onNextSong?.Invoke(song);
+                    NextSong(song);
                     PresenceController.UpdateCyberGrindWave(EndlessGrid.Instance.currentWave);
                     yield return song.Acquire(Play(first));
                     first = false;
@@ -156,7 +157,7 @@ namespace Jukebox.Components
             if (!stopped)
             {
                 StopPlaylist();
-                onStop.Invoke();
+                OnStop?.Invoke();
             }
             else
                 StartPlaylist();
@@ -164,17 +165,41 @@ namespace Jukebox.Components
 
         private void OnPrefChanged(string key, object value)
         {
-            if (!key.Equals("jukebox.volumeBoost"))
-                return;
-
-            VolumeBoost = allowVolumeBoost ? (float)value : 0;
+            switch (key)
+            {
+                case "jukebox.volumeBoost":
+                {
+                    if (IndividualBoostPerTrack && CurrentSong is { IsCustom: true })
+                        JukeboxVolumeManager.Instance.SetVolumeBoostFor(CurrentSong.Id.path, (float) value);
+                    VolumeBoost = (float)value;
+                    break;
+                }
+                case "jukebox.individualBoostPerTrack":
+                    VolumeBoost = CalculateBoostFor(CurrentSong);
+                    break;
+            }
         }
-        
-        private void OnNextSong(JukeboxSong song)
+
+        private void NextSong(JukeboxSong song)
         {
             CurrentSong = song;
             allowVolumeBoost = song.IsCustom;
-            VolumeBoost = allowVolumeBoost ? PrefsManager.Instance.GetFloatLocal("jukebox.volumeBoost") : 0;
+            VolumeBoost = CalculateBoostFor(song);
+            OnNextSong?.Invoke(song);
+        }
+
+        private float CalculateBoostFor(JukeboxSong song)
+        {
+            if (!allowVolumeBoost)
+                return 0;
+
+            if (!IndividualBoostPerTrack)
+                return VolumeBoostValue;
+
+            if (song == null || JukeboxVolumeManager.Instance.GetVolumeBoostFor(song.Id.path) is not { } boost)
+                return VolumeBoostValue;
+            
+            return boost;
         }
     }
 }

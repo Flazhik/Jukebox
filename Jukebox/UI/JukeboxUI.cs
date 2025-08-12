@@ -18,10 +18,15 @@ namespace Jukebox.UI
 
         private GameObject jukeboxMenu;
         private GameObject playbackMenu;
-        private GameObject nowPlayingHud;
-        private GameObject nowPlayingHudClassic;
 
         private ReadOnlyCollection<JukeboxWindow> windows;
+
+        public void OpenDownloader()
+        {
+            var jukeboxWindow = jukeboxMenu.GetComponent<JukeboxMenuWindow>();
+            jukeboxWindow.Open();
+            jukeboxWindow.OpenDownloader();
+        }
 
         protected void Awake()
         {
@@ -88,10 +93,10 @@ namespace Jukebox.UI
 
             jukeboxMenu = Instantiate(jukeboxMenuTemplate, canvas.transform);
             playbackMenu = Instantiate(playbackMenuTemplate, canvas.transform);
-            nowPlayingHud = Instantiate(nowPlayingHudTemplate, Find("/Player/Main Camera/HUD Camera/HUD/GunCanvas").transform, false);
-            nowPlayingHudClassic = Instantiate(nowPlayingHudClassicTemplate, canvas.transform.Find("Crosshair Filler"), false);
+            Instantiate(nowPlayingHudTemplate, Find("/Player/Main Camera/HUD Camera/HUD/GunCanvas").transform, false);
+            Instantiate(nowPlayingHudClassicTemplate, canvas.transform.Find("Crosshair Filler"), false);
         }
 
-        private bool GameIsPaused() => GameStateManager.Instance.IsStateActive("pause");
+        private static bool GameIsPaused() => GameStateManager.Instance.IsStateActive("pause");
     }
 }

@@ -1,6 +1,6 @@
 using System;
-using Jukebox.Core.Model.Song;
 using Jukebox.Utils;
+using JukeboxCore.Models.Song;
 using SettingsMenu.Components.Pages;
 using TMPro;
 using UnityEngine;
@@ -55,8 +55,8 @@ namespace Jukebox.Components
 
         protected void OnEnable()
         {
-            JukeboxMusicPlayer.onNextSong += OnNextSong;
-            JukeboxMusicPlayer.onStop += OnStop;
+            JukeboxMusicPlayer.OnNextSong += OnNextSong;
+            JukeboxMusicPlayer.OnStop += OnStop;
             PrefsManager.onPrefChanged += OnPrefChanged;
             
             player = JukeboxManager.Instance.player;
@@ -69,8 +69,8 @@ namespace Jukebox.Components
 
         protected void OnDisable()
         {
-            JukeboxMusicPlayer.onNextSong -= OnNextSong;
-            JukeboxMusicPlayer.onStop -= OnStop;
+            JukeboxMusicPlayer.OnNextSong -= OnNextSong;
+            JukeboxMusicPlayer.OnStop -= OnStop;
             PrefsManager.onPrefChanged -= OnPrefChanged;
         }
 

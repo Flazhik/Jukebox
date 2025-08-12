@@ -1,6 +1,6 @@
 using System.Collections;
 using Jukebox.Components;
-using Jukebox.Core.Model.Song;
+using JukeboxCore.Models.Song;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -36,8 +36,8 @@ namespace Jukebox.UI.SongPanel
         public void Awake()
         {
             PrefsManager.onPrefChanged += OnPrefChanged;
-            JukeboxMusicPlayer.onNextSong += OnNextSong;
-            JukeboxMusicPlayer.onStop += OnStop;
+            JukeboxMusicPlayer.OnNextSong += OnNextSong;
+            JukeboxMusicPlayer.OnStop += OnStop;
             showIndefinitely = PrefsManager.Instance.GetBoolLocal("jukebox.showTrackPanelIndefinitely");
             active = PrefsManager.Instance.GetIntLocal("jukebox.songPanelStyle") == (int)Style;
         }
@@ -45,8 +45,8 @@ namespace Jukebox.UI.SongPanel
         public void OnDestroy()
         {
             PrefsManager.onPrefChanged -= OnPrefChanged;
-            JukeboxMusicPlayer.onNextSong -= OnNextSong;
-            JukeboxMusicPlayer.onStop -= OnStop;
+            JukeboxMusicPlayer.OnNextSong -= OnNextSong;
+            JukeboxMusicPlayer.OnStop -= OnStop;
         }
 
         private IEnumerator ShowPanelRoutine(JukeboxSongMetadata metadata)

@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Jukebox.Core.Model.Song;
+using JukeboxCore.Components;
+using JukeboxCore.Models.Song;
 using UnityEngine;
 using UnityEngine.UI;
 using static Playlist;
@@ -30,14 +31,14 @@ namespace Jukebox.Components
 
         protected void Awake()
         {
-            JukeboxMusicPlayer.onOrderChange += OnOrderChange;
-            JukeboxMusicPlayer.onNextSong += OnNextSong;
+            JukeboxMusicPlayer.OnOrderChange += OnOrderChange;
+            JukeboxMusicPlayer.OnNextSong += OnNextSong;
         }
 
         protected void OnDestroy()
         {
-            JukeboxMusicPlayer.onOrderChange -= OnOrderChange;
-            JukeboxMusicPlayer.onNextSong -= OnNextSong;
+            JukeboxMusicPlayer.OnOrderChange -= OnOrderChange;
+            JukeboxMusicPlayer.OnNextSong -= OnNextSong;
         }
 
         protected void OnEnable() => GoToBase();

@@ -1,5 +1,5 @@
 using System.Collections;
-using Jukebox.Core.Model.Song;
+using JukeboxCore.Models.Song;
 using UnityEngine;
 using static Jukebox.Utils.ReflectionUtils;
 
@@ -18,8 +18,8 @@ namespace Jukebox.Components
         private void Awake()
         {
             screenZone = GetComponent<ScreenZone>();
-            terminalMusic = (AudioSource)GetPrivate(screenZone, typeof(ScreenZone), "music");
-            inZone = (bool)GetPrivate(screenZone, typeof(ScreenZone), "inZone");
+            terminalMusic = GetPrivate<AudioSource>(screenZone, typeof(ScreenZone), "music");
+            inZone = GetPrivate<bool>(screenZone, typeof(ScreenZone), "inZone");
             preview = gameObject.AddComponent<AudioSource>();
         }
 

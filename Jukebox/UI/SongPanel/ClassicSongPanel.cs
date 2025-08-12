@@ -1,5 +1,5 @@
 using System.Collections;
-using Jukebox.Core.Model.Song;
+using JukeboxCore.Models.Song;
 using UnityEngine;
 
 namespace Jukebox.UI.SongPanel

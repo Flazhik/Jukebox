@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using Jukebox.Components;
 using Jukebox.UI.Elements;
-using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
@@ -16,6 +14,18 @@ namespace Jukebox.UI.Themes
 
         [SerializeField]
         private GameObject enemyTemplate;
+
+        [SerializeField]
+        private GameObject regularEnemies;
+        
+        [SerializeField]
+        private GameObject radiantEnemies;
+        
+        [SerializeField]
+        private Button[] tabButtons;
+
+        [SerializeField]
+        private GameObject activeTab;
         
         [SerializeField]
         private List<AssetReferenceT<SpawnableObject>> enemies;
@@ -26,44 +36,79 @@ namespace Jukebox.UI.Themes
             threshold.SetDefaultValue(PrefsManager.Instance.GetIntLocal("jukebox.calmThemeEnemiesThreshold"));
             threshold.OnChanged += OnThresholdChanged;
             
+            foreach (var button in tabButtons)
+            {
+                button.onClick.AddListener(() =>
+                {
+                    activeTab.transform.SetParent(button.transform);
+                    activeTab.transform.SetSiblingIndex(0);
+                    activeTab.transform.localPosition = Vector3.zero;
+                });
+            }
+            
             foreach (var enemyReference in enemies)
             {
                 var handle = enemyReference.LoadAssetAsync();
                 var enemy = handle.WaitForCompletion();
                 Addressables.Release(handle);
-                
-                var entry = Instantiate(enemyTemplate, enemyTemplate.transform.parent);
-                var icon = enemy.gridIcon;
-                entry.transform.Find("Icon").GetComponentInChildren<Image>().sprite = icon;
-                entry.transform.Find("Title").GetComponentInChildren<TMP_Text>().text = enemy.objectName;
 
-                var counter = entry.GetComponentInChildren<Counter>();
-                var toggle = entry.GetComponentInChildren<Toggle>();
-                
-                var thresholdForEnemy = themesManager.GetThresholdFor(enemy.enemyType);
-                if (!thresholdForEnemy.HasValue)
+                var respectiveSettings = new Dictionary<bool, ThemeEnemySettings>();
+                foreach (var tab in new [] { regularEnemies, radiantEnemies })
                 {
-                    toggle.isOn = false;
-                    counter.SetDefaultValue(0);
+                    var entry = Instantiate(enemyTemplate, tab.transform);
+                    var radiant = tab == radiantEnemies;
+                    
+                    var icon = enemy.gridIcon;
+                    var enemySettings = entry.GetComponent<ThemeEnemySettings>();
+                    enemySettings.icon.sprite = icon;
+                    enemySettings.title.text = radiant ? $"Radiant {enemy.objectName}" : enemy.objectName;
+                    enemySettings.radianceBg.SetActive(radiant);
+
+                    if (themesManager.GetThresholdFor(enemy.enemyType, radiant) is var enemyThreshold
+                        && !enemyThreshold.HasValue)
+                        enemySettings.counter.SetDefaultValue(0);
+                    else
+                        enemySettings.counter.SetDefaultValue(enemyThreshold.Value);
+
+                    enemySettings.toggle.isOn = enemyThreshold.HasValue;
+                    enemySettings.counter.OnChanged += value =>
+                    {
+                        enemySettings.toggle.isOn = true;
+                        themesManager.SetThresholdFor(enemy.enemyType, value, radiant);
+                    };
+                    enemySettings.toggle.onValueChanged.AddListener(on =>
+                    {
+                        if (on)
+                            themesManager.SetThresholdFor(enemy.enemyType, enemySettings.counter.Value, radiant);
+                        else
+                            themesManager.DisableThresholdFor(enemy.enemyType, radiant);
+                    });
+                    respectiveSettings[radiant] = enemySettings;
+                    entry.SetActive(true);
                 }
-                else
-                    counter.SetDefaultValue(thresholdForEnemy.Value);
 
-                counter.OnChanged += value =>
+                respectiveSettings[false].counter.OnChanged += value =>
                 {
-                    toggle.isOn = true;
-                    themesManager.SetThresholdFor(enemy.enemyType, value);
+                    if (themesManager.GetThresholdFor(enemy.enemyType, true) is var enemyThreshold
+                        && !enemyThreshold.HasValue || enemyThreshold.Value > value)
+                    {
+                        themesManager.SetThresholdFor(enemy.enemyType, value, true);
+                        respectiveSettings[true].toggle.isOn = true;
+                        respectiveSettings[true].counter.Value = value;
+                    }
                 };
                 
-                toggle.onValueChanged.AddListener(on =>
+                respectiveSettings[false].toggle.onValueChanged.AddListener(on =>
                 {
-                    if (on)
-                        themesManager.SetThresholdFor(enemy.enemyType, counter.Value);
-                    else
-                        themesManager.DisableThresholdFor(enemy.enemyType);
-                });
+                    if (!on)
+                        return;
 
-                entry.SetActive(true);
+                    if (themesManager.GetThresholdFor(enemy.enemyType, true) is not null)
+                        return;
+                    
+                    respectiveSettings[true].toggle.isOn = true;
+                    respectiveSettings[true].counter.Value = respectiveSettings[false].counter.Value;
+                });
             }
         }
 

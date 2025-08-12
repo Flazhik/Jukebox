@@ -18,10 +18,10 @@ namespace Jukebox.Patches
             if (DiscordController.Instance == null)
                 return false;
 
-            var disabled = (bool)GetPrivate(DiscordController.Instance, typeof(DiscordController), "disabled");
-            var cachedActivity = (Activity)GetPrivate(DiscordController.Instance, typeof(DiscordController), "cachedActivity");
-            var activityManager = (ActivityManager)GetPrivate(DiscordController.Instance, typeof(DiscordController), "activityManager");
-            var discord = (Discord.Discord)GetPrivate(DiscordController.Instance, typeof(DiscordController), "discord");
+            var disabled = GetPrivate<bool>(DiscordController.Instance, typeof(DiscordController), "disabled");
+            var cachedActivity = GetPrivate<Activity>(DiscordController.Instance, typeof(DiscordController), "cachedActivity");
+            var activityManager = GetPrivate<ActivityManager>(DiscordController.Instance, typeof(DiscordController), "activityManager");
+            var discord = GetPrivate<Discord.Discord>(DiscordController.Instance, typeof(DiscordController), "discord");
 
             if (disabled)
                 return false;

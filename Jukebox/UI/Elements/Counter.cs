@@ -8,7 +8,17 @@ namespace Jukebox.UI.Elements
 {
     public class Counter : MonoBehaviour
     {
-        public int Value { get; set; }
+        public int Value
+        {
+            get => value;
+            set
+            {
+                this.value = value;
+                textValue.text = Value.ToString();
+                OnChanged?.Invoke(value);
+            }
+        }
+
         public event Action<int> OnChanged;
 
         [SerializeField]
@@ -28,6 +38,7 @@ namespace Jukebox.UI.Elements
         
         private int tmpValue;
         private IEnumerator changeValueRoutine;
+        private int value;
 
         public void Awake()
         {
@@ -59,19 +70,18 @@ namespace Jukebox.UI.Elements
                 StopCoroutine(changeValueRoutine);
             
             Value = tmpValue;
-            textValue.text = Value.ToString();
             OnChanged?.Invoke(Value);
         }
 
         [SuppressMessage("ReSharper", "IteratorNeverReturns")]
         private IEnumerator ChangeValueRoutine(Action<int> callback)
         {
-            callback.Invoke(tmpValue);
+            callback(tmpValue);
             yield return new WaitForSecondsRealtime(0.3f);
 
             while (true)
             {
-                callback.Invoke(tmpValue);
+                callback(tmpValue);
                 yield return new WaitForSecondsRealtime(0.1f);
             }
         }
@@ -85,7 +95,7 @@ namespace Jukebox.UI.Elements
 
         private int ValidateOperation(Func<int, int> operation)
         {
-            var result = operation.Invoke(tmpValue);
+            var result = operation(tmpValue);
             return result < minValue || result > maxValue ? tmpValue : result;
         }
     }

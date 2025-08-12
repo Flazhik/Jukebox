@@ -6,12 +6,13 @@ using System.Reflection;
 using System.Threading;
 using BepInEx;
 using HarmonyLib;
-using Jukebox.Assets;
 using Jukebox.Components;
 using Jukebox.Input;
+using JukeboxCore.Assets;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
+using static JukeboxCore.Utils.PathsUtils;
 
 namespace Jukebox
 {
@@ -20,17 +21,17 @@ namespace Jukebox
     public class JukeboxPlugin : BaseUnityPlugin
     {
         [ExternalAsset("Assets/Jukebox/Bootstrap.prefab", typeof(GameObject))]
-        private static GameObject bootstrap;
+        private static GameObject _bootstrap;
 
-        public static string catalogDir;
+        private static readonly string CatalogDir;
         private static Harmony _harmony;
-        private static bool motdShown;
-        private static bool init;
+        
+        private static bool _motDShown;
+        private static bool _init;
 
         static JukeboxPlugin()
         {
-            var assemblyDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            catalogDir = Path.Combine(assemblyDir!, "Assets");
+            CatalogDir = Path.Combine(AssemblyPath!, "Assets");
         }
 
         private void Awake()
@@ -38,7 +39,7 @@ namespace Jukebox
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             
             Addressables.InitializeAsync().WaitForCompletion();
-            Addressables.LoadContentCatalogAsync(Path.Combine(catalogDir, "catalog.json"), true).WaitForCompletion();
+            Addressables.LoadContentCatalogAsync(Path.Combine(CatalogDir, "catalog.json"), true).WaitForCompletion();
 
             _harmony = new Harmony(PluginInfo.GUID);
             Startup();
@@ -47,9 +48,11 @@ namespace Jukebox
         private void Startup()
         {
             _harmony.PatchAll();
+            if (new FileInfo(Path.Combine(AssemblyPath, "cookies.txt")) is var cookiesFile && cookiesFile.Exists)
+                cookiesFile.Delete();
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
-        
+
         private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
         {
             if (scene != SceneManager.GetActiveScene())
@@ -64,19 +67,19 @@ namespace Jukebox
                 }
                 case "Main Menu":
                 {
-                    if (init)
+                    if (_init)
                         return;
 
-                    AssetsManager.Instance.LoadAssets();
-                    AssetsManager.Instance.RegisterPrefabs();
-                    init = true;
+                    AssetsManager.Instance.LoadAssets(Resources.Jukebox);
+                    AssetsManager.Instance.RegisterPrefabs(Assembly.GetExecutingAssembly());
+                    _init = true;
                     break;
                 }
                 case "Endless":
                 {
-                    var o = Instantiate(bootstrap);
-                    if (!motdShown)
-                        JukeboxManager.Instance.StartCoroutine(Motd());
+                    var o = Instantiate(_bootstrap);
+                    if (!_motDShown)
+                        JukeboxManager.Instance.StartCoroutine(MotD());
                     break;
                 }
             }
@@ -87,6 +90,7 @@ namespace Jukebox
             var defaultValues = new Dictionary<string, object>
             {
                 { "jukebox.volumeBoost", 0f },
+                { "jukebox.individualBoostPerTrack", false },
                 { "jukebox.showTrackPanelIndefinitely", false },
                 { "jukebox.alwaysPlayIntro", true },
                 { "jukebox.discordAndSteamIntegration", true },
@@ -102,19 +106,20 @@ namespace Jukebox
                 { "jukebox.effects.gameover", null },
                 { "jukebox.effects.aww", null },
                 { "jukebox.effects.terminal-music", null },
+                { "jukebox.downloader.separateFolderPerPlaylist", true },
             };
             
             foreach (var value in defaultValues)
                 PrefsManager.Instance.defaultValues.Add(value.Key, value.Value);
         }
 
-        private IEnumerator Motd()
+        private static IEnumerator MotD()
         {
             yield return new WaitForSeconds(1.5f);
             var menu = JukeboxInputs.Instance.Menu;
             var bindings = menu.bindings.Join(binding => menu.GetBindingDisplayStringWithoutOverride(binding));
             HudMessageReceiver.Instance.SendHudMessage($"Jukebox menu is available by pressing <color=orange>{bindings}</color>");
-            motdShown = true;
+            _motDShown = true;
         }
     }
 }

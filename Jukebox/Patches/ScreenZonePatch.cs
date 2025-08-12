@@ -6,8 +6,8 @@ namespace Jukebox.Patches
     [HarmonyPatch(typeof(ScreenZone))]
     public static class ScreenZonePatch
     {
-        private static PreviewHelper helper;
-        private static ScreenZone cgTerminal;
+        private static PreviewHelper _helper;
+        private static ScreenZone _cgTerminal;
         
         [HarmonyPostfix]
         [HarmonyPatch(typeof(ScreenZone), "Awake")]
@@ -19,24 +19,24 @@ namespace Jukebox.Patches
             if (!__instance.TryGetComponent<PreviewHelper>(out _)) 
                 __instance.gameObject.AddComponent<PreviewHelper>();
 
-            cgTerminal = __instance;
+            _cgTerminal = __instance;
         }
         
         [HarmonyPrefix]
         [HarmonyPatch(typeof(ScreenZone), "Update")]
         public static bool ScreenZone_Update_Prefix(bool ___inZone, ScreenZone __instance)
         {
-            if (cgTerminal != __instance)
+            if (_cgTerminal != __instance)
                 return true;
 
-            if (helper == null)
+            if (_helper == null)
             {
                 if (!__instance.TryGetComponent<PreviewHelper>(out var h))
                     return true;
-                helper = h;
+                _helper = h;
             }
 
-            helper.inZone = ___inZone;
+            _helper.inZone = ___inZone;
             return true;
         }
     }

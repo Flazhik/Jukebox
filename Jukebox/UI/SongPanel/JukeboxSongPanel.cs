@@ -1,6 +1,6 @@
 using System.Collections;
-using Jukebox.Core.Model.Song;
 using Jukebox.Utils;
+using JukeboxCore.Models.Song;
 using UnityEngine;
 
 namespace Jukebox.UI.SongPanel

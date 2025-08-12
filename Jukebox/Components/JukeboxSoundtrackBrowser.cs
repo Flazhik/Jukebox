@@ -161,7 +161,7 @@ namespace Jukebox.Components
                 componentInChildren.costText.text = "Unlocked";
                 componentInChildren.button.onClick.AddListener(() => SelectSong(reference.AssetGUID, song));
                 componentInChildren.introAndLoopIcon.SetActive(song.introClip != null);
-                componentInChildren.calmThemeIcon.SetActive(JukeboxManager.Instance.calmThemes.FindCalmClipsFor(reference.AssetGUID) != default);
+                componentInChildren.calmThemeIcon.SetActive(JukeboxCore.Components.JukeboxStaticData.Instance.calmThemes.FindCalmClipsFor(reference.AssetGUID) != default);
                 SetActiveAll(componentInChildren.objectsToActivateIfAvailable, true);
                 btn.SetActive(true);
             }

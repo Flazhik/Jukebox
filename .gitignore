@@ -22,7 +22,6 @@ x64/
 *_p.c
 *_i.h
 *.ilk
-*.meta
 *.obj
 *.pch
 *.pdb
@@ -143,6 +142,7 @@ _NCrunch*
 /JukeboxAssets/[Bb]uilds/
 /JukeboxAssets/[Ll]ogs/
 /JukeboxAssets/[Uu]ser[Ss]ettings/
+/JukeboxAssets/[Aa]ssets/Jukebox/TextMesh Pro
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data

@@ -28,18 +28,7 @@ namespace Jukebox.Patches
                 return;
             }
 
-            /*var inputActionMap = jukeboxActionAssets
-                .SelectMany(asset => ((InputActionAsset)asset).actionMaps)
-                .FirstOrDefault(map => map.name.Equals("Jukebox"));
-            
-            if (inputActionMap == default)
-            {
-                Debug.LogError("Couldn't find an InputActionAsset for Jukebox");
-                return;
-            }*/
-
-            //var mineJson = inputActionMap.ToJson();
-            var mineJson = @"{
+            var actionsJson = @"{
                 ""maps"": [
                     {
                         ""name"": ""Jukebox"",
@@ -131,7 +120,7 @@ namespace Jukebox.Patches
                     }
                 ]
             }";
-            ukInputActions.asset.AddActionMap(InputActionMap.FromJson(mineJson)[0]);
+            ukInputActions.asset.AddActionMap(InputActionMap.FromJson(actionsJson)[0]);
         }
     }
 }

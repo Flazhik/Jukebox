@@ -99,7 +99,7 @@ namespace Jukebox.Components
             if (path != null)
                 yield return Download(new FileInfo(path), callback);
             else
-                callback.Invoke(fallback);
+                callback(fallback);
         }
 
         private IEnumerator Download(FileSystemInfo path, Action<AudioClip> callback)
@@ -110,7 +110,7 @@ namespace Jukebox.Components
             using var wr = new UnityWebRequest(new Uri(path.FullName).AbsoluteUri, "GET", handler, null);
             yield return wr.SendWebRequest();
             if (wr.responseCode == 200)
-                callback.Invoke(handler.audioClip);
+                callback(handler.audioClip);
         }
         
         private void OnPrefChanged(string key, object value)
@@ -130,7 +130,7 @@ namespace Jukebox.Components
                     StartCoroutine(PrepareTerminalMusic());
                     break;
                 case "jukebox.effects.parry":
-                    var audioSource = (AudioSource)GetPrivate(crowdReactions, typeof(CrowdReactions), "aud");
+                    var audioSource = GetPrivate<AudioSource>(crowdReactions, typeof(CrowdReactions), "aud");
                     audioSource.Stop();
                     StartCoroutine(PrepareParrySfx());
                     break;

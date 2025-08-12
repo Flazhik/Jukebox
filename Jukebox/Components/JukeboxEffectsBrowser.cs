@@ -1,15 +1,14 @@
 using System;
-using System.Diagnostics;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using static JukeboxCore.Utils.PathsUtils;
 
 namespace Jukebox.Components
 {
     public class JukeboxEffectsBrowser : DirectoryTreeBrowser<FileInfo>
     {
-        private static readonly DirectoryInfo EffectsDirectory = new(Path.Combine(Directory.GetParent(Application.dataPath)!.FullName,
-            "Cybergrind", "Effects"));
+        private static readonly DirectoryInfo EffectsDirectory = new(Path.Combine(ApplicationPath, "Cybergrind", "Effects"));
 
         [SerializeField]
         private JukeboxTerminalPanel navigator;

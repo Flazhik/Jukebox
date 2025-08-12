@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Jukebox.Core.Model.Song;
 using Jukebox.UI;
 using Jukebox.Utils;
+using JukeboxCore.Components;
+using JukeboxCore.Models.Song;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
@@ -50,8 +51,10 @@ namespace Jukebox.Components
         public JukeboxPlaylist playlist = new();
 
         protected override int maxPageLength => anchors.Count;
-        protected override IDirectoryTree<JukeboxSong> baseDirectory => new FakeDirectoryTree<JukeboxSong>("Songs", playlist.ids.Select(id => loader.Load(id)));
-        private JukeboxCustomContentButton CurrentButton => buttons.ElementAtOrDefault(playlist.selected % maxPageLength)?.GetComponent<JukeboxCustomContentButton>();
+        protected override IDirectoryTree<JukeboxSong> baseDirectory =>
+            new FakeDirectoryTree<JukeboxSong>("Songs", playlist.ids.Select(id => loader.Load(id)));
+        private JukeboxCustomContentButton CurrentButton =>
+            buttons.ElementAtOrDefault(playlist.selected % maxPageLength)?.GetComponent<JukeboxCustomContentButton>();
         
         private void Start()
         {
