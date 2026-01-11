@@ -18,7 +18,7 @@ namespace JukeboxDownloader.Utils
     public static class ThirdPartySoftwareUtils
     {
         private const string FfmpegApiUrl = "https://ffbinaries.com/api/v1/version/6.1";
-        private const string YtDlpUrl = "https://github.com/yt-dlp/yt-dlp/releases/download/2025.07.21/yt-dlp.exe";
+        private const string YtDlpUrl = "https://github.com/yt-dlp/yt-dlp/releases/download/2025.12.08/yt-dlp.exe";
 
         private static readonly List<string> BinariesNames = new()
         {
@@ -31,7 +31,7 @@ namespace JukeboxDownloader.Utils
         {
             { "ffmpeg.exe", "7afdd1037ac16bce65a7bb721818cc9fa0857059" },
             { "ffprobe.exe", "678fcc1327c5d86c33e1f2e463bcb592f6c1643f" },
-            { "yt-dlp.exe", "66e4550d420a940fe75a6029439afb30665b73b8" }
+            { "yt-dlp.exe", "5329549c5611209c1e7bcbc441d95db6184adc23" }
         };
 
         private static readonly SHA1CryptoServiceProvider SHA1Provider = new();

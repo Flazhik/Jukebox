@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jukebox", "Jukebox\Jukebox.csproj", "{B01B8657-61B6-4BC3-BFAF-F43D4C264B4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JukeboxDownloader", "JukeboxDownloader\JukeboxDownloader.csproj", "{5C0415F4-8665-489A-A19E-094051311242}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JukeboxCore", "JukeboxCore\JukeboxCore.csproj", "{AB57436D-F3D9-454E-8F64-33F23AFD6690}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B01B8657-61B6-4BC3-BFAF-F43D4C264B4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B01B8657-61B6-4BC3-BFAF-F43D4C264B4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B01B8657-61B6-4BC3-BFAF-F43D4C264B4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B01B8657-61B6-4BC3-BFAF-F43D4C264B4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C0415F4-8665-489A-A19E-094051311242}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C0415F4-8665-489A-A19E-094051311242}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C0415F4-8665-489A-A19E-094051311242}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C0415F4-8665-489A-A19E-094051311242}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB57436D-F3D9-454E-8F64-33F23AFD6690}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB57436D-F3D9-454E-8F64-33F23AFD6690}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB57436D-F3D9-454E-8F64-33F23AFD6690}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB57436D-F3D9-454E-8F64-33F23AFD6690}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
