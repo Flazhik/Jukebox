@@ -19,5 +19,11 @@ namespace Jukebox.Utils
             if (privateField != null)
                 privateField.SetValue(instance, value);
         }
+
+        public static void CallPrivate(object instance, Type classType, string methodName, params object[] args)
+        {
+            var privateMethod = classType.GetMethod(methodName, PrivateFields);
+            privateMethod?.Invoke(instance, args);
+        }
     }
 }

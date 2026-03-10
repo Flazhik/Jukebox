@@ -39,7 +39,7 @@ You can also use r2modman for that
 All the basic functionality is available by pressing **F4** while in Cyber Grind and ~ while in arena.
 
 ## Settings
-![Jukebox Menu](https://i.imgur.com/Ksg3kBX.png)
+![Jukebox Menu](https://i.imgur.com/Xn4KiN3.png)
 
 All the settings for the mod are available by pressing Menu hotkey (F4 by default). The main screen of the menu contains the following options:
 
@@ -49,7 +49,8 @@ All the settings for the mod are available by pressing Menu hotkey (F4 by defaul
 2. **Custom tracks volume boost**: if your track is still too quiet, you can always add up to 10dB to it. Please use it carefully
 3. **Save volume boost for each individual track**: volume level might vary from song to song, so this feature will allow you to set a volume boost for each track individually 
 4. **Always play an intro part**: intro section of the song is always going to be played despite the track position in the playlist
-5. **Discord & Steam integration**: shows the current track name alongside wave number in Discord and Steam
+5. **Resume the last song from where it left off**: have you died or just closed CG while listening to 2 hours mix? Don't worry, the song will continue from where it left off
+6. **Discord & Steam integration**: shows the current track name alongside wave number in Discord and Steam
 
 **Playlist editing**
 
@@ -80,9 +81,9 @@ It could be many things. Age restriction, sensitive topics. Hell, some videos ar
 See p. 1, most likely you're going to have to refresh and re-exports your cookies
 
 ## Playback menu
-![Playback menu](https://i.imgur.com/1qaFgPT.png)
+![Playback menu](https://i.imgur.com/3f5gSpA.png)
 
-Allows you to switch between the tracks mid-game. Available by pressing **~** by default.
+Allows you to switch between the tracks mid-game and includes a seek bar for navigating the song. Available by pressing **~** by default.
 
 If the whole menu is an overkill for you, just switch between tracks using **Next track** hotkey.
 

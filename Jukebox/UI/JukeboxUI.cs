@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -13,11 +14,13 @@ namespace Jukebox.UI
     {
         [SerializeField] public GameObject jukeboxMenuTemplate;
         [SerializeField] public GameObject playbackMenuTemplate;
+        [SerializeField] public GameObject whatIsNewMenuTemplate;
         [SerializeField] public GameObject nowPlayingHudTemplate;
         [SerializeField] public GameObject nowPlayingHudClassicTemplate;
 
         private GameObject jukeboxMenu;
         private GameObject playbackMenu;
+        private GameObject whatIsNew;
 
         private ReadOnlyCollection<JukeboxWindow> windows;
 
@@ -34,11 +37,13 @@ namespace Jukebox.UI
             windows = new ReadOnlyCollection<JukeboxWindow>(new List<JukeboxWindow>
             {
                 jukeboxMenu.GetComponent<JukeboxWindow>(),
-                playbackMenu.GetComponent<JukeboxPlaybackWindow>()
+                playbackMenu.GetComponent<JukeboxPlaybackWindow>(),
+                whatIsNew.GetComponent<WhatsNew>()
             });
 
             foreach (var window in windows)
                 window.gameObject.SetActive(false);
+            StartCoroutine(WhatIsNewRoutine());
         }
 
         protected void Update()
@@ -60,12 +65,12 @@ namespace Jukebox.UI
             }
 
             var requestedWindow = windows
-                .FirstOrDefault(w => w.hotkey.ToInputAction().WasPerformedThisFrame());
+                .FirstOrDefault(w => w.hotkey != null && w.hotkey.ToInputAction().WasPerformedThisFrame());
 
-            if (requestedWindow != default)
+            if (requestedWindow != null)
             {
                 foreach (var window in windows)
-                    if (window.hotkey.ToInputAction().IsActionEqual(requestedWindow.hotkey.ToInputAction()))
+                    if (window.hotkey != null && window.hotkey.ToInputAction().IsActionEqual(requestedWindow.hotkey.ToInputAction()))
                         window.Toggle();
                     else
                         window.Close();
@@ -93,8 +98,15 @@ namespace Jukebox.UI
 
             jukeboxMenu = Instantiate(jukeboxMenuTemplate, canvas.transform);
             playbackMenu = Instantiate(playbackMenuTemplate, canvas.transform);
+            whatIsNew = Instantiate(whatIsNewMenuTemplate, canvas.transform);
             Instantiate(nowPlayingHudTemplate, Find("/Player/Main Camera/HUD Camera/HUD/GunCanvas").transform, false);
             Instantiate(nowPlayingHudClassicTemplate, canvas.transform.Find("Crosshair Filler"), false);
+        }
+
+        private IEnumerator WhatIsNewRoutine()
+        {
+            yield return new WaitForSeconds(1.4f);
+            whatIsNew.GetComponent<WhatsNew>().Open();
         }
 
         private static bool GameIsPaused() => GameStateManager.Instance.IsStateActive("pause");

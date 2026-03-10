@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using JukeboxCore.Assets;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
 using Object = UnityEngine.Object;
 using static JukeboxCore.Utils.CompositeSongsUtils;
@@ -13,11 +13,16 @@ namespace JukeboxCore.Models.Song
 {
     public sealed class JukeboxCustomSong: JukeboxSong
     {
-        [ExternalAsset("Assets/Jukebox/Textures/music_note.png", typeof(Sprite))]
-        private static Sprite defaultIcon;
+        private static readonly Sprite DefaultIcon;
 
         private readonly List<UnityWebRequest> requests = new();
         private List<DownloadHandlerAudioClip> handles;
+
+        static JukeboxCustomSong()
+        {
+            DefaultIcon = Addressables.LoadAssetAsync<Sprite>("Assets/Jukebox/Textures/music_note.png")
+                .WaitForCompletion();
+        }
 
         private JukeboxCustomSong(string path) : base(new Playlist.SongIdentifier(path, Playlist.SongIdentifier.IdentifierType.File))
         {
@@ -30,8 +35,8 @@ namespace JukeboxCore.Models.Song
         protected override Lazy<JukeboxSongMetadata> GetMetadata => new(() =>
         {
             var data = JukeboxSongMetadata.From(new FileInfo(Id.path));
-            if (data.Icon == default)
-                data.Icon = defaultIcon;
+            if (data.Icon == null)
+                data.Icon = DefaultIcon;
             return data;
         });
 

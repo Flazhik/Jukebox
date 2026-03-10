@@ -2,8 +2,8 @@ namespace Jukebox
 {
     internal static class PluginInfo
     {
-        public const string GUID = "dev.flazhik.jukebox";
-        public const string NAME = "Jukebox";
-        public const string VERSION = "2.1.1";
+        public const string Guid = "dev.flazhik.jukebox";
+        public const string Name = "Jukebox";
+        public const string Version = "2.2.0";
     }
 }

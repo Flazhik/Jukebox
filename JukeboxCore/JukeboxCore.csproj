@@ -11,6 +11,7 @@
         <RootNamespace>JukeboxCore</RootNamespace>
         <AssemblyName>JukeboxCore</AssemblyName>
         <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+        <TargetFramework>netstandard2.1</TargetFramework>
         <FileAlignment>512</FileAlignment>
         <LangVersion>9</LangVersion>
     </PropertyGroup>
@@ -34,7 +35,7 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <PropertyGroup>
-        <ULTRAKILLPath>D:\SteamLibrary\steamapps\common\ULTRAKILL</ULTRAKILLPath>
+        <ULTRAKILLPath>C:\Steam\steamapps\common\ULTRAKILL</ULTRAKILLPath>
         <ManagedDir>$(ULTRAKILLPath)\ULTRAKILL_Data\Managed\</ManagedDir>
         <BepInExRootDir>$(ULTRAKILLPath)\BepInEx\</BepInExRootDir>
         <BepInExCoreDir>$(BepInExRootDir)\core\</BepInExCoreDir>
@@ -55,6 +56,7 @@
         <Compile Include="Components\JukeboxStaticData.cs" />
         <Compile Include="Components\JukeboxSongsLoader.cs" />
         <Compile Include="Components\RingPlaceholder.cs" />
+        <Compile Include="Events\ClipChangedArgs.cs" />
         <Compile Include="Events\JukeboxEvent.cs" />
         <Compile Include="Events\EventStore.cs" />
         <Compile Include="Events\EventManager.cs" />
@@ -69,7 +71,7 @@
         <Compile Include="Models\Downloader\DownloadableSongMetadata.cs" />
         <Compile Include="Models\Downloader\DownloadableEntityState.cs" />
         <Compile Include="Models\Preferences\JukeboxThemesConfig.cs" />
-        <Compile Include="Models\Preferences\JukeboxVolumeConfig.cs" />
+        <Compile Include="Models\Preferences\JukeboxPreferences.cs" />
         <Compile Include="Models\Song\JukeboxCustomSong.cs" />
         <Compile Include="Models\Song\JukeboxPlaylist.cs" />
         <Compile Include="Models\Song\JukeboxSong.cs" />

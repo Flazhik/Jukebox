@@ -10,8 +10,19 @@ namespace Jukebox.Patches
         [HarmonyPatch(typeof(FinalCyberRank), "GameOver")]
         public static bool FinalCyberRank_GameOver_Prefix()
         {
-            if (JukeboxManager.Instance.player != null)
-                JukeboxManager.Instance.player.Stop();
+            var player = JukeboxManager.Instance.player;
+            if (player != null)
+            {
+                if (PrefsManager.Instance.GetBoolLocal("jukebox.resumeLastSong")
+                    && JukeboxMusicPlayer.CurrentSong != null
+                    && player.Source.clip != null)
+                {
+                    var preferences = JukeboxPreferencesManager.Instance;
+                    preferences.SetPlaybackPosition(JukeboxMusicPlayer.CurrentSong.Id, JukeboxMusicPlayer.CurrentClipIndex, player.Source.time);
+                    preferences.ForceSavePreferences();
+                }
+                player.Stop();
+            }
 
             return true;
         }

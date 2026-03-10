@@ -19,25 +19,32 @@ namespace JukeboxDownloader.Components
         [SerializeField]
         public ThirdPartyExecsDownloader thirdPartyExecsDownloader;
         
+        [SerializeField]
+        public YtDlpUpdater ytDlpUpdater;
+        
         private JukeboxDownloaderService downloaderService;
 
         private void Awake()
         {
             downloaderService = JukeboxDownloaderService.Instance;
-            Task.Run(() =>
-            {
-                var softwareIntact = AllRequiredSoftwarePresent() && ValidateThirdPartySoftwareIntegrity();
+            Task.Run(IsYtDlpUpToDate)
+                .ContinueWith(ytDlpIsUtToDate => Task.Run(() =>
+                {
+                    var softwareIntact = AllRequiredSoftwarePresent() && ValidateThirdPartySoftwareIntegrity();
+
                     MainThreadDispatcher.Instance.Enqueue(() =>
                     {
                         downloaderService.ThirdPartySoftwareState = new ThirdPartyExecsState
                         {
                             state = softwareIntact
-                                ? ExecsState.Present
+                                ? ytDlpIsUtToDate.IsFaulted || ytDlpIsUtToDate.IsCanceled || ytDlpIsUtToDate.Result
+                                    ? ExecsState.Present
+                                    : ExecsState.UpdateRequired
                                 : ExecsState.Missing
                         };
                         loadingScreen.SetActive(false);
                     });
-            });
+                }));
         }
 
         private void OnEnable()
@@ -54,7 +61,12 @@ namespace JukeboxDownloader.Components
         private void HandleState(ThirdPartyExecsState state)
         {
             downloader.gameObject.SetActive(state.state == ExecsState.Present);
-            thirdPartyExecsDownloader.gameObject.SetActive(!state.state.IsOneOf(ExecsState.Present, ExecsState.None));
+            if (!state.state.IsOneOf(ExecsState.Downloading, ExecsState.Failed))
+            {
+                thirdPartyExecsDownloader.gameObject.SetActive(!state.state.IsOneOf(ExecsState.Present, ExecsState.None,
+                    ExecsState.UpdateRequired));
+                ytDlpUpdater.gameObject.SetActive(state.state == ExecsState.UpdateRequired);
+            }
         }
     }
 }

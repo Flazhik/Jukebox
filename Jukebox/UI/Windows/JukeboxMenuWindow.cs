@@ -1,5 +1,5 @@
 using Jukebox.Components;
-using JukeboxCore.Models.Song;
+using JukeboxCore.Events;
 using SettingsMenu.Components;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,12 +33,12 @@ namespace Jukebox.UI.Windows
             foreach (var button in buttons)
                 button.onClick.AddListener(() => SetActiveButton(button));
 
-            JukeboxMusicPlayer.OnNextSong += OnNextSong;
+            JukeboxMusicPlayer.OnNextAudioClip += NextAudioClip;
         }
         
-        public void OnNextSong(JukeboxSong song)
+        public void NextAudioClip(ClipChangedArgs clip)
         {
-            if (!song.IsCustom)
+            if (!clip.NewSong || !clip.Song.IsCustom)
                 return;
             
             var settingsSlider = generalSettings.GetComponentInChildren<SettingsSlider>(true);
@@ -57,7 +57,7 @@ namespace Jukebox.UI.Windows
 
         protected void OnDestroy()
         {
-            JukeboxMusicPlayer.OnNextSong -= OnNextSong;
+            JukeboxMusicPlayer.OnNextAudioClip -= NextAudioClip;
         }
 
         private void SetActiveButton(Button button)

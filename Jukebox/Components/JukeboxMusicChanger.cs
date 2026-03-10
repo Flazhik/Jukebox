@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
@@ -39,22 +40,21 @@ namespace Jukebox.Components
             }
         }
 
-        public void ChangeTo(AudioClip battleTheme, AudioClip calmTheme)
+        public void ChangeTo(AudioClip battleTheme, AudioClip calmTheme, float startingFrom = 0f)
         {
             if (updateRoutine != null)
                 StopCoroutine(updateRoutine);
-            
-            battle.time = 0.0f;
-            clean.time = 0.0f;
             
             clean.clip = calmTheme;
             battle.clip = battleTheme;
 
             battle.Play();
+            battle.time = startingFrom;
             battle.volume = 1f;
             if (clean.clip != null)
             {
                 clean.Play();
+                clean.time = startingFrom;
                 if (CalmThemesAllowed && themesManager.FewEnemies)
                 {
                     clean.volume = 1f;
@@ -63,6 +63,12 @@ namespace Jukebox.Components
             }
 
             updateRoutine = StartCoroutine(SlowUpdate());
+        }
+        
+        public void RewindTo(float position = 0f)
+        {
+            clean.time = Math.Min(position, clean.clip != null ? clean.clip.length : 0);
+            battle.time = Math.Min(position, battle.clip != null ? battle.clip.length : 0);
         }
 
         [SuppressMessage("ReSharper", "IteratorNeverReturns")]

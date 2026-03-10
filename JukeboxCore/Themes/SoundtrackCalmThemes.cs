@@ -16,7 +16,7 @@ namespace JukeboxCore.Themes
             var entry = calmClips.FirstOrDefault(variation =>
                 variation.reference.AssetGUID == guid);
 
-            return entry != default ? entry.calmVariationClips : default;
+            return entry != null ? entry.calmVariationClips : null;
         }
     }
 }

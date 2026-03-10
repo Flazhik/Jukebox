@@ -24,6 +24,8 @@ namespace JukeboxDownloader.Service.YouTube
 
         private const string PostProcessing =
             "EmbedThumbnail+ffmpeg_o:-c:v mjpeg -vf crop=\\\"w='min(iw,ih)':h='min(iw,ih)'\\\"";
+        
+        private const string EjsParam = "ejs:github";
 
         private static bool SaveIntoSeparateFolders =>
             PrefsManager.Instance.GetBoolLocal("jukebox.downloader.separateFolderPerPlaylist");
@@ -74,6 +76,7 @@ namespace JukeboxDownloader.Service.YouTube
             };
             
             options.AddCustomOption("--ppa", PostProcessing);
+            options.AddCustomOption("--remote-components", EjsParam);
             return await client.RunWithOptions(url, options, progress: progress, ct: token, output: Logger);
         }
     }

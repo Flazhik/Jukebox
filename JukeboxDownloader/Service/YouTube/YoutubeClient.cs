@@ -52,7 +52,7 @@ namespace JukeboxDownloader.Service.YouTube
                     $"https://i.ytimg.com/vi/{entry.ID}/hqdefault.jpg",
                     entry.Title,
                     entry.Uploader,
-                    isPlaylist ? data.Data.Title : default))
+                    isPlaylist ? data.Data.Title : null))
                 .ToList();
         }
 
@@ -111,7 +111,7 @@ namespace JukeboxDownloader.Service.YouTube
             {
                 var exception = handlers
                     .FirstOrDefault(handler => handler.Item1
-                        .FirstOrDefault(o.Contains) != default);
+                        .FirstOrDefault(o.Contains) != null);
                 
                 if (exception != default)
                     throw exception.Item2();

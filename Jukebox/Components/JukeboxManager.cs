@@ -29,9 +29,8 @@ namespace Jukebox.Components
         [SerializeField]
         private GameObject musicChanger;
 
-        protected new void Awake()
+        protected void Awake()
         {
-            base.Awake();
             ReplaceOriginalLogic();
             SetupTerminal();
             SetupSongPanel();

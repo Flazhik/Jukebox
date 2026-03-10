@@ -17,9 +17,11 @@ using UnityEngine;
 using static JukeboxDownloader.Utils.ThirdPartySoftwareUtils;
 using static YoutubeDLSharp.Utils;
 using static JukeboxCore.Utils.ConfigUtils;
+using static SingletonFlags;
 
 namespace JukeboxDownloader.Service
 {
+    [ConfigureSingleton(HideAutoInstance)]
     public class JukeboxDownloaderService : MonoSingleton<JukeboxDownloaderService>
     {
         private readonly ConfigEntry<int> queueSize = BepInExConfig.Bind("Concurrency",
@@ -88,9 +90,8 @@ namespace JukeboxDownloader.Service
         
         private JukeboxDownloaderState state = JukeboxDownloaderState.Idle;
 
-        protected override void Awake()
+        protected void Start()
         {
-            base.Awake();
             queue = new QueueManager(queueSize.Value);
             mainThread = MainThreadDispatcher.Instance;
         }
@@ -171,6 +172,21 @@ namespace JukeboxDownloader.Service
             {
                 await DownloadSoftwarePiece("ffmpeg", FfmpegBinaryName, DownloadFfmpeg);
                 await DownloadSoftwarePiece("ffprobe", FfprobeBinaryName, DownloadFfprobe);
+                await UpdateYtDlp();
+                CleanUp();
+                
+                ThirdPartySoftwareState = ThirdPartyExecsState.Present();
+            }
+            catch (Exception)
+            {
+                ThirdPartySoftwareState = ThirdPartyExecsState.Failed();
+            }
+        }
+        
+        public async Task UpdateYtDlp()
+        {
+            try
+            {
                 await DownloadSoftwarePiece("yt-dlp", YtDlpBinaryName, DownloadYtDlp);
                 CleanUp();
                 
@@ -180,29 +196,29 @@ namespace JukeboxDownloader.Service
             {
                 ThirdPartySoftwareState = ThirdPartyExecsState.Failed();
             }
-
-            async Task DownloadSoftwarePiece(string softwareTitle, string filename, Func<WebClient, Task> downloadRoutine)
+        }
+        
+        private async Task DownloadSoftwarePiece(string softwareTitle, string filename, Func<WebClient, Task> downloadRoutine)
+        {
+            try
             {
-                try
-                {
-                    if (ThirdPartySoftwarePresent(filename) && ValidateBinaryIntegrity(filename))
-                        return;
+                if (ThirdPartySoftwarePresent(filename) && ValidateBinaryIntegrity(filename))
+                    return;
 
-                    ThirdPartySoftwareState = ThirdPartyExecsState.DownloadingStarted();
-                    using var client = new WebClient();
-                    client.DownloadProgressChanged += (_, e) =>
-                        ThirdPartySoftwareState =
-                            ThirdPartyExecsState.DownloadingProgress(softwareTitle, e.ProgressPercentage / 100f);
+                ThirdPartySoftwareState = ThirdPartyExecsState.DownloadingStarted();
+                using var client = new WebClient();
+                client.DownloadProgressChanged += (_, e) =>
+                    ThirdPartySoftwareState =
+                        ThirdPartyExecsState.DownloadingProgress(softwareTitle, e.ProgressPercentage / 100f);
                 
-                    await downloadRoutine(client);
-                }
-                catch (Exception e)
-                {
-                    mainThread.Enqueue(() =>
-                        Debug.LogError($"An error has occured while downloading 3rd-party software: {e.Message}"));
-                    ThirdPartySoftwareState = ThirdPartyExecsState.Failed();
-                    throw;
-                }
+                await downloadRoutine(client);
+            }
+            catch (Exception e)
+            {
+                mainThread.Enqueue(() =>
+                    Debug.LogError($"An error has occured while downloading 3rd-party software: {e.Message}"));
+                ThirdPartySoftwareState = ThirdPartyExecsState.Failed();
+                throw;
             }
         }
 
@@ -223,16 +239,15 @@ namespace JukeboxDownloader.Service
         private static AbstractDownloaderClient GetClientFor(string url)
         {
             var result = Clients.FirstOrDefault(client => client.SupportsUrl(url));
-            if (result == default)
+            if (result == null)
                 throw new UrlIsNotSupported();
             
             return result;
         }
 
-        protected override void OnDestroy()
+        protected void OnDestroy()
         {
             CancelEverything();
-            base.OnDestroy();
         }
     }
 }

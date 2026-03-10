@@ -62,14 +62,14 @@ namespace JukeboxDownloader.UI
             if (state.progress.HasValue)
                 progressPercentage.text = $"{(int)(state.progress.Value * 100)}%";
             
-            if (state.eta != default)
+            if (state.eta != null)
                 progressPercentage.text = state.eta;
         }
 
         private void SetThumbnail(Sprite texture)
         {
-            thumbnailPlaceholder.SetActive(texture == default);
-            thumbnail.gameObject.SetActive(texture != default);
+            thumbnailPlaceholder.SetActive(texture == null);
+            thumbnail.gameObject.SetActive(texture != null);
             thumbnail.sprite = texture;
         }
         
@@ -96,13 +96,13 @@ namespace JukeboxDownloader.UI
                 if (e.newState.state.HasValue)
                     HandleState(e.newState.state.Value);
                 
-                if (e.newState.thumbnail != default)
+                if (e.newState.thumbnail != null)
                     SetThumbnail(e.newState.thumbnail);
 
                 if (e.newState.progress.HasValue)
                     UpdateProgress(e.newState.progress.Value);
                 
-                if (e.newState.eta != default)
+                if (e.newState.eta != null)
                     downloadEta.text = e.newState.eta;
             });
         }

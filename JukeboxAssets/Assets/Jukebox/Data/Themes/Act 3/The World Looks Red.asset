@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1059017350, guid: 5bacb47211d7a2845a64ac8ae4454555, type: 3}
+  m_Name: The World Looks Red
+  m_EditorClassIdentifier: 
+  reference:
+    m_AssetGUID: 6da404a7f7065194794357f35f6db2dd
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  calmVariationClips:
+  - m_AssetGUID: 10214ceea6a6fde42bf44692a0c650c2
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0

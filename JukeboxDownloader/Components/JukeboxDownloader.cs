@@ -75,7 +75,7 @@ namespace JukeboxDownloader.Components
 
         private void OnURLChanged(string value)
         {
-            if (urlChangedRoutine != default)
+            if (urlChangedRoutine != null)
                 StopCoroutine(urlChangedRoutine);
 
             urlChangedRoutine = StartCoroutine(URLChangedRoutine(value));
