@@ -1,5 +1,6 @@
 using System.Collections;
 using Jukebox.Components;
+using JukeboxCore.Events;
 using JukeboxCore.Models.Song;
 using TMPro;
 using UnityEngine;
@@ -36,7 +37,7 @@ namespace Jukebox.UI.SongPanel
         public void Awake()
         {
             PrefsManager.onPrefChanged += OnPrefChanged;
-            JukeboxMusicPlayer.OnNextSong += OnNextSong;
+            JukeboxMusicPlayer.OnNextAudioClip += NextAudioClip;
             JukeboxMusicPlayer.OnStop += OnStop;
             showIndefinitely = PrefsManager.Instance.GetBoolLocal("jukebox.showTrackPanelIndefinitely");
             active = PrefsManager.Instance.GetIntLocal("jukebox.songPanelStyle") == (int)Style;
@@ -45,7 +46,7 @@ namespace Jukebox.UI.SongPanel
         public void OnDestroy()
         {
             PrefsManager.onPrefChanged -= OnPrefChanged;
-            JukeboxMusicPlayer.OnNextSong -= OnNextSong;
+            JukeboxMusicPlayer.OnNextAudioClip -= NextAudioClip;
             JukeboxMusicPlayer.OnStop -= OnStop;
         }
 
@@ -62,12 +63,15 @@ namespace Jukebox.UI.SongPanel
             yield return FadeOut();
         }
 
-        private void OnNextSong(JukeboxSong song)
+        private void NextAudioClip(ClipChangedArgs clip)
         {
+            if (!clip.NewSong)
+                return;
+            
             active = PrefsManager.Instance.GetIntLocal("jukebox.songPanelStyle") == (int)Style;
             if (displayRoutine != null)
                 StopCoroutine(displayRoutine);
-            displayRoutine = StartCoroutine(ShowPanelRoutine(song.Metadata));
+            displayRoutine = StartCoroutine(ShowPanelRoutine(clip.Song.Metadata));
         }
         
         private void OnStop() => active = false;

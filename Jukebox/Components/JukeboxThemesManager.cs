@@ -6,6 +6,7 @@ using static Newtonsoft.Json.JsonConvert;
 
 namespace Jukebox.Components
 {
+    [ConfigureSingleton(SingletonFlags.HideAutoInstance)]
     public class JukeboxThemesManager: MonoSingleton<JukeboxThemesManager>
     {
         private static readonly string PreferencesPath = Path.Combine(
@@ -22,9 +23,8 @@ namespace Jukebox.Components
 
         private bool isDirty;
 
-        protected override void Awake()
+        protected void Awake()
         {
-            base.Awake();
             prefsManager = PrefsManager.Instance;
             enemyTracker = EnemyTracker.Instance;
             LoadPreferences();
@@ -40,11 +40,10 @@ namespace Jukebox.Components
             isDirty = false;
         }
 
-        protected override void OnDestroy()
+        protected void OnDestroy()
         {
             SavePreferences();
             isDirty = false;
-            base.OnDestroy();
         }
 
         public int? GetThresholdFor(EnemyType type, bool radiant = false)

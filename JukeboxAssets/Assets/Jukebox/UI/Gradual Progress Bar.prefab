@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 8328612754520096226}
   - component: {fileID: 2247375682993400628}
   - component: {fileID: 4903067286228750858}
-  - component: {fileID: 8643506979523978480}
+  - component: {fileID: 184159162100230058}
   m_Layer: 5
   m_Name: Gradual Progress Bar
   m_TagString: Untagged
@@ -218,7 +218,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &8643506979523978480
+--- !u!114 &184159162100230058
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -227,7 +227,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6655323054808817834}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bcbf1667f515e3e4985554571cfd8643, type: 3}
+  m_Script: {fileID: -1778211212, guid: bad1d6acc9cea49478519bf6a0d7efa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   progressBar: {fileID: 4903067286228750858}

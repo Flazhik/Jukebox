@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Jukebox.UI.Elements;
+using Jukebox.Utils;
 using JukeboxCore.Components;
-using JukeboxCore.Models.Song;
+using JukeboxCore.Events;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static Playlist;
@@ -18,8 +21,20 @@ namespace Jukebox.Components
         
         [SerializeField]
         private GameObject buttonsSection;
+        
+        [SerializeField]
+        private RewindSlider rewindSlider;
+        
+        [SerializeField]
+        private TMP_Text currentTimestamp;
+        
+        [SerializeField]
+        private TMP_Text totalLength;
+        
+        [NonSerialized]
+        private JukeboxMusicPlayer player;
 
-        protected override int maxPageLength => 6;
+        protected override int maxPageLength => 5;
         protected override IDirectoryTree<SongIdentifier> baseDirectory =>
             new FakeDirectoryTree<SongIdentifier>("Playlist", order);
         private CustomContentButton CurrentButton => buttons
@@ -31,14 +46,23 @@ namespace Jukebox.Components
 
         protected void Awake()
         {
+            player = JukeboxManager.Instance.player;
             JukeboxMusicPlayer.OnOrderChange += OnOrderChange;
-            JukeboxMusicPlayer.OnNextSong += OnNextSong;
+            JukeboxMusicPlayer.OnNextAudioClip += NextAudioClip;
+            JukeboxMusicPlayer.OnStop += OnStop;
+
+            rewindSlider.OnValueChanged += position =>
+            {
+                player.RewindTo(position);
+                rewindSlider.slider.value = position;
+            };
         }
 
         protected void OnDestroy()
         {
+            JukeboxMusicPlayer.OnStop -= OnStop;
             JukeboxMusicPlayer.OnOrderChange -= OnOrderChange;
-            JukeboxMusicPlayer.OnNextSong -= OnNextSong;
+            JukeboxMusicPlayer.OnNextAudioClip -= NextAudioClip;
         }
 
         protected void OnEnable() => GoToBase();
@@ -46,6 +70,17 @@ namespace Jukebox.Components
         public new void NextPage() => SetPage(currentPage == maxPages - 1 ? 0 : currentPage + 1);
 
         public new void PreviousPage() => SetPage(currentPage == 0 ? maxPages - 1 : currentPage - 1);
+
+        private void Update()
+        {
+            if (player.Source == null || player.Source.clip == null)
+                return;
+
+            if (!rewindSlider.beingDragged)
+                rewindSlider.slider.value = player.Source.time;
+            
+            currentTimestamp.text = player.Source.time.SecondsToHumanReadable();
+        }
 
         protected override Action BuildLeaf(SongIdentifier id, int indexInPage)
         {
@@ -81,10 +116,30 @@ namespace Jukebox.Components
             Rebuild();
         }
         
-        private void OnNextSong(JukeboxSong _)
+        private void NextAudioClip(ClipChangedArgs clip)
         {
+            var audioClip = player.Source.clip;
+            rewindSlider.slider.value = 0;
+            rewindSlider.slider.maxValue = audioClip.length;
+            totalLength.text = audioClip.length.SecondsToHumanReadable();
+            
             buttonsSection.SetActive(true);
+            rewindSlider.slider.interactable = true;
+
             disclaimer.SetActive(false);
+            Rebuild(false);
+        }
+
+        private void OnStop()
+        {
+            rewindSlider.slider.interactable = false;
+        }
+
+        public new void GoToBase()
+        {
+            if (Equals(currentDirectory, baseDirectory))
+                return;
+            currentDirectory = baseDirectory;
             Rebuild(false);
         }
 

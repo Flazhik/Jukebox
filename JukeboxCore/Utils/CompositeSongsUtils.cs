@@ -22,7 +22,7 @@ namespace JukeboxCore.Utils
             new CompositeProperties.Builder()
                 .GotIntroAndLoop(song.introClip != null)
                 .GotCalmIntro(false)
-                .GotCalmLoop(JukeboxStaticData.Instance.calmThemes.FindCalmClipsFor(guid) != default)
+                .GotCalmLoop(JukeboxStaticData.Instance.calmThemes.FindCalmClipsFor(guid) != null)
                 .Build;
 
         public static CompositeProperties GetSongComponents(FileInfo fileInfo)

@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 6696864591190595063}
   - component: {fileID: 8471570131977900080}
   - component: {fileID: 1447762311904662558}
-  - component: {fileID: 2352426181157506028}
+  - component: {fileID: 3870712157648016800}
   m_Layer: 5
   m_Name: Playlist Selectable
   m_TagString: Untagged
@@ -214,7 +214,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2352426181157506028
+--- !u!114 &3870712157648016800
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -223,7 +223,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1238517570795783168}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dae2c4d7c2eb3c344969bba59e597417, type: 3}
+  m_Script: {fileID: -1069206317, guid: 9beecc8011520934e82a8ba90d1f7066, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   itemButtonTemplate: {fileID: 1323804179206433638}

@@ -54,6 +54,7 @@ namespace JukeboxDownloader.Models
         None,
         Missing,
         Present,
+        UpdateRequired,
         Downloading,
         Failed
     }

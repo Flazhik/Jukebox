@@ -684,7 +684,7 @@ GameObject:
   - component: {fileID: 7664108795284639450}
   - component: {fileID: 1441298338211573660}
   - component: {fileID: 4646945951512628023}
-  - component: {fileID: 4930531576193829962}
+  - component: {fileID: 4159701676506581377}
   m_Layer: 5
   m_Name: Jukebox
   m_TagString: Untagged
@@ -732,7 +732,7 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &4930531576193829962
+--- !u!114 &4159701676506581377
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -741,7 +741,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6369031354226539197}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9385abad3a1179d4d9fd6366c3897967, type: 3}
+  m_Script: {fileID: -1152566118, guid: 9beecc8011520934e82a8ba90d1f7066, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   panelGroup: {fileID: 4646945951512628023}
@@ -762,7 +762,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7155275431851906494}
   - component: {fileID: 3839105342289198436}
-  - component: {fileID: 7844496350906209993}
+  - component: {fileID: 1000033684832646007}
   m_Layer: 0
   m_Name: Classic
   m_TagString: Untagged
@@ -802,7 +802,7 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &7844496350906209993
+--- !u!114 &1000033684832646007
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -811,7 +811,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8291942369875042762}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7eb26d83918203747a451b70a4d7da3d, type: 3}
+  m_Script: {fileID: -1785292556, guid: 9beecc8011520934e82a8ba90d1f7066, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   panelGroup: {fileID: 3839105342289198436}

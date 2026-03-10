@@ -15,7 +15,7 @@ namespace JukeboxCore.Models.Song
         public string Artist { get; }
         public CompositeProperties Composite { get; }
 
-        private JukeboxSongMetadata(Sprite icon, string title, CompositeProperties composite, string artist = default)
+        private JukeboxSongMetadata(Sprite icon, string title, CompositeProperties composite, string artist = null)
         {
             Icon = icon;
             Title = title;
@@ -41,7 +41,7 @@ namespace JukeboxCore.Models.Song
             }
             catch (Exception)
             {
-                return new JukeboxSongMetadata(default, file.Name, composite);
+                return new JukeboxSongMetadata(null, file.Name, composite);
             }
         }
 
@@ -61,7 +61,7 @@ namespace JukeboxCore.Models.Song
         private static Sprite LoadCover(Tag tag)
         {
             if (tag.Pictures.Length <= 0)
-                return default;
+                return null;
             
             var pic = tag.Pictures[0];
             using var ms = new MemoryStream(pic.Data.Data);
@@ -77,7 +77,7 @@ namespace JukeboxCore.Models.Song
             }
             catch (Exception)
             {
-                return default;
+                return null;
             }
         }
 

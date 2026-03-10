@@ -1,6 +1,6 @@
 using System;
 using Jukebox.Utils;
-using JukeboxCore.Models.Song;
+using JukeboxCore.Events;
 using SettingsMenu.Components.Pages;
 using TMPro;
 using UnityEngine;
@@ -36,6 +36,9 @@ namespace Jukebox.Components
         
         [SerializeField]
         protected TMP_Text totalDuration;
+        
+        [SerializeField]
+        protected TMP_Text currentClip;
 
         [SerializeField]
         protected GameObject bar;
@@ -53,13 +56,16 @@ namespace Jukebox.Components
 
         private float progressBarWidth;
 
+        [NonSerialized]
+        private float clipDuration;
+
         protected void OnEnable()
         {
-            JukeboxMusicPlayer.OnNextSong += OnNextSong;
+            player = JukeboxManager.Instance.player;
+            JukeboxMusicPlayer.OnNextAudioClip += NextAudioClip;
             JukeboxMusicPlayer.OnStop += OnStop;
             PrefsManager.onPrefChanged += OnPrefChanged;
-            
-            player = JukeboxManager.Instance.player;
+
             progressBarWidth = ((RectTransform)bar.transform).rect.width;
 
             SetOpacity(PrefsManager.Instance.GetFloat("hudBackgroundOpacity"));
@@ -69,36 +75,48 @@ namespace Jukebox.Components
 
         protected void OnDisable()
         {
-            JukeboxMusicPlayer.OnNextSong -= OnNextSong;
+            JukeboxMusicPlayer.OnNextAudioClip -= NextAudioClip;
             JukeboxMusicPlayer.OnStop -= OnStop;
             PrefsManager.onPrefChanged -= OnPrefChanged;
         }
 
         protected void Update()
         {
-            if (player.Source == null || player.Source.clip == null)
+            if (player.Source == null || player.Source.clip == null || clipDuration == 0)
                 return;
 
             var elapsed = player.Source.time;
-            var total = player.Source.clip.length;
 
-            if (type != HudType.Classic)
-            {
+            if (type == HudType.Standard)
                 timestamp.text = elapsed.SecondsToHumanReadable();
-                totalDuration.text = total.SecondsToHumanReadable();
-            }
 
             var rect = bar.GetComponent<RectTransform>();
-            rect.sizeDelta = new Vector2(progressBarWidth * (-1 + elapsed / total), rect.sizeDelta.y);
+            rect.sizeDelta = new Vector2(progressBarWidth * (-1 + elapsed / clipDuration), rect.sizeDelta.y);
         }
 
-        private void OnNextSong(JukeboxSong song)
+        private void NextAudioClip(ClipChangedArgs clip)
         {
             var hudType = HudTypePref;
             hud.SetActive(EnableHud && (type == HudType.Standard ? hudType == 1 : hudType > 1));
+
+            var song = clip.Song;
             cover.sprite = song.Metadata.Icon;
             title.text = song.Metadata.Title;
             artist.text = song.Metadata.Artist;
+
+            clipDuration = player.Source.clip.length;
+            if (type == HudType.Standard)
+            {
+                totalDuration.text = player.Source.clip.length.SecondsToHumanReadable();
+                currentClip.text = JukeboxMusicPlayer.CurrentClipIndex switch
+                {
+                    -1 => "",
+                    0 => "INTRO",
+                    _ => song.Clips.Count > 1
+                        ? $"{JukeboxMusicPlayer.CurrentClipIndex}/{song.Clips.Count}"
+                        : ""
+                };
+            }
         }
 
         private void OnStop() => hud.SetActive(false);
@@ -155,14 +173,14 @@ namespace Jukebox.Components
                 case "hudAlwaysOnTop":
                     SetAlwaysOnTop((bool) value);
                     break;
-                case "hudType" when JukeboxMusicPlayer.CurrentSong != default:
+                case "hudType" when JukeboxMusicPlayer.CurrentSong != null:
                     hud.SetActive(type == HudType.Standard ? (int) value == 1 : (int) value > 1);
                     break;
-                case "jukebox.nowPlayingHud" when JukeboxMusicPlayer.CurrentSong != default:
+                case "jukebox.nowPlayingHud" when JukeboxMusicPlayer.CurrentSong != null:
                 {
                     hud.SetActive((bool) value);
                     if ((bool)value)
-                        OnNextSong(JukeboxMusicPlayer.CurrentSong);
+                        NextAudioClip(new ClipChangedArgs(JukeboxMusicPlayer.CurrentSong, true));
                     break;
                 }
             }

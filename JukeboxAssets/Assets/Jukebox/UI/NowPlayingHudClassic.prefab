@@ -85,7 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3732121352081858978}
   - component: {fileID: 6523132626593238204}
-  - component: {fileID: 4629172294793790728}
+  - component: {fileID: 3550862317420818856}
   m_Layer: 5
   m_Name: NowPlayingHudClassic
   m_TagString: Untagged
@@ -121,7 +121,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 159930588741289706}
   m_CullTransparentMesh: 0
---- !u!114 &4629172294793790728
+--- !u!114 &3550862317420818856
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,7 +130,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 159930588741289706}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55e2f0fc46d289a4db9111d868ef7efe, type: 3}
+  m_Script: {fileID: 943089650, guid: 9beecc8011520934e82a8ba90d1f7066, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hud: {fileID: 7434714051917279692}

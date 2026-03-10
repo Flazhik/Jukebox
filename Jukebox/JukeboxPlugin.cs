@@ -1,29 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using System.Reflection;
-using System.Threading;
 using BepInEx;
 using HarmonyLib;
 using Jukebox.Components;
 using Jukebox.Input;
-using JukeboxCore.Assets;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using static JukeboxCore.Utils.PathsUtils;
 
 namespace Jukebox
 {
     [BepInProcess("ULTRAKILL.exe")]
-    [BepInPlugin(PluginInfo.GUID, PluginInfo.NAME, PluginInfo.VERSION)]
+    [BepInPlugin(PluginInfo.Guid, PluginInfo.Name, PluginInfo.Version)]
     public class JukeboxPlugin : BaseUnityPlugin
     {
-        [ExternalAsset("Assets/Jukebox/Bootstrap.prefab", typeof(GameObject))]
         private static GameObject _bootstrap;
 
-        private static readonly string CatalogDir;
+        public static string catalogDir;
         private static Harmony _harmony;
         
         private static bool _motDShown;
@@ -31,18 +27,31 @@ namespace Jukebox
 
         static JukeboxPlugin()
         {
-            CatalogDir = Path.Combine(AssemblyPath!, "Assets");
+            catalogDir = Path.Combine(AssemblyPath!, "Assets");
         }
 
         private void Awake()
         {
-            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            
             Addressables.InitializeAsync().WaitForCompletion();
-            Addressables.LoadContentCatalogAsync(Path.Combine(CatalogDir, "catalog.json"), true).WaitForCompletion();
+            Addressables.LoadContentCatalogAsync(Path.Combine(catalogDir, "catalog.json"), true).WaitForCompletion();
 
-            _harmony = new Harmony(PluginInfo.GUID);
+            _harmony = new Harmony(PluginInfo.Guid);
             Startup();
+        }
+
+        /*
+         * Apparently WaitForCompletion() makes addressables go fucky wucky during a scene load causing a deadlock
+         * This part serves the only purpose of letting Jukebox bootstrap and action map to be loaded
+         * smh
+         */
+        private void Start()
+        {
+            _bootstrap = Addressables.LoadAssetAsync<GameObject>("Assets/Jukebox/Bootstrap.prefab")
+                .WaitForCompletion();
+            Addressables.LoadAssetAsync<InputActionAsset>("Assets/Jukebox/JukeboxControls.inputactions")
+                .WaitForCompletion();
+            Addressables.LoadAssetAsync<Sprite>("Assets/Jukebox/Textures/music_note.png")
+                .WaitForCompletion();
         }
 
         private void Startup()
@@ -69,15 +78,13 @@ namespace Jukebox
                 {
                     if (_init)
                         return;
-
-                    AssetsManager.Instance.LoadAssets(Resources.Jukebox);
-                    AssetsManager.Instance.RegisterPrefabs(Assembly.GetExecutingAssembly());
+                    
                     _init = true;
                     break;
                 }
                 case "Endless":
                 {
-                    var o = Instantiate(_bootstrap);
+                    var bootstrap = Instantiate(_bootstrap);
                     if (!_motDShown)
                         JukeboxManager.Instance.StartCoroutine(MotD());
                     break;
@@ -93,6 +100,7 @@ namespace Jukebox
                 { "jukebox.individualBoostPerTrack", false },
                 { "jukebox.showTrackPanelIndefinitely", false },
                 { "jukebox.alwaysPlayIntro", true },
+                { "jukebox.resumeLastSong", false },
                 { "jukebox.discordAndSteamIntegration", true },
                 { "jukebox.enableTracksPreview", true },
                 { "jukebox.preventDuplicateTracks", false },
@@ -118,7 +126,7 @@ namespace Jukebox
             yield return new WaitForSeconds(1.5f);
             var menu = JukeboxInputs.Instance.Menu;
             var bindings = menu.bindings.Join(binding => menu.GetBindingDisplayStringWithoutOverride(binding));
-            HudMessageReceiver.Instance.SendHudMessage($"Jukebox menu is available by pressing <color=orange>{bindings}</color>");
+            HudMessageReceiver.Instance.SendHudMessage($"CGME menu is available by pressing <color=orange>{bindings}</color>");
             _motDShown = true;
         }
     }

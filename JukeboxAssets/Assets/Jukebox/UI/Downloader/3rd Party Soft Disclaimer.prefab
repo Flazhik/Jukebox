@@ -295,7 +295,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7436836528276985640}
+      - m_Target: {fileID: 430419999037602864}
         m_TargetAssemblyTypeName: JukeboxDownloader.Components.ThirdPartyExecsDownloader,
           JukeboxDownloader
         m_MethodName: Install
@@ -626,7 +626,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7436836528276985640}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: JukeboxDownloader.Components.ThirdPartyExecsDownloader,
           JukeboxDownloader
         m_MethodName: RevealModLocation
@@ -892,7 +892,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7436836528276985640}
+      - m_Target: {fileID: 430419999037602864}
         m_TargetAssemblyTypeName: JukeboxDownloader.Components.ThirdPartyExecsDownloader,
           JukeboxDownloader
         m_MethodName: OpenURL
@@ -1372,7 +1372,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7436836528276985640}
+      - m_Target: {fileID: 430419999037602864}
         m_TargetAssemblyTypeName: JukeboxDownloader.Components.ThirdPartyExecsDownloader,
           JukeboxDownloader
         m_MethodName: Install
@@ -1396,7 +1396,7 @@ GameObject:
   - component: {fileID: 1351347344362326335}
   - component: {fileID: 8147190415752183025}
   - component: {fileID: 4449676508622431008}
-  - component: {fileID: 7436836528276985640}
+  - component: {fileID: 430419999037602864}
   m_Layer: 5
   m_Name: 3rd Party Soft Disclaimer
   m_TagString: Untagged
@@ -1464,7 +1464,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 5.4
---- !u!114 &7436836528276985640
+--- !u!114 &430419999037602864
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1473,11 +1473,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4331402776128235202}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b60e778b7c7fcf5489a3c5b70a40afe6, type: 3}
+  m_Script: {fileID: 1645751840, guid: bad1d6acc9cea49478519bf6a0d7efa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   installButton: {fileID: 1655563092021458588}
-  progressBar: {fileID: 2305338737364537806}
+  progressBar: {fileID: 7675138011217220244}
   errorMessage: {fileID: 3428599809241100142}
   progressText: {fileID: 1945686530208068872}
 --- !u!1 &4416326993878431661
@@ -1600,7 +1600,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7436836528276985640}
+      - m_Target: {fileID: 430419999037602864}
         m_TargetAssemblyTypeName: JukeboxDownloader.Components.ThirdPartyExecsDownloader,
           JukeboxDownloader
         m_MethodName: OpenURL
@@ -1610,7 +1610,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: https://github.com/yt-dlp/yt-dlp/releases/download/2025.07.21/yt-dlp.exe
+          m_StringArgument: https://github.com/yt-dlp/yt-dlp/releases/download/2026.03.03/yt-dlp.exe
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &4599609703706576673
@@ -2852,7 +2852,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7436836528276985640}
+      - m_Target: {fileID: 430419999037602864}
         m_TargetAssemblyTypeName: JukeboxDownloader.Components.ThirdPartyExecsDownloader,
           JukeboxDownloader
         m_MethodName: OpenURL
@@ -3100,19 +3100,19 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9238644fe9f4a94caf0ff9d5b296ab6, type: 3}
---- !u!114 &2305338737364537806 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8643506979523978480, guid: b9238644fe9f4a94caf0ff9d5b296ab6, type: 3}
-  m_PrefabInstance: {fileID: 7497880485451625790}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bcbf1667f515e3e4985554571cfd8643, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &6881807259878699603 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4002791522732558189, guid: b9238644fe9f4a94caf0ff9d5b296ab6, type: 3}
   m_PrefabInstance: {fileID: 7497880485451625790}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7675138011217220244 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 184159162100230058, guid: b9238644fe9f4a94caf0ff9d5b296ab6, type: 3}
+  m_PrefabInstance: {fileID: 7497880485451625790}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1778211212, guid: bad1d6acc9cea49478519bf6a0d7efa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -30,7 +30,7 @@ namespace JukeboxCore.Utils
                 {
                     var response = await Client.GetAsync(url);
                     var raw = await response.Content.ReadAsStringAsync();
-                    if (raw == default)
+                    if (raw == null)
                         continue;
 
                     return raw;

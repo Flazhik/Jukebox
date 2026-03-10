@@ -33,7 +33,7 @@ namespace JukeboxCore.Models.Song
             Clips = addressable.clips;
             
             var calmClips = JukeboxStaticData.Instance.calmThemes.FindCalmClipsFor(Id.path);
-            if (calmClips != default)
+            if (calmClips != null)
             {
                 CalmClips = new List<AudioClip>();
                 foreach (var calmClipHandle in calmClips

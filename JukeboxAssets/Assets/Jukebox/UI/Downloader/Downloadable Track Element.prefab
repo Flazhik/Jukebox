@@ -797,7 +797,7 @@ GameObject:
   - component: {fileID: 4717432628065706933}
   - component: {fileID: 7740220541314644142}
   - component: {fileID: 6073616630825840402}
-  - component: {fileID: 5430248309314889500}
+  - component: {fileID: 8546379158335262486}
   m_Layer: 0
   m_Name: Circle Overlay
   m_TagString: Untagged
@@ -862,7 +862,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5430248309314889500
+--- !u!114 &8546379158335262486
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -871,7 +871,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3701668765613760697}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 040340f56c82f894c8a5ff99cf1d0e2d, type: 3}
+  m_Script: {fileID: 2146611739, guid: 5bacb47211d7a2845a64ac8ae4454555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4196015966623128492
@@ -1087,7 +1087,7 @@ GameObject:
   - component: {fileID: 3691457281541418316}
   - component: {fileID: 4162770593163870265}
   - component: {fileID: 8116381740913117477}
-  - component: {fileID: 318444189436864028}
+  - component: {fileID: 1788548575528764842}
   m_Layer: 0
   m_Name: Circle Overlay
   m_TagString: Untagged
@@ -1152,7 +1152,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &318444189436864028
+--- !u!114 &1788548575528764842
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1161,7 +1161,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4381039243371799912}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 040340f56c82f894c8a5ff99cf1d0e2d, type: 3}
+  m_Script: {fileID: 2146611739, guid: 5bacb47211d7a2845a64ac8ae4454555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4972368104906126733
@@ -1417,7 +1417,7 @@ GameObject:
   - component: {fileID: 4008585056475188095}
   - component: {fileID: 2773102752809859013}
   - component: {fileID: 6369762648408100650}
-  - component: {fileID: 8223917914040513866}
+  - component: {fileID: 8269146984981111750}
   m_Layer: 5
   m_Name: Downloadable Track Element
   m_TagString: Untagged
@@ -1487,7 +1487,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 5.4
---- !u!114 &8223917914040513866
+--- !u!114 &8269146984981111750
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1496,7 +1496,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6436454296304536257}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89b772f2eda4d334db7caaa914ff14a0, type: 3}
+  m_Script: {fileID: -1464056556, guid: bad1d6acc9cea49478519bf6a0d7efa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   id: 
@@ -1505,7 +1505,7 @@ MonoBehaviour:
   progressPercentage: {fileID: 1638261130373217847}
   downloadEta: {fileID: 8262976457109367198}
   thumbnail: {fileID: 7284923842844007116}
-  progressBar: {fileID: 194364624923787006}
+  progressBar: {fileID: 8633155973152193956}
   downloadButton: {fileID: 5469981690544899980}
   retryButton: {fileID: 348081458906562213}
   thumbnailPlaceholder: {fileID: 1274774822262850606}
@@ -2174,19 +2174,19 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9238644fe9f4a94caf0ff9d5b296ab6, type: 3}
---- !u!114 &194364624923787006 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8643506979523978480, guid: b9238644fe9f4a94caf0ff9d5b296ab6, type: 3}
-  m_PrefabInstance: {fileID: 8449142496379345422}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bcbf1667f515e3e4985554571cfd8643, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &4813688274938912099 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4002791522732558189, guid: b9238644fe9f4a94caf0ff9d5b296ab6, type: 3}
   m_PrefabInstance: {fileID: 8449142496379345422}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8633155973152193956 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 184159162100230058, guid: b9238644fe9f4a94caf0ff9d5b296ab6, type: 3}
+  m_PrefabInstance: {fileID: 8449142496379345422}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1778211212, guid: bad1d6acc9cea49478519bf6a0d7efa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

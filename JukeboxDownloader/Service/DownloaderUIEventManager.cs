@@ -38,7 +38,7 @@ namespace JukeboxDownloader.Service
             return new DownloadableEntityState
             {
                 state = TrackDownloadingState.None,
-                thumbnail = ThumbnailCache.TryGetValue(id, out var thumbnail) ? thumbnail : default
+                thumbnail = ThumbnailCache.TryGetValue(id, out var thumbnail) ? thumbnail : null
             };
         }
     }
