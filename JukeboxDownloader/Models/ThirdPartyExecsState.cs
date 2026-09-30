@@ -1,61 +1,60 @@
 using JetBrains.Annotations;
 
-namespace JukeboxDownloader.Models
+namespace JukeboxDownloader.Models;
+
+public class ThirdPartyExecsState
 {
-    public class ThirdPartyExecsState
+    [CanBeNull] public string currentBinary;
+    public float? progress;
+    public ExecsState state = ExecsState.None;
+
+    public static ThirdPartyExecsState DownloadingStarted()
     {
-        public ThirdPartyExecsState()
+        return new ThirdPartyExecsState
         {
-            state = ExecsState.None;
-        }
-
-        public ExecsState state;
-        
-        public float? progress;
-        
-        [CanBeNull]
-        public string currentBinary;
-
-        public static ThirdPartyExecsState DownloadingStarted() =>
-            new()
-            {
-                state = ExecsState.Downloading,
-                currentBinary = null,
-                progress = null
-            };
-        
-        public static ThirdPartyExecsState DownloadingProgress(string software, float progress) =>
-            new()
-            {
-                state = ExecsState.Downloading,
-                currentBinary = software,
-                progress = progress
-            };
-        
-        public static ThirdPartyExecsState Failed() =>
-            new()
-            {
-                state = ExecsState.Failed,
-                currentBinary = null,
-                progress = null
-            };
-        
-        public static ThirdPartyExecsState Present() =>
-            new()
-            {
-                state = ExecsState.Present,
-                currentBinary = null,
-                progress = null
-            };
+            state = ExecsState.Downloading,
+            currentBinary = null,
+            progress = null
+        };
     }
 
-    public enum ExecsState
+    public static ThirdPartyExecsState DownloadingProgress(string software, float progress)
     {
-        None,
-        Missing,
-        Present,
-        UpdateRequired,
-        Downloading,
-        Failed
+        return new ThirdPartyExecsState
+        {
+            state = ExecsState.Downloading,
+            currentBinary = software,
+            progress = progress
+        };
     }
+
+    public static ThirdPartyExecsState Failed()
+    {
+        return new ThirdPartyExecsState
+        {
+            state = ExecsState.Failed,
+            currentBinary = null,
+            progress = null
+        };
+    }
+
+    public static ThirdPartyExecsState Present()
+    {
+        return new ThirdPartyExecsState
+        {
+            state = ExecsState.Present,
+            currentBinary = null,
+            progress = null
+        };
+    }
+}
+
+public enum ExecsState
+{
+    None,
+    Missing,
+    Present,
+    UpdateRequired,
+    Downloading,
+    Failed
 }

@@ -1,8 +1,7 @@
-namespace Jukebox.UI.SongPanel
+namespace Jukebox.UI.SongPanel;
+
+public enum SongPanelStyle
 {
-    public enum SongPanelStyle
-    {
-        Jukebox,
-        Classic
-    }
+    Jukebox,
+    Classic
 }

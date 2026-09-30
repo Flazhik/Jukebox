@@ -1,13 +1,9 @@
 using UnityEngine;
 
-namespace Jukebox.UI
+namespace Jukebox.UI;
+
+public class JukeboxCustomContentButton : CustomContentButton
 {
-    public class JukeboxCustomContentButton: CustomContentButton
-    {
-        [SerializeField]
-        public GameObject introAndLoopIcon;
-        
-        [SerializeField]
-        public GameObject calmThemeIcon;
-    }
+    [SerializeField] public GameObject introAndLoopIcon;
+    [SerializeField] public GameObject calmThemeIcon;
 }

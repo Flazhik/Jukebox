@@ -3,20 +3,18 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace JukeboxCore.Themes
+namespace JukeboxCore.Themes;
+
+[CreateAssetMenu(menuName = "Jukebox/Calm Themes Data")]
+public class SoundtrackCalmThemes : ScriptableObject
 {
-    [CreateAssetMenu(menuName = "Jukebox/Calm Themes Data")]
-    public class SoundtrackCalmThemes: ScriptableObject
+    [SerializeField] public CalmThemeEntry[] calmClips;
+
+    public List<AssetReferenceT<AudioClip>> FindCalmClipsFor(string guid)
     {
-        [SerializeField]
-        public CalmThemeEntry[] calmClips;
+        var entry = calmClips.FirstOrDefault(variation =>
+            variation.reference.AssetGUID == guid);
 
-        public List<AssetReferenceT<AudioClip>> FindCalmClipsFor(string guid)
-        {
-            var entry = calmClips.FirstOrDefault(variation =>
-                variation.reference.AssetGUID == guid);
-
-            return entry != null ? entry.calmVariationClips : null;
-        }
+        return entry != null ? entry.calmVariationClips : null;
     }
 }

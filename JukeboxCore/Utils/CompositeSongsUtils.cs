@@ -1,77 +1,108 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
-using JukeboxCore.Components;
+using JukeboxCore.Songs.Models;
 using static System.IO.Path;
-using static JukeboxCore.Models.Song.JukeboxSongMetadata;
-namespace JukeboxCore.Utils
+
+namespace JukeboxCore.Utils;
+
+public static class CompositeSongsUtils
 {
-    public static class CompositeSongsUtils
+    private const string IntroPostfix = "intro";
+    private const string LoopPostfix = "loop";
+    private const string CalmPostfix = "calm";
+    private const string CalmLoopPostfix = "calmloop";
+    private const string CalmIntroPostfix = "calmintro";
+
+    private static readonly List<string> SpecialPostfixes =
+    [
+        CalmIntroPostfix,
+        CalmLoopPostfix,
+        LoopPostfix,
+        CalmPostfix,
+        IntroPostfix
+    ];
+
+    public static CompositeSongFiles GetTrackSegments(FileInfo baseTrack, IEnumerable<FileInfo> siblings = null)
     {
-        private static readonly List<string> SpecialPostfixes = new()
+        var name = GetFileNameWithoutExtension(baseTrack.Name);
+        var baseName = GetBaseName(name);
+        var isBase = name.Equals(baseName);
+        var requestedExists = baseTrack.Exists && HasValidExtenstion(baseTrack);
+
+        if (!isBase)
+            return requestedExists
+                ? new CompositeSongFiles { Main = baseTrack }
+                : CompositeSongFiles.Empty;
+
+        var group = (siblings ?? ListSiblings(baseTrack, baseName)).ToList();
+        var main = requestedExists
+            ? baseTrack
+            : FindComponent(group, baseName, LoopPostfix, baseTrack.Extension);
+
+        if (main == null)
+            return CompositeSongFiles.Empty;
+
+        return new CompositeSongFiles
         {
-            "intro",
-            "loop",
-            "calm",
-            "calmloop",
-            "calmintro"
+            Main = main,
+            Intro = FindComponent(group, baseName, IntroPostfix, baseTrack.Extension),
+            CalmIntro = FindComponent(group, baseName, CalmIntroPostfix, baseTrack.Extension),
+            Calm = FindComponent(group, baseName, CalmPostfix, baseTrack.Extension)
+                ?? FindComponent(group, baseName, CalmLoopPostfix, baseTrack.Extension)
         };
+    }
+    
+    public static bool IsPlayableTrack(FileInfo id) => GetTrackSegments(id).IsPlayable;
 
-        public static CompositeProperties GetSongComponents(string guid, SoundtrackSong song) =>
-            new CompositeProperties.Builder()
-                .GotIntroAndLoop(song.introClip != null)
-                .GotCalmIntro(false)
-                .GotCalmLoop(JukeboxStaticData.Instance.calmThemes.FindCalmClipsFor(guid) != null)
-                .Build;
+    public static FileInfo WithoutPostfix(FileInfo path)
+    {
+        var name = PathsUtils.GetFileNameWithoutExtension(path.Name);
+        var baseName = GetBaseName(name);
+        return baseName.Equals(name)
+            ? path
+            : new FileInfo(Combine(path.DirectoryName ?? string.Empty, baseName + path.Extension));
+    }
 
-        public static CompositeProperties GetSongComponents(FileInfo fileInfo)
-        {
-            var builder = new CompositeProperties.Builder();
-            var grouped = fileInfo.Directory?
-                .GetFiles()
-                .Where(file => WithoutPostfix(file).Name.Equals(fileInfo.Name))
-                .Select(file =>
-                {
-                    if (HasSpecialPostfix(file, "calmintro"))
-                        builder.GotCalmIntro(true);
+    public static bool HasValidExtenstion(FileInfo path)
+    {
+        return CustomMusicFileBrowser.extensionTypeDict.Keys.Any(extension =>
+            path.Extension.ToLower().Equals(extension));
+    }
+    
+    public static string GetBaseName(string fileName)
+    {
+        if (string.IsNullOrEmpty(fileName))
+            return fileName;
 
-                    if (HasSpecialPostfix(file, "calmloop"))
-                        builder.GotCalmLoop(true);
-                    
-                    if (HasSpecialPostfix(file, "calm"))
-                        builder.GotCalmTheme(true);
-
-                    return file;
-                }).ToList() ?? new List<FileInfo>();
-
-            if (grouped.Any(file => HasSpecialPostfix(file, "intro"))
-                && grouped.Any(file => HasSpecialPostfix(file, "loop")))
-                builder.GotIntroAndLoop(true);
-
-            return builder.Build;
-        }
-
-        public static FileInfo WithPostfix(FileInfo path, string postfix)
-        {
-            return new FileInfo(
-                @$"{GetDirectoryName(path.FullName)}\{GetFileNameWithoutExtension(path.FullName)}_{postfix}{path.Extension}");
-        }
-
-        public static FileInfo WithoutPostfix(FileInfo path)
-        {
-            return !HasAnySpecialPostfix(path)
-                ? path
-                : new FileInfo(Regex.Replace(path.FullName, @"_[a-zA-Z]+\.[a-zA-Z0-9]+$", path.Extension));
-        }
-
-        public static bool HasValidExtenstion(FileInfo path) =>
-            CustomMusicFileBrowser.extensionTypeDict.Keys.Any(extension => path.Extension.ToLower().Equals(extension));
-
-        private static bool HasAnySpecialPostfix(FileInfo path)
-            => SpecialPostfixes.Any(postfix => HasSpecialPostfix(path, postfix));
+        foreach (var suffix in SpecialPostfixes.Select(static postfix => $"_{postfix}")
+                     .Where(suffix => fileName.EndsWith(suffix, StringComparison.OrdinalIgnoreCase)))
+            return fileName[..^suffix.Length];
         
-        private static bool HasSpecialPostfix(FileInfo path, string postfix) 
-            => GetFileNameWithoutExtension(path.Name).EndsWith($"_{postfix}");
+        return fileName;
+    }
+
+    private static List<FileInfo> ListSiblings(FileInfo requested, string baseName)
+    {
+        var directory = requested.Directory;
+        if (directory is not { Exists: true })
+            return [];
+
+        return directory.GetFiles()
+            .Where(HasValidExtenstion)
+            .Where(file => GetBaseName(PathsUtils.GetFileNameWithoutExtension(file.Name)).Equals(baseName))
+            .ToList();
+    }
+
+    private static FileInfo FindComponent(IReadOnlyList<FileInfo> group, string baseName, string postfix, string preferredExtension)
+    {
+        var target = $"{baseName}_{postfix}";
+
+        return group
+            .Where(file => PathsUtils.GetFileNameWithoutExtension(file.Name).Equals(target))
+            .OrderBy(file => file.Extension.Equals(preferredExtension, StringComparison.OrdinalIgnoreCase) ? 0 : 1)
+            .ThenBy(static file => file.Name, StringComparer.Ordinal)
+            .FirstOrDefault();
     }
 }

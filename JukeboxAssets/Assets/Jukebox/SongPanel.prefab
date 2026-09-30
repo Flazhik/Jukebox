@@ -264,8 +264,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: CURRENT SONG
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c665f735df1f4db43a715b3cb44a57c0, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: b8a0c8e6a47071038ae73eb82f8ed52c, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 4883cfbb59316534da2f94828cbef8a9, type: 2}
+  m_sharedMaterial: {fileID: -8427080483724623173, guid: 4883cfbb59316534da2f94828cbef8a9, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -398,8 +398,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: CURRENT SONG
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c665f735df1f4db43a715b3cb44a57c0, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: b8a0c8e6a47071038ae73eb82f8ed52c, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 4883cfbb59316534da2f94828cbef8a9, type: 2}
+  m_sharedMaterial: {fileID: -8427080483724623173, guid: 4883cfbb59316534da2f94828cbef8a9, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

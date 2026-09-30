@@ -17,6 +17,7 @@
     - [Playback menu](#playback-menu)
     - [Current track HUD](#current-track-hud)
     - [Switching playlists](#switching-playlists)
+    - [Subtitles](#subtitles)
     - [Clear playlist / Load all tracks from a folder](#clear-playlist--load-all-tracks-from-a-folder)
     - [Effects replacement](#effects-replacement)
     - [Calm & Battle themes](#calm-and-battle-themes)
@@ -45,12 +46,13 @@ All the settings for the mod are available by pressing Menu hotkey (F4 by defaul
 
 **Playback**
 
-1. **Show current track panel indefinitely**: once checked, this option will make the "Now playing" panel to be present the whole time the track is playing
+1. **Show current track panel indefinitely**: when enabled, this option displays subtitles for the current track if an identically named .srt file is located in the same directory
 2. **Custom tracks volume boost**: if your track is still too quiet, you can always add up to 10dB to it. Please use it carefully
 3. **Save volume boost for each individual track**: volume level might vary from song to song, so this feature will allow you to set a volume boost for each track individually 
 4. **Always play an intro part**: intro section of the song is always going to be played despite the track position in the playlist
 5. **Resume the last song from where it left off**: have you died or just closed CG while listening to 2 hours mix? Don't worry, the song will continue from where it left off
-6. **Discord & Steam integration**: shows the current track name alongside wave number in Discord and Steam
+6. **Display subtitles**: once checked, thip option renders subtitle of the track if the track has the identically named `.srt` file sitting in the same directorysubtitles
+7. **Discord & Steam integration**: shows the current track name alongside wave number in Discord and Steam
 
 **Playlist editing**
 
@@ -92,11 +94,25 @@ If the whole menu is an overkill for you, just switch between tracks using **Nex
 
 A HUD element that shows currently played track's info. Available for all the HUD variants.
 
+## Thorn support
+
+![Thorn](https://i.ibb.co/9HvhWchk/thorn-readme.png)
+
+If you're using [Thorn](https://old.thunderstore.io/c/ultrakill/p/end_4/Thorn/), you can now add the Now Playing panel, the playback time display, and the subtitles panel as its modules.
+Please note that the **General** > **Display subtitles** and **HUD** > **Show current track in HUD** settings have no effect on these modules.
+
 ## Switching playlists
 
 ![Playlist selection](https://i.imgur.com/hIZdvai.png)
 
 This feature allows you to switch between up to 6 different playlists
+
+## Subtitles
+This feature has long been dead since 1.6.3, it's time to to bring it back.
+
+This option can be found in in **Menu** > **General** > **Display subtitles**
+Currently, only the `.srt` subtitle format is supported. The `.srt` file must be placed in the same directory as the track and have the exact same filename.
+The Downloader will now automatically download English subtitles if they are available for the video. Please note that automatically generated YouTube subtitles are not supported.
 
 ## Clear playlist / Load all tracks from a folder
 
@@ -134,7 +150,7 @@ _"Play calm theme when there's 4 or less enemies around. Unless there's more tha
 Alright, but what about custom tracks?
 
 Well, to create such a track, use the same technique as for intros and loops: postfixes in your track file name.
-Any track is treated as a "battle theme" by default. To add its calm variation, add another, similarly named track with **_calm** postfix. Again, these files must have the same extension!
+Any track is treated as a "battle theme" by default. To add its calm variation, add another, similarly named track with **_calm** postfix.
 
 And what about segmented tracks? They already contain two files! How do I even make a calm variation to its intro and loop? Can I add a calm theme only to loop or only to intro specifically?
 Yes, you can. Customize it the way you want. Calm loop part can either have a **_calm** or **_calmloop** postfix, but intro has to end with **_calmintro**.
@@ -143,7 +159,6 @@ More on that in the Manual section of the menu.
 ## Segmented tracks
 You can also add multi-segmented looped tracks with an intro and loop parts.
 In order to make such a track, place your intro and loop files in the same folder and add _intro and _loop postfixes into their file names respectively.
-Please note that these parts must have the same extension!
 
 ![Looped track example](https://github.com/Flazhik/CybergrindMusicExplorer/assets/2077991/204979ac-2fe7-44b8-9c99-1892610a98b8)
 
@@ -159,3 +174,4 @@ Special thanks to [eternalUnion](https://github.com/eternalUnion) for VanityRepr
 
 #### Jukebox uses following libraries:
 - [TagLibSharp](https://github.com/mono/taglib-sharp) - Licensed under [LGPL-2.1](https://github.com/mono/taglib-sharp/blob/main/COPYING)
+- [SubtitlesParser](https://github.com/AlexPoint/SubtitlesParser) - Licensed under [MIT License](https://github.com/AlexPoint/SubtitlesParser/blob/master/LICENSE)

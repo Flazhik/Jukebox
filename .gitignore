@@ -11,6 +11,7 @@
 [Dd]ebug/
 [Rr]elease/
 x64/
+.[Bb]in/
 [Bb]in/
 [Oo]bj/
 
@@ -199,3 +200,5 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /JukeboxAssets/[Aa]ssets/[Ss]treamingAssets/aa.meta
 /JukeboxAssets/[Aa]ssets/[Ss]treamingAssets/aa/*
+
+*.DotSettings*

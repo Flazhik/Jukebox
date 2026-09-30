@@ -205,7 +205,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: UP/DOWN/LEFT/RIGHT
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c665f735df1f4db43a715b3cb44a57c0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 4883cfbb59316534da2f94828cbef8a9, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: b8a0c8e6a47071038ae73eb82f8ed52c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -269,7 +269,7 @@ MonoBehaviour:
   m_margin: {x: 5, y: 5, z: 5, w: 5}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &182910599522361522
@@ -852,7 +852,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: UP/DOWN/LEFT/RIGHT
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c665f735df1f4db43a715b3cb44a57c0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 4883cfbb59316534da2f94828cbef8a9, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: b8a0c8e6a47071038ae73eb82f8ed52c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -916,7 +916,7 @@ MonoBehaviour:
   m_margin: {x: 5, y: 5, z: 5, w: 5}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &246391755571189511
@@ -2935,7 +2935,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -10}
+  m_AnchoredPosition: {x: 0, y: -10.000122}
   m_SizeDelta: {x: 0, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3985282722019874956
@@ -5304,7 +5304,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -10}
+  m_AnchoredPosition: {x: 0, y: -10.000122}
   m_SizeDelta: {x: 0, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4933310406807555906
@@ -5683,38 +5683,38 @@ MonoBehaviour:
 
     Any track is treated as a "battle theme" by default.
     To add its calm variation, add another, similarly named track with <b><i>_calm</i></b>
-    postfix. Again, these files must have the same extension!
+    postfix.
 
 
-    <b>Music.mp3           
-    - A battle theme of the track
+    <b>Music.mp3            - A battle theme of the track
 
-    Music_calm.mp3       - A calm theme of the
-    track</b>
-
-
-    And what about segmented tracks? They already contain two files!
-    How do I even make a calm variation to its intro and loop? Can I add a calm theme
-    only to loop or only to intro specifically?
+    Music_calm.mp3      
+    - A calm theme of the track</b>
 
 
-    Yes you can. Customize it the
-    way you want.
+    And what about segmented tracks? They already
+    contain two files! How do I even make a calm variation to its intro and loop?
+    Can I add a calm theme only to loop or only to intro specifically?
 
 
-    <b>Music_calmintro.mp3  - A calm variation of the intro section
-
-    Music_intro.mp3     
-    - A battle variation of the intro
-
-    Music_calmloop.mp3   - A calm variation
-    of the main part
-
-    Music.mp3            - A battle version of the main part</b>
+    Yes
+    you can. Customize it the way you want.
 
 
-    And
-    yes, all these files will be treated as a single track in the Terminal'
+    <b>Music_calmintro.mp3  - A calm
+    variation of the intro section
+
+    Music_intro.mp3      - A battle variation
+    of the intro
+
+    Music_calmloop.mp3   - A calm variation of the main part
+
+    Music.mp3           
+    - A battle version of the main part</b>
+
+
+    And yes, all these files will be
+    treated as a single track in the Terminal'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c665f735df1f4db43a715b3cb44a57c0, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: b8a0c8e6a47071038ae73eb82f8ed52c, type: 2}
@@ -7160,14 +7160,14 @@ MonoBehaviour:
     If you have
     two identically named tracks with <b><i>_intro</i></b> and <b><i>_loop</i></b> 
     postfixes, these files will be treated as a single track with intro and loop
-    parts. Make sure that they have the same extension!
+    parts.
 
     <b>
 
-    Music_intro.mp3     
-    - An intro part
+    Music_intro.mp3      - An intro part
 
-    Music_loop.mp3       - A main loop part
+    Music_loop.mp3      
+    - A main loop part
 
     </b>'
   m_isRightToLeft: 0
@@ -7303,7 +7303,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: v2.2.0
+  m_text: v2.3.0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c665f735df1f4db43a715b3cb44a57c0, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: b8a0c8e6a47071038ae73eb82f8ed52c, type: 2}
@@ -10055,7 +10055,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2104529087282654769}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.73373425
+  m_Size: 0.6955389
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10417,7 +10417,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0.0000035762787}
-  m_SizeDelta: {x: 0, y: 722.3324}
+  m_SizeDelta: {x: 0, y: 761.9991}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2177715036660465553
 MonoBehaviour:
@@ -13401,7 +13401,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: UP/DOWN/LEFT/RIGHT
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c665f735df1f4db43a715b3cb44a57c0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 4883cfbb59316534da2f94828cbef8a9, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: b8a0c8e6a47071038ae73eb82f8ed52c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -13465,7 +13465,7 @@ MonoBehaviour:
   m_margin: {x: 5, y: 5, z: 5, w: 5}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &4773854443681619918
@@ -14863,7 +14863,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: UP/DOWN/LEFT/RIGHT
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c665f735df1f4db43a715b3cb44a57c0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 4883cfbb59316534da2f94828cbef8a9, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: b8a0c8e6a47071038ae73eb82f8ed52c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -14927,7 +14927,7 @@ MonoBehaviour:
   m_margin: {x: 5, y: 5, z: 5, w: 5}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &5081641469210894198
@@ -15799,7 +15799,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -10}
+  m_AnchoredPosition: {x: 0, y: -10.000122}
   m_SizeDelta: {x: 0, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3398863662773903594
@@ -17654,7 +17654,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 25, y: -10}
+  m_AnchoredPosition: {x: 25, y: -10.000122}
   m_SizeDelta: {x: -50, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4088098939218400151
@@ -17876,7 +17876,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -10}
+  m_AnchoredPosition: {x: 0, y: -10.000122}
   m_SizeDelta: {x: 0, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1978650407258305002
@@ -19051,7 +19051,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000015258789}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -37, y: 473}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &6570362385630124347
@@ -19210,8 +19210,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: -15}
-  m_SizeDelta: {x: 20, y: -210}
+  m_AnchoredPosition: {x: 0, y: -35}
+  m_SizeDelta: {x: 20, y: -170}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &2136020522708356213
 CanvasRenderer:
@@ -25625,7 +25625,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: UP/DOWN/LEFT/RIGHT
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c665f735df1f4db43a715b3cb44a57c0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 4883cfbb59316534da2f94828cbef8a9, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: b8a0c8e6a47071038ae73eb82f8ed52c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -25689,7 +25689,7 @@ MonoBehaviour:
   m_margin: {x: 5, y: 5, z: 5, w: 5}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &8985834651032050605
@@ -26934,10 +26934,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4076452612819445775}
     m_Modifications:
-    - target: {fileID: 2861262217162456163, guid: 62f31d683656bec48b47a0d6fcaf12c5, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: RevealModLocation
-      objectReference: {fileID: 0}
     - target: {fileID: 4167851523725062104, guid: 62f31d683656bec48b47a0d6fcaf12c5, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -27021,18 +27017,6 @@ PrefabInstance:
     - target: {fileID: 6794415399146311955, guid: 62f31d683656bec48b47a0d6fcaf12c5, type: 3}
       propertyPath: m_Name
       value: Cookies Required Window
-      objectReference: {fileID: 0}
-    - target: {fileID: 6794415399146311955, guid: 62f31d683656bec48b47a0d6fcaf12c5, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7381066461252594905, guid: 62f31d683656bec48b47a0d6fcaf12c5, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OpenURL
-      objectReference: {fileID: 0}
-    - target: {fileID: 9020383034785481094, guid: 62f31d683656bec48b47a0d6fcaf12c5, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OpenURL
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -27123,7 +27107,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 24279544180164329, guid: 99172021e411a314284ea1fac824015f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -10
+      value: -10.000122
       objectReference: {fileID: 0}
     - target: {fileID: 24279544180164329, guid: 99172021e411a314284ea1fac824015f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -27160,6 +27144,10 @@ PrefabInstance:
     - target: {fileID: 1506012107469586463, guid: 99172021e411a314284ea1fac824015f, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2761489169508438031, guid: 99172021e411a314284ea1fac824015f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -12.16687
       objectReference: {fileID: 0}
     - target: {fileID: 3225268925280073751, guid: 99172021e411a314284ea1fac824015f, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -27213,6 +27201,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8052089476882986437, guid: 99172021e411a314284ea1fac824015f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -262.96997
+      objectReference: {fileID: 0}
+    - target: {fileID: 8052089476882986437, guid: 99172021e411a314284ea1fac824015f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 56.19995
+      objectReference: {fileID: 0}
     - target: {fileID: 8772450527777588550, guid: 99172021e411a314284ea1fac824015f, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 117
@@ -27220,6 +27216,10 @@ PrefabInstance:
     - target: {fileID: 8772450527777588550, guid: 99172021e411a314284ea1fac824015f, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108949204647539182, guid: 99172021e411a314284ea1fac824015f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

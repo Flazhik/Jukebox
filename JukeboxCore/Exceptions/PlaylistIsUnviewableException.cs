@@ -1,7 +1,6 @@
-namespace JukeboxCore.Exceptions
+namespace JukeboxCore.Exceptions;
+
+public class PlaylistIsUnviewableException : JukeboxException
 {
-    public class PlaylistIsUnviewableException : JukeboxException
-    {
-        public override string Message => "This type of playlist cannot be downloaded";
-    }
+    public override string Message => "This type of playlist cannot be downloaded";
 }

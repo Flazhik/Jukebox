@@ -4,99 +4,88 @@ using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEngine;
 
-namespace Jukebox.UI.Elements
+namespace Jukebox.UI.Elements;
+
+public class Counter : MonoBehaviour
 {
-    public class Counter : MonoBehaviour
+    [SerializeField] private TextMeshProUGUI textValue;
+    [SerializeField] private CounterButton increase;
+    [SerializeField] private CounterButton decrease;
+    [SerializeField] private int minValue;
+    [SerializeField] private int maxValue;
+
+    private IEnumerator changeValueRoutine;
+    private int tmpValue;
+
+    public int Value
     {
-        public int Value
+        get;
+        set
         {
-            get => value;
-            set
-            {
-                this.value = value;
-                textValue.text = Value.ToString();
-                OnChanged?.Invoke(value);
-            }
+            field = value;
+            textValue.text = Value.ToString();
+            OnChanged?.Invoke(value);
         }
+    }
 
-        public event Action<int> OnChanged;
+    public void Awake()
+    {
+        AddEvents(increase, v => tmpValue = ChangeValue(i => i + 1));
+        AddEvents(decrease, v => tmpValue = ChangeValue(i => i - 1));
+    }
 
-        [SerializeField]
-        private TextMeshProUGUI textValue;
+    public event Action<int> OnChanged;
 
-        [SerializeField]
-        private CounterButton increase;
+    public void SetDefaultValue(int defaultValue)
+    {
+        Value = defaultValue;
+        tmpValue = defaultValue;
+        textValue.text = defaultValue.ToString();
+    }
 
-        [SerializeField]
-        private CounterButton decrease;
-
-        [SerializeField]
-        private int minValue;
-        
-        [SerializeField]
-        private int maxValue;
-        
-        private int tmpValue;
-        private IEnumerator changeValueRoutine;
-        private int value;
-
-        public void Awake()
+    private void AddEvents(CounterButton button, Action<int> callback)
+    {
+        button.OnDown += () =>
         {
-            AddEvents(increase, v => tmpValue = ChangeValue(i => i + 1));
-            AddEvents(decrease, v => tmpValue = ChangeValue(i => i - 1));
-        }
+            changeValueRoutine = ChangeValueRoutine(callback);
+            StartCoroutine(changeValueRoutine);
+        };
+        button.OnUp += SaveValue;
+        button.OnExit += SaveValue;
+    }
 
-        public void SetDefaultValue(int defaultValue)
-        {
-            Value = defaultValue;
-            tmpValue = defaultValue;
-            textValue.text = defaultValue.ToString();
-        }
+    private void SaveValue()
+    {
+        if (changeValueRoutine != null)
+            StopCoroutine(changeValueRoutine);
 
-        private void AddEvents(CounterButton button, Action<int> callback)
-        {
-            button.OnDown += () =>
-            {
-                changeValueRoutine = ChangeValueRoutine(callback);
-                StartCoroutine(changeValueRoutine);
-            };
-            button.OnUp += SaveValue;
-            button.OnExit += SaveValue;
-        }
+        Value = tmpValue;
+        OnChanged?.Invoke(Value);
+    }
 
-        private void SaveValue()
-        {
-            if (changeValueRoutine != null)
-                StopCoroutine(changeValueRoutine);
-            
-            Value = tmpValue;
-            OnChanged?.Invoke(Value);
-        }
+    [SuppressMessage("ReSharper", "IteratorNeverReturns")]
+    private IEnumerator ChangeValueRoutine(Action<int> callback)
+    {
+        callback(tmpValue);
+        yield return new WaitForSecondsRealtime(0.3f);
 
-        [SuppressMessage("ReSharper", "IteratorNeverReturns")]
-        private IEnumerator ChangeValueRoutine(Action<int> callback)
+        while (true)
         {
             callback(tmpValue);
-            yield return new WaitForSecondsRealtime(0.3f);
-
-            while (true)
-            {
-                callback(tmpValue);
-                yield return new WaitForSecondsRealtime(0.1f);
-            }
+            yield return new WaitForSecondsRealtime(0.1f);
         }
+    }
 
-        private int ChangeValue(Func<int, int> operation)
-        {
-            var result = ValidateOperation(operation);
-            textValue.text = result.ToString();
-            return result;
-        }
+    private int ChangeValue(Func<int, int> operation)
+    {
+        var result = ValidateOperation(operation);
+        textValue.text = result.ToString();
+        return result;
+    }
 
-        private int ValidateOperation(Func<int, int> operation)
-        {
-            var result = operation(tmpValue);
-            return result < minValue || result > maxValue ? tmpValue : result;
-        }
+    private int ValidateOperation(Func<int, int> operation)
+    {
+        var result = operation(tmpValue);
+        return result < minValue || result > maxValue ? tmpValue : result;
     }
 }

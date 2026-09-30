@@ -3,31 +3,32 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace JukeboxCore.Utils
+namespace JukeboxCore.Utils;
+
+public class UnityWebRequestAwaiter : INotifyCompletion
 {
-    public class UnityWebRequestAwaiter : INotifyCompletion
+    private readonly UnityWebRequestAsyncOperation asyncOp;
+    private Action continuation;
+
+    public UnityWebRequestAwaiter(UnityWebRequestAsyncOperation asyncOp)
     {
-        private readonly UnityWebRequestAsyncOperation asyncOp;
-        private Action continuation;
+        this.asyncOp = asyncOp;
+        asyncOp.completed += OnRequestCompleted;
+    }
 
-        public UnityWebRequestAwaiter(UnityWebRequestAsyncOperation asyncOp)
-        {
-            this.asyncOp = asyncOp;
-            asyncOp.completed += OnRequestCompleted;
-        }
+    public bool IsCompleted => asyncOp.isDone;
 
-        public bool IsCompleted => asyncOp.isDone;
+    public void OnCompleted(Action action)
+    {
+        continuation = action;
+    }
 
-        public void GetResult() { }
+    public void GetResult()
+    {
+    }
 
-        public void OnCompleted(Action action)
-        {
-            continuation = action;
-        }
-
-        private void OnRequestCompleted(AsyncOperation obj)
-        {
-            continuation();
-        }
+    private void OnRequestCompleted(AsyncOperation obj)
+    {
+        continuation();
     }
 }

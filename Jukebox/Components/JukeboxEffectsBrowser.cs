@@ -4,53 +4,49 @@ using UnityEngine;
 using UnityEngine.UI;
 using static JukeboxCore.Utils.PathsUtils;
 
-namespace Jukebox.Components
+namespace Jukebox.Components;
+
+public class JukeboxEffectsBrowser : DirectoryTreeBrowser<FileInfo>
 {
-    public class JukeboxEffectsBrowser : DirectoryTreeBrowser<FileInfo>
+    private static readonly DirectoryInfo EffectsDirectory = new(EffectsPath);
+
+    [SerializeField] private JukeboxTerminalPanel navigator;
+    [SerializeField] private GameObject effectsMenu;
+
+    private string currentPrefKey;
+
+    protected override int maxPageLength => 3;
+    protected override IDirectoryTree<FileInfo> baseDirectory => new FileDirectoryTree(EffectsDirectory);
+    
+    public new void NextPage() => SetPage(currentPage == maxPages - 1 ? 0 : currentPage + 1);
+    public new void PreviousPage() => SetPage(currentPage == 0 ? maxPages - 1 : currentPage - 1);
+    public void SetCurrentPrefKey(string key) => currentPrefKey = key;
+    public void ResetToDefault() => PrefsManager.Instance?.SetStringLocal(currentPrefKey, null);
+    
+
+    protected override Action BuildLeaf(FileInfo item, int indexInPage)
     {
-        private static readonly DirectoryInfo EffectsDirectory = new(Path.Combine(ApplicationPath, "Cybergrind", "Effects"));
+        var go = Instantiate(itemButtonTemplate, itemParent);
+        var contentButton = go.GetComponent<CustomContentButton>();
+        contentButton.text.text = item.Name;
+        go.SetActive(true);
 
-        [SerializeField]
-        private JukeboxTerminalPanel navigator;
-        
-        [SerializeField]
-        private GameObject effectsMenu;
-
-        private string currentPrefKey;
-        
-        protected override int maxPageLength => 3;
-        
-        protected override IDirectoryTree<FileInfo> baseDirectory => new FileDirectoryTree(EffectsDirectory);
-        
-        public new void NextPage() => SetPage(currentPage == maxPages - 1 ? 0 : currentPage + 1);
-
-        public new void PreviousPage() => SetPage(currentPage == 0 ? maxPages - 1 : currentPage - 1);
-
-        public void SetCurrentPrefKey(string key) => currentPrefKey = key;
-
-        public void ResetToDefault() => PrefsManager.Instance.SetStringLocal(currentPrefKey, null);
-        
-        protected override Action BuildLeaf(FileInfo item, int indexInPage)
+        contentButton.button.onClick.AddListener(() =>
         {
-            var go = Instantiate(itemButtonTemplate, itemParent);
-            var contentButton = go.GetComponent<CustomContentButton>();
-            contentButton.text.text = item.Name;
-            go.SetActive(true);
+            PrefsManager.Instance?.SetStringLocal(currentPrefKey, item.FullName);
+            navigator.GoToNoMenu(effectsMenu);
+        });
+        return () => Destroy(go);
+    }
 
-            contentButton.button.onClick.AddListener(() =>
-            {
-                PrefsManager.Instance.SetStringLocal(currentPrefKey, item.FullName);
-                navigator.GoToNoMenu(effectsMenu);
-            });
-            return () => Destroy(go);
-        }
+    public void OpenEffectsFolder()
+    {
+        Application.OpenURL(new Uri(EffectsDirectory.FullName).AbsoluteUri);
+    }
 
-        public void OpenEffectsFolder() => Application.OpenURL(new Uri(EffectsDirectory.FullName).AbsoluteUri);
-
-        public override void Rebuild(bool setToPageZero = true)
-        {
-            LayoutRebuilder.ForceRebuildLayoutImmediate(itemParent as RectTransform);
-            base.Rebuild(setToPageZero);
-        }
+    public override void Rebuild(bool setToPageZero = true)
+    {
+        LayoutRebuilder.ForceRebuildLayoutImmediate(itemParent as RectTransform);
+        base.Rebuild(setToPageZero);
     }
 }

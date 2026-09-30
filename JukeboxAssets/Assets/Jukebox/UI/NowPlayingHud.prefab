@@ -328,7 +328,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Title
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c665f735df1f4db43a715b3cb44a57c0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 4883cfbb59316534da2f94828cbef8a9, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: b8a0c8e6a47071038ae73eb82f8ed52c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -392,7 +392,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &3138549326292379907
@@ -968,7 +968,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Artist
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c665f735df1f4db43a715b3cb44a57c0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 4883cfbb59316534da2f94828cbef8a9, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: b8a0c8e6a47071038ae73eb82f8ed52c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1032,7 +1032,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &6518328792016708009
@@ -1324,9 +1324,13 @@ MonoBehaviour:
   totalDuration: {fileID: 8012411390280695440}
   currentClip: {fileID: 4201904220127915618}
   bar: {fileID: 7640824888231807367}
-  normalTextMaterial: {fileID: 2100000, guid: 0e0aa3127ef1bd248835f120bdd2fab6, type: 2}
   overlayTextMaterial: {fileID: 2100000, guid: 11f59d16cb27ef34993c5b92076bda91, type: 2}
+  normalTextMaterial: {fileID: 2100000, guid: 0e0aa3127ef1bd248835f120bdd2fab6, type: 2}
   hudMaterial: {fileID: 2100000, guid: 3e93901eb185b0f4cad45821126e4431, type: 2}
+  fontMaterials:
+  - {fileID: -8427080483724623173, guid: 4883cfbb59316534da2f94828cbef8a9, type: 2}
+  - {fileID: 2457065563025843217, guid: 899b9b0e1760fa74591d1fd1d705dd02, type: 2}
+  - {fileID: 98864394855352131, guid: 03f392d58a9a03f41b39b8138f8b3d58, type: 2}
 --- !u!1 &9123942749575840320
 GameObject:
   m_ObjectHideFlags: 0

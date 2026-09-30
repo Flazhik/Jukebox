@@ -2,65 +2,61 @@ using UnityEngine;
 using static UnityEngine.GameObject;
 using static UnityEngine.Resources;
 
-namespace Jukebox.Components
+namespace Jukebox.Components;
+
+[ConfigureSingleton(SingletonFlags.NoAutoInstance)]
+public class JukeboxManager : MonoSingleton<JukeboxManager>
 {
-    [ConfigureSingleton(SingletonFlags.NoAutoInstance)]
-    public class JukeboxManager : MonoSingleton<JukeboxManager>
+    private const string CanvasPath = "/Canvas";
+    private const string CybergrindShopPath = "/FirstRoom/Room/Cybergrind Shop";
+    private const string PanelPath = "/FirstRoom/Room/Cybergrind Shop/Canvas/Background/Main Panel";
+
+    [SerializeField] public GameObject songPanel;
+    [SerializeField] public GameObject subtitlesPanel;
+    [SerializeField] public JukeboxPlaylistEditor playlistEditor;
+    [SerializeField] public JukeboxMusicPlayer player;
+    [SerializeField] private GameObject terminalPanel;
+    [SerializeField] private GameObject musicLogic;
+    [SerializeField] private GameObject musicChanger;
+
+    protected void Awake()
     {
-        private const string CanvasPath = "/Canvas";
-        private const string CybergrindShopPath = "/FirstRoom/Room/Cybergrind Shop";
-        private const string PanelPath = "/FirstRoom/Room/Cybergrind Shop/Canvas/Background/Main Panel";
+        ReplaceOriginalLogic();
+        SetupTerminal();
+        SetupSongPanel();
+        SetupSubtitlesPanel();
+    }
 
-        [SerializeField]
-        public GameObject songPanel;
+    private void SetupTerminal()
+    {
+        var mainPanel = Find($"{PanelPath}");
+        terminalPanel.transform.SetParent(mainPanel.transform, false);
+    }
 
-        [SerializeField]
-        public JukeboxPlaylistEditor playlistEditor;
-        
-        [SerializeField]
-        public JukeboxMusicPlayer player;
+    private void ReplaceOriginalLogic()
+    {
+        var cybergrindShop = Find(CybergrindShopPath);
 
-        [SerializeField]
-        private GameObject terminalPanel;
-        
-        [SerializeField]
-        private GameObject musicLogic;
-        
-        [SerializeField]
-        private GameObject musicChanger;
+        var originalLogic = cybergrindShop.transform.Find("Logic");
+        Destroy(originalLogic.Find("Music").gameObject);
+        musicLogic.transform.parent = originalLogic;
 
-        protected void Awake()
-        {
-            ReplaceOriginalLogic();
-            SetupTerminal();
-            SetupSongPanel();
-        }
+        var originalChanger = FindObjectsOfTypeAll<CustomMusicPlayer>()[0];
+        var timer = originalChanger.transform.parent;
+        Destroy(originalChanger.gameObject);
+        musicChanger.transform.parent = timer.transform;
+    }
 
-        private void SetupTerminal()
-        {
-            var mainPanel = Find($"{PanelPath}");
-            terminalPanel.transform.SetParent(mainPanel.transform, false);
-        }
-
-        private void ReplaceOriginalLogic()
-        {
-            var cybergrindShop = Find(CybergrindShopPath);
-            
-            var originalLogic = cybergrindShop.transform.Find("Logic");
-            Destroy(originalLogic.Find("Music").gameObject);
-            musicLogic.transform.parent = originalLogic;
-
-            var originalChanger = FindObjectsOfTypeAll<CustomMusicPlayer>()[0];
-            var timer = originalChanger.transform.parent;
-            Destroy(originalChanger.gameObject);
-            musicChanger.transform.parent = timer.transform;
-        }
-
-        private void SetupSongPanel()
-        {
-            var canvas = Find(CanvasPath);
-            Destroy(canvas.transform.Find("SongPanel").gameObject);
-            songPanel.transform.SetParent(canvas.transform, false);
-        }
+    private void SetupSongPanel()
+    {
+        var canvas = Find(CanvasPath);
+        Destroy(canvas.transform.Find("SongPanel").gameObject);
+        songPanel.transform.SetParent(canvas.transform, false);
+    }
+    
+    private void SetupSubtitlesPanel()
+    {
+        var canvas = Find(CanvasPath);
+        subtitlesPanel.transform.SetParent(canvas.transform, false);
     }
 }

@@ -1,10 +1,9 @@
 using System.Linq;
 
-namespace JukeboxCore.Utils
+namespace JukeboxCore.Utils;
+
+public static class GenericUtils
 {
-    public static class GenericUtils
-    {
-        public static string FirstNonEmpty(params string[] options) =>
-            options.FirstOrDefault(option => !string.IsNullOrEmpty(option));
-    }
+    public static string FirstNonEmpty(params string[] options) =>
+        options.FirstOrDefault(static option => !string.IsNullOrEmpty(option));
 }
