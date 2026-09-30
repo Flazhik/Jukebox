@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JukeboxDownloader", "Jukebo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JukeboxCore", "JukeboxCore\JukeboxCore.csproj", "{AB57436D-F3D9-454E-8F64-33F23AFD6690}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jukebox.ThornExtensions", "Jukebox.ThornExtensions\Jukebox.ThornExtensions.csproj", "{954CEB2C-ADDF-41BA-8D05-735A884E8D63}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{AB57436D-F3D9-454E-8F64-33F23AFD6690}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB57436D-F3D9-454E-8F64-33F23AFD6690}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB57436D-F3D9-454E-8F64-33F23AFD6690}.Release|Any CPU.Build.0 = Release|Any CPU
+		{954CEB2C-ADDF-41BA-8D05-735A884E8D63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{954CEB2C-ADDF-41BA-8D05-735A884E8D63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{954CEB2C-ADDF-41BA-8D05-735A884E8D63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{954CEB2C-ADDF-41BA-8D05-735A884E8D63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

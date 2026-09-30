@@ -1,7 +1,6 @@
-namespace Jukebox.Utils
+namespace Jukebox.Utils;
+
+public static class IntExtensions
 {
-    public static class IntExtensions
-    {
-        public static int Mod(this int num, int mod) => (num % mod + mod) % mod;
-    }
+    public static int Mod(this int num, int mod) => (num % mod + mod) % mod;
 }

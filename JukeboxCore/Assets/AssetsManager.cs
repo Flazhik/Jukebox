@@ -1,58 +1,76 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using UnityEngine;
+using JukeboxCore.Utils;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using Object = UnityEngine.Object;
+using static JukeboxCore.Logging.JukeboxLogger;
 
-namespace JukeboxCore.Assets
+namespace JukeboxCore.Assets;
+
+public static class AssetsManager
 {
-    [ConfigureSingleton(SingletonFlags.PersistAutoInstance)]
-    public class AssetsManager : MonoSingleton<AssetsManager>
+    private static readonly Dictionary<object, AsyncOperationHandle> Handles = [];
+
+    public static void Inject(params Assembly[] assemblies)
     {
-        private const BindingFlags Flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
-        private readonly List<AssetBundle> bundles =  new();
+        var targets = ReflectionUtils.GetAssembliesStaticFields(assemblies)
+            .Select(static field => (field, addressable: field.GetCustomAttribute<AddressableAsset>()))
+            .Where(static target => target.addressable != null);
 
-        public void LoadAssets(byte[] raw)
-        {
-            bundles.Add(AssetBundle.LoadFromMemory(raw));
-        }
-
-        public void RegisterPrefabs(Assembly assembly)
-        {
-            foreach (var type in assembly.GetTypes())
-                CheckType(type);
-        }
-        
-        private void CheckType(IReflect type)
-        {
-            type.GetFields(Flags)
-                .ToList()
-                .ForEach(ProcessField);
-        }
-
-        private void ProcessField(FieldInfo field)
-        {
-            if (field.FieldType.IsArray
-                || !typeof(Object).IsAssignableFrom(field.FieldType)
-                || !field.IsStatic)
-                return;
-
-            var externalAsset = field.GetCustomAttribute<ExternalAsset>();
-            var addressableAsset = field.GetCustomAttribute<AddressableAsset>();
-
-            if (externalAsset != null)
-                field.SetValue(null, LoadAsset(externalAsset.Path, externalAsset.Type));
-            
-            if (addressableAsset != null)
-                Addressables.LoadAssetAsync<GameObject>(addressableAsset.Path).Completed += value =>
-                    field.SetValue(null, Convert.ChangeType(value.Result, addressableAsset.AssetType));
-        }
-
-        private Object LoadAsset(string path, Type type)
-        {
-            return bundles.Select(bundle => bundle.LoadAsset(path, type)).FirstOrDefault();
-        }
+        foreach (var (field, addressable) in targets)
+            Assign(field, addressable.Path);
     }
+
+    public static T Load<T>(object key) where T : Object
+    {
+        var normalized = NormalizeKey(key);
+        if (Handles.TryGetValue(normalized, out var cached))
+            return cached.Result as T;
+
+        var handle = Addressables.LoadAssetAsync<T>(key);
+        handle.WaitForCompletion();
+
+        if (handle.Status != AsyncOperationStatus.Succeeded)
+        {
+            Log.LogError($"Failed to load addressable {key}: {handle.OperationException}");
+            Addressables.Release(handle);
+            return null;
+        }
+
+        Handles[normalized] = handle;
+        return handle.Result;
+    }
+
+    private static void Assign(FieldInfo field, string key)
+    {
+        var handle = Addressables.LoadAssetAsync<Object>(key);
+        var asset = handle.WaitForCompletion();
+
+        if (handle.Status != AsyncOperationStatus.Succeeded)
+        {
+            Log.LogError($"Failed to load addressable {key}: {handle.OperationException}");
+            return;
+        }
+
+        if (!field.FieldType.IsInstanceOfType(asset))
+        {
+            Log.LogError($"Addressable {key} is {asset.GetType().Name}, expected {field.FieldType.Name}");
+            return;
+        }
+
+        Handles[NormalizeKey(key)] = handle;
+        field.SetValue(null, asset);
+    }
+    
+        public static void ReleaseAll()
+        {
+            foreach (var handle in Handles.Values)
+                Addressables.Release(handle);
+    
+            Handles.Clear();
+        }
+
+    private static object NormalizeKey(object key) => key is AssetReference reference ? reference.AssetGUID : key;
 }

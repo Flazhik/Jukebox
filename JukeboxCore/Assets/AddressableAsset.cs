@@ -1,18 +1,9 @@
 using System;
 
-namespace JukeboxCore.Assets
-{
-    [AttributeUsage(AttributeTargets.Field)]
-    public class AddressableAsset : Attribute
-    {
-        public string Path { get; }
-        
-        public Type AssetType { get; }
+namespace JukeboxCore.Assets;
 
-        public AddressableAsset(string path, Type type)
-        {
-            Path = path;
-            AssetType = type;
-        }
-    }
+[AttributeUsage(AttributeTargets.Field)]
+public class AddressableAsset(string path) : Attribute
+{
+    public string Path { get; } = path;
 }

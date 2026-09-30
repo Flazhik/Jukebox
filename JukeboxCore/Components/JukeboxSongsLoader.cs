@@ -1,20 +1,25 @@
 using System.Collections.Generic;
-using JukeboxCore.Models.Song;
+using JukeboxCore.Songs;
+using JukeboxCore.Songs.Models;
 
-namespace JukeboxCore.Components
+namespace JukeboxCore.Components;
+
+[ConfigureSingleton(SingletonFlags.NoAutoInstance | SingletonFlags.DestroyDuplicates)]
+public class JukeboxSongsLoader : MonoSingleton<JukeboxSongsLoader>
 {
-    [ConfigureSingleton(SingletonFlags.NoAutoInstance | SingletonFlags.DestroyDuplicates)]
-    public class JukeboxSongsLoader: MonoSingleton<JukeboxSongsLoader>
+    private readonly Dictionary<Playlist.SongIdentifier, JukeboxSong> cache = new();
+
+    public JukeboxSong Get(Playlist.SongIdentifier id)
     {
-        private readonly Dictionary<Playlist.SongIdentifier, JukeboxSong> cache = new();
+        if (cache.TryGetValue(id, out var song))
+            return song;
 
-        public JukeboxSong Load(Playlist.SongIdentifier id)
-        {
-            if (cache.TryGetValue(id, out var result))
-                return result;
-
-            cache.Add(id, JukeboxSongFactory.Create(id));
-            return cache[id];
-        }
+        song = JukeboxSong.Create(id);
+        cache.Add(id, song);
+        return song;
     }
+
+    public JukeboxSongSession CreateSession(JukeboxSong song) => song != null
+        ? JukeboxSongSessionFactory.Create(song)
+        : null;
 }

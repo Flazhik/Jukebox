@@ -1,7 +1,6 @@
-namespace JukeboxCore.Exceptions
+namespace JukeboxCore.Exceptions;
+
+public class CookiesRequiredException : JukeboxException
 {
-    public class CookiesRequiredException : JukeboxException
-    {
-        public override string Message => "Cookies required";
-    }
+    public override string Message => "Cookies required";
 }

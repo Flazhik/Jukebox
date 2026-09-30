@@ -1,88 +1,87 @@
 using System.Collections;
 using Jukebox.Components;
 using JukeboxCore.Events;
-using JukeboxCore.Models.Song;
+using JukeboxCore.Playback;
+using JukeboxCore.Songs.Models;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Jukebox.UI.SongPanel
+namespace Jukebox.UI.SongPanel;
+
+public abstract class SongPanel : MonoBehaviour
 {
-    public abstract class SongPanel: MonoBehaviour
+    [SerializeField] public CanvasGroup panelGroup;
+    [SerializeField] public Sprite defaultIcon;
+    [SerializeField] public float panelApproachTime;
+    [SerializeField] public float panelStayTime;
+
+    public TMP_Text text;
+    public Image icon;
+
+    protected bool active;
+    protected bool showIndefinitely;
+    private Coroutine displayRoutine;
+    private IPlaybackController player;
+
+    protected abstract SongPanelStyle Style { get; }
+
+    public void Awake()
     {
-        [SerializeField]
-        public CanvasGroup panelGroup;
+        PrefsManager.onPrefChanged += OnPrefChanged;
+        player = JukeboxManager.Instance!.player;
+        player.OnNextAudioClip += NextAudioClip;
+        player.OnStop += OnStop;
+        showIndefinitely = PrefsManager.Instance.GetBoolLocal("jukebox.showTrackPanelIndefinitely");
+        active = PrefsManager.Instance.GetIntLocal("jukebox.songPanelStyle") == (int)Style;
+    }
 
-        [SerializeField]
-        public Sprite defaultIcon;
-        
-        [SerializeField]
-        public float panelApproachTime;
-        
-        [SerializeField]
-        public float panelStayTime;
-        
-        public TMP_Text text;
-        public Image icon;
+    public void OnDestroy()
+    {
+        PrefsManager.onPrefChanged -= OnPrefChanged;
+        player.OnNextAudioClip -= NextAudioClip;
+        player.OnStop -= OnStop;
+    }
 
-        protected bool showIndefinitely;
-        protected bool active;
-        private Coroutine displayRoutine;
-        
-        protected abstract IEnumerator FadeIn(JukeboxSongMetadata metadata);
-        protected abstract IEnumerator Await();
-        protected abstract IEnumerator FadeOut();
-        protected abstract SongPanelStyle Style { get; }
+    protected abstract IEnumerator FadeIn(JukeboxSongMetadata metadata);
+    protected abstract IEnumerator Await();
+    protected abstract IEnumerator FadeOut();
 
-        public void Awake()
-        {
-            PrefsManager.onPrefChanged += OnPrefChanged;
-            JukeboxMusicPlayer.OnNextAudioClip += NextAudioClip;
-            JukeboxMusicPlayer.OnStop += OnStop;
-            showIndefinitely = PrefsManager.Instance.GetBoolLocal("jukebox.showTrackPanelIndefinitely");
-            active = PrefsManager.Instance.GetIntLocal("jukebox.songPanelStyle") == (int)Style;
-        }
+    private IEnumerator ShowPanelRoutine(JukeboxSongMetadata metadata)
+    {
+        var artist = !string.IsNullOrEmpty(metadata.Artist)
+            ? $"<color=#999>{metadata.Artist}</color>"
+            : string.Empty;
 
-        public void OnDestroy()
-        {
-            PrefsManager.onPrefChanged -= OnPrefChanged;
-            JukeboxMusicPlayer.OnNextAudioClip -= NextAudioClip;
-            JukeboxMusicPlayer.OnStop -= OnStop;
-        }
+        text.text = $"{metadata.Title.ToUpper()} {artist}";
+        icon.sprite = metadata.Icon != null ? metadata.Icon : defaultIcon;
+        yield return FadeIn(metadata);
+        yield return Await();
+        yield return FadeOut();
+    }
 
-        private IEnumerator ShowPanelRoutine(JukeboxSongMetadata metadata)
-        {
-            var artist = !string.IsNullOrEmpty(metadata.Artist)
-                ? $"<color=#999>{metadata.Artist}</color>"
-                : string.Empty;
-            
-            text.text = $"{metadata.Title.ToUpper()} {artist}";
-            icon.sprite = metadata.Icon != null ? metadata.Icon : defaultIcon;
-            yield return FadeIn(metadata);
-            yield return Await();
-            yield return FadeOut();
-        }
+    private void NextAudioClip(ClipChangedArgs clip)
+    {
+        if (!clip.NewSong)
+            return;
 
-        private void NextAudioClip(ClipChangedArgs clip)
-        {
-            if (!clip.NewSong)
-                return;
-            
-            active = PrefsManager.Instance.GetIntLocal("jukebox.songPanelStyle") == (int)Style;
-            if (displayRoutine != null)
-                StopCoroutine(displayRoutine);
-            displayRoutine = StartCoroutine(ShowPanelRoutine(clip.Song.Metadata));
-        }
-        
-        private void OnStop() => active = false;
+        active = PrefsManager.Instance.GetIntLocal("jukebox.songPanelStyle") == (int)Style;
+        if (displayRoutine != null)
+            StopCoroutine(displayRoutine);
+        displayRoutine = StartCoroutine(ShowPanelRoutine(clip.Song.Metadata));
+    }
 
-        private void OnPrefChanged(string key, object value)
-        {
-            if (key.Equals("jukebox.showTrackPanelIndefinitely"))
-                showIndefinitely = (bool)value;
+    private void OnStop()
+    {
+        active = false;
+    }
 
-            if (key.Equals("jukebox.songPanelStyle"))
-                active = (int)value == (int)Style;
-        }
+    private void OnPrefChanged(string key, object value)
+    {
+        if (key.Equals("jukebox.showTrackPanelIndefinitely"))
+            showIndefinitely = (bool)value;
+
+        if (key.Equals("jukebox.songPanelStyle"))
+            active = (int)value == (int)Style;
     }
 }

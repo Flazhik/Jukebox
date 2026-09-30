@@ -1,11 +1,9 @@
 using TMPro;
 using UnityEngine;
 
-namespace JukeboxDownloader.UI
+namespace JukeboxDownloader.UI;
+
+public class DownloaderErrorDialogue : MonoBehaviour
 {
-    public class DownloaderErrorDialogue : MonoBehaviour
-    {
-        [SerializeField]
-        public TMP_Text messageText;
-    }
+    [SerializeField] public TMP_Text messageText;
 }

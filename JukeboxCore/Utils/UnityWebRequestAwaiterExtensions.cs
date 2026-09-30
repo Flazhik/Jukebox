@@ -1,12 +1,11 @@
 using UnityEngine.Networking;
 
-namespace JukeboxCore.Utils
+namespace JukeboxCore.Utils;
+
+public static class UnityWebRequestAwaiterExtensions
 {
-    public static class UnityWebRequestAwaiterExtensions
+    public static UnityWebRequestAwaiter GetAwaiter(this UnityWebRequestAsyncOperation asyncOp)
     {
-        public static UnityWebRequestAwaiter GetAwaiter(this UnityWebRequestAsyncOperation asyncOp)
-        {
-            return new UnityWebRequestAwaiter(asyncOp);
-        }
+        return new UnityWebRequestAwaiter(asyncOp);
     }
 }

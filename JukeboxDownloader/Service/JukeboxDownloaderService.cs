@@ -9,245 +9,253 @@ using JukeboxCore;
 using JukeboxCore.Exceptions;
 using JukeboxCore.Models.Downloader;
 using JukeboxCore.Utils;
-using JukeboxDownloader.Events;
 using JukeboxDownloader.Exceptions;
 using JukeboxDownloader.Models;
 using JukeboxDownloader.Service.YouTube;
-using UnityEngine;
 using static JukeboxDownloader.Utils.ThirdPartySoftwareUtils;
 using static YoutubeDLSharp.Utils;
 using static JukeboxCore.Utils.ConfigUtils;
 using static SingletonFlags;
+using static JukeboxCore.Logging.JukeboxLogger;
 
-namespace JukeboxDownloader.Service
+namespace JukeboxDownloader.Service;
+
+[ConfigureSingleton(HideAutoInstance)]
+public class JukeboxDownloaderService : MonoSingleton<JukeboxDownloaderService>
 {
-    [ConfigureSingleton(HideAutoInstance)]
-    public class JukeboxDownloaderService : MonoSingleton<JukeboxDownloaderService>
+    private static readonly List<AbstractDownloaderClient> Clients = [new YoutubeClient()];
+
+    private readonly ConfigEntry<int> queueSize = BepInExConfig.Bind("Concurrency",
+        "DownloaderQueueSize",
+        3,
+        "The size of the downloader queue");
+    
+    private MainThreadDispatcher mainThread;
+    private QueueManager queue;
+
+    private int mTotalDownloaded;
+    private int mTotalEnqueued;
+    private int mTotalFailed;
+
+    public int TotalDownloaded
     {
-        private readonly ConfigEntry<int> queueSize = BepInExConfig.Bind("Concurrency",
-            "DownloaderQueueSize",
-            3,
-            "The size of the downloader queue");
-        
-        private static readonly List<AbstractDownloaderClient> Clients = new()
-        {
-            new YoutubeClient()
-        };
+        get => mTotalDownloaded;
+        private set => mTotalDownloaded = value;
+    }
 
-        public int TotalDownloaded
+    public int TotalFailed
+    {
+        get => mTotalFailed;
+        private set => mTotalFailed = value;
+    }
+
+    public int TotalEnqueued
+    {
+        get => mTotalEnqueued;
+        private set => mTotalEnqueued = value;
+    }
+
+    public JukeboxDownloaderState State
+    {
+        get;
+        set
         {
-            get => mTotalDownloaded;
-            private set => mTotalDownloaded = value;
+            field = value;
+            mainThread.Enqueue(() => OnStateChanged?.Invoke(value));
         }
+    } = JukeboxDownloaderState.Idle;
 
-        public int TotalFailed
+    public ThirdPartyExecsState ThirdPartySoftwareState
+    {
+        get;
+        set
         {
-            get => mTotalFailed;
-            private set => mTotalFailed = value;
+            field = value;
+            mainThread.Enqueue(() => OnThirdPartySoftwareChanged?.Invoke(value));
         }
-        
-        public int TotalEnqueued
-        {
-            get => mTotalEnqueued;
-            private set => mTotalEnqueued = value;
-        }
+    } = new();
 
-        public JukeboxDownloaderState State
-        {
-            get => state;
-            set
-            {
-                state = value;
-                mainThread.Enqueue(() => OnStateChanged?.Invoke(value));
-            }
-        }
-        
-        public ThirdPartyExecsState ThirdPartySoftwareState
-        {
-            get => thirdPartySoftwareState;
-            set
-            {
-                thirdPartySoftwareState = value;
-                mainThread.Enqueue(() => OnThirdPartySoftwareChanged?.Invoke(value));
-            }
-        }
-        
-        public DownloaderUIEventManager UIEventManager { get; } = new();
-        public List<DownloadableSongMetadata> Metadata { get; private set; } = new();
-        
-        public event Action<ThirdPartyExecsState> OnThirdPartySoftwareChanged;
-        public event Action<JukeboxDownloaderState> OnStateChanged;
-        public event Action<List<DownloadableSongMetadata>> OnMetadataChanged;
-        
-        private QueueManager queue;
-        private CancellationTokenSource tokenSource = new();
-        private ThirdPartyExecsState thirdPartySoftwareState = new();
-        private MainThreadDispatcher mainThread;
+    public DownloaderUIEventManager UIEventManager { get; } = new();
+    public List<DownloadableSongMetadata> Metadata { get; private set; } = [];
 
-        private int mTotalDownloaded;
-        private int mTotalFailed;
-        private int mTotalEnqueued;
-        
-        private JukeboxDownloaderState state = JukeboxDownloaderState.Idle;
+    protected void Start()
+    {
+        queue = new QueueManager(queueSize.Value);
+        mainThread = MainThreadDispatcher.Instance;
+    }
 
-        protected void Start()
+    protected void OnDestroy()
+    {
+        CancelEverything();
+    }
+
+    public event Action<ThirdPartyExecsState> OnThirdPartySoftwareChanged;
+    public event Action<JukeboxDownloaderState> OnStateChanged;
+    public event Action<List<DownloadableSongMetadata>> OnMetadataChanged;
+
+    public static bool SupportsUrl(string url)
+    {
+        return Clients.Any(client => client.SupportsUrl(url));
+    }
+
+    public void Clear()
+    {
+        UIEventManager.Clear();
+    }
+
+    public void CancelEverything()
+    {
+        try
         {
-            queue = new QueueManager(queueSize.Value);
-            mainThread = MainThreadDispatcher.Instance;
-        }
-
-        public static bool SupportsUrl(string url) => Clients.Any(client => client.SupportsUrl(url));
-        
-        public void Clear() => UIEventManager.Clear();
-
-        public void CancelEverything()
-        {
-            tokenSource.Cancel();
             queue.CancelAll();
-            ResetCounters();
-            UIEventManager.Map(kv =>
-            {
-                var s = kv.Value.state;
-                if (s.HasValue && !s.IsOneOf(TrackDownloadingState.Failed, TrackDownloadingState.Success))
-                    UIEventManager.Invoke(kv.Key, new DownloadCanceledEvent());
-            });
+        }
+        catch (Exception e)
+        {
+            Log.LogError(e);
         }
 
-        public async Task LoadMetadata(string url)
+        ResetCounters();
+        UIEventManager.Map(kv =>
         {
-            try
-            {
-                queue.CancelAll();
-                State = JukeboxDownloaderState.LoadingMetadata;
-                Metadata = await GetClientFor(url).GetMetadata(url, RegenerateTokenSource().Token);
-                foreach (var track in Metadata)
-                    UIEventManager.Register(track.Id);
-                mainThread.Enqueue(() => OnMetadataChanged?.Invoke(Metadata));
-            }
-            catch (JukeboxException e)
-            {
-                mainThread.Enqueue(() => Debug.LogError($"Unable to retrieve metadata: {e.Message}"));
-                throw;
-            }
-            finally
-            {
-                State = JukeboxDownloaderState.Idle;
-            }
-        }
+            var s = kv.Value.state;
+            if (s.HasValue && !s.IsOneOf(TrackDownloadingState.Failed, TrackDownloadingState.Success))
+                UIEventManager.Update(kv.Key, static s => s.state = TrackDownloadingState.None);
+        });
+    }
 
-        public void EnqueueDownload(string id, string url, string playlist, bool decrementFailed = false)
+    public async Task LoadMetadata(string url)
+    {
+        try
         {
-            Interlocked.Increment(ref mTotalEnqueued);
-            if (decrementFailed)
-                Interlocked.Decrement(ref mTotalFailed);
+            Log.LogInfo($"Loading metadata for URL: {url}");
+            queue.CancelAll();
+            State = JukeboxDownloaderState.LoadingMetadata;
+            var fetchedMetadata = await GetClientFor(url).GetMetadata(url, queue.Token);
+            lock (Metadata)
+            {
+                Metadata = fetchedMetadata;
+            }
+
+            foreach (var track in Metadata)
+                UIEventManager.Register(track.Id);
             
-            UIEventManager.Invoke(id, new TrackEnqueuedEvent());
-            queue.Enqueue(token =>
-            {
-                var progressHandler = new Progress<DownloadProgress>(p =>
-                {
-                    if (token.IsCancellationRequested)
-                        return;
-                    
-                    switch (p.State)
-                    {
-                        case TrackDownloadingState.Success:
-                            Interlocked.Decrement(ref mTotalEnqueued);
-                            Interlocked.Increment(ref mTotalDownloaded);
-                            break;
-                        case TrackDownloadingState.Failed:
-                            Interlocked.Decrement(ref mTotalEnqueued);
-                            Interlocked.Increment(ref mTotalFailed);
-                            break;
-                    }
-                    UIEventManager.Invoke(id, new ProgressUpdatedEvent(p.State, p.Progress, p.Eta));
-                });
-                return GetClientFor(url).Download(url, playlist, progressHandler, token);
-            });
-        }
+            Log.LogInfo($"Metadata loaded successfully. Total tracks: {Metadata.Count}");
 
-        public async Task DownloadThirdPartySoftware()
-        {
-            try
-            {
-                await DownloadSoftwarePiece("ffmpeg", FfmpegBinaryName, DownloadFfmpeg);
-                await DownloadSoftwarePiece("ffprobe", FfprobeBinaryName, DownloadFfprobe);
-                await UpdateYtDlp();
-                CleanUp();
-                
-                ThirdPartySoftwareState = ThirdPartyExecsState.Present();
-            }
-            catch (Exception)
-            {
-                ThirdPartySoftwareState = ThirdPartyExecsState.Failed();
-            }
+            mainThread.Enqueue(() => OnMetadataChanged?.Invoke(Metadata));
         }
-        
-        public async Task UpdateYtDlp()
+        catch (JukeboxException e)
         {
-            try
-            {
-                await DownloadSoftwarePiece("yt-dlp", YtDlpBinaryName, DownloadYtDlp);
-                CleanUp();
-                
-                ThirdPartySoftwareState = ThirdPartyExecsState.Present();
-            }
-            catch (Exception)
-            {
-                ThirdPartySoftwareState = ThirdPartyExecsState.Failed();
-            }
+            Log.LogError($"Unable to retrieve metadata: {e.Message}");
+            throw;
         }
-        
-        private async Task DownloadSoftwarePiece(string softwareTitle, string filename, Func<WebClient, Task> downloadRoutine)
+        finally
         {
-            try
+            State = JukeboxDownloaderState.Idle;
+        }
+    }
+
+    public void EnqueueDownload(string id, string url, string playlist, bool decrementFailed = false)
+    {
+        Interlocked.Increment(ref mTotalEnqueued);
+        if (decrementFailed)
+            Interlocked.Decrement(ref mTotalFailed);
+
+        UIEventManager.Update(id, static s => s.state = TrackDownloadingState.Enqueued);
+        queue.Enqueue(token =>
+        {
+            var progressHandler = new Progress<DownloadProgress>(p =>
             {
-                if (ThirdPartySoftwarePresent(filename) && ValidateBinaryIntegrity(filename))
+                if (token.IsCancellationRequested)
                     return;
 
-                ThirdPartySoftwareState = ThirdPartyExecsState.DownloadingStarted();
-                using var client = new WebClient();
-                client.DownloadProgressChanged += (_, e) =>
-                    ThirdPartySoftwareState =
-                        ThirdPartyExecsState.DownloadingProgress(softwareTitle, e.ProgressPercentage / 100f);
-                
-                await downloadRoutine(client);
-            }
-            catch (Exception e)
-            {
-                mainThread.Enqueue(() =>
-                    Debug.LogError($"An error has occured while downloading 3rd-party software: {e.Message}"));
-                ThirdPartySoftwareState = ThirdPartyExecsState.Failed();
-                throw;
-            }
-        }
+                switch (p.State)
+                {
+                    case TrackDownloadingState.Success:
+                        Interlocked.Decrement(ref mTotalEnqueued);
+                        Interlocked.Increment(ref mTotalDownloaded);
+                        break;
+                    case TrackDownloadingState.Failed:
+                        Interlocked.Decrement(ref mTotalEnqueued);
+                        Interlocked.Increment(ref mTotalFailed);
+                        break;
+                }
 
-        private void ResetCounters()
-        {
-            TotalDownloaded = 0;
-            TotalFailed = 0;
-            TotalEnqueued = 0;
-        }
+                mainThread.Enqueue(() => UIEventManager.Update(id, s =>
+                {
+                    s.state = p.State;
+                    s.progress = p.Progress;
+                    s.eta = p.Eta;
+                }));
+            });
+            return GetClientFor(url).Download(url, playlist, progressHandler, token);
+        });
+    }
 
-        private CancellationTokenSource RegenerateTokenSource()
+    public async Task DownloadThirdPartySoftware()
+    {
+        try
         {
-            tokenSource.Cancel();
-            tokenSource = new CancellationTokenSource();
-            return tokenSource;
-        }
+            await DownloadSoftwarePiece("ffmpeg", FfmpegBinaryName, DownloadFfmpeg);
+            await DownloadSoftwarePiece("ffprobe", FfprobeBinaryName, DownloadFfprobe);
+            await UpdateYtDlp();
+            CleanUp();
 
-        private static AbstractDownloaderClient GetClientFor(string url)
-        {
-            var result = Clients.FirstOrDefault(client => client.SupportsUrl(url));
-            if (result == null)
-                throw new UrlIsNotSupported();
-            
-            return result;
+            ThirdPartySoftwareState = ThirdPartyExecsState.Present();
         }
+        catch (Exception)
+        {
+            ThirdPartySoftwareState = ThirdPartyExecsState.Failed();
+        }
+    }
 
-        protected void OnDestroy()
+    public async Task UpdateYtDlp()
+    {
+        try
         {
-            CancelEverything();
+            await DownloadSoftwarePiece("yt-dlp", YtDlpBinaryName, DownloadYtDlp);
+            CleanUp();
+
+            ThirdPartySoftwareState = ThirdPartyExecsState.Present();
         }
+        catch (Exception)
+        {
+            ThirdPartySoftwareState = ThirdPartyExecsState.Failed();
+        }
+    }
+
+    private async Task DownloadSoftwarePiece(string softwareTitle, string filename, Func<WebClient, Task> downloadRoutine)
+    {
+        try
+        {
+            if (ThirdPartySoftwarePresent(filename) && ValidateBinaryIntegrity(filename))
+                return;
+
+            ThirdPartySoftwareState = ThirdPartyExecsState.DownloadingStarted();
+            using var client = new WebClient();
+            client.DownloadProgressChanged += (_, e) =>
+                ThirdPartySoftwareState =
+                    ThirdPartyExecsState.DownloadingProgress(softwareTitle, e.ProgressPercentage / 100f);
+
+            await downloadRoutine(client);
+        }
+        catch (Exception e)
+        {
+            Log.LogError($"An error has occured while downloading 3rd-party software: {e.Message}");
+            ThirdPartySoftwareState = ThirdPartyExecsState.Failed();
+            throw;
+        }
+    }
+
+    private void ResetCounters()
+    {
+        TotalDownloaded = 0;
+        TotalFailed = 0;
+        TotalEnqueued = 0;
+    }
+
+    private static AbstractDownloaderClient GetClientFor(string url)
+    {
+        var result = Clients.FirstOrDefault(client => client.SupportsUrl(url));
+        return result ?? throw new UrlIsNotSupported();
     }
 }

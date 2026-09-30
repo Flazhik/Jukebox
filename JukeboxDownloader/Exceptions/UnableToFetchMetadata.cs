@@ -1,16 +1,8 @@
 using JukeboxCore.Exceptions;
 
-namespace JukeboxDownloader.Exceptions
-{
-    public class UnableToFetchMetadata : JukeboxException
-    {
-        private readonly string message;
-        
-        public UnableToFetchMetadata(string message)
-        {
-            this.message = message;
-        }
+namespace JukeboxDownloader.Exceptions;
 
-        public override string Message => "Unable to fetch metadata: " + message;
-    }
+public class UnableToFetchMetadata(string message) : JukeboxException
+{
+    public override string Message => "Unable to fetch metadata: " + message;
 }
