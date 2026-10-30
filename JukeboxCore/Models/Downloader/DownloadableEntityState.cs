@@ -1,18 +1,12 @@
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace JukeboxCore.Models.Downloader
+namespace JukeboxCore.Models.Downloader;
+
+public class DownloadableEntityState
 {
-    public class DownloadableEntityState
-    {
-        [CanBeNull]
-        public Sprite thumbnail;
-        
-        public TrackDownloadingState? state;
-        
-        public float? progress;
-        
-        [CanBeNull]
-        public string eta;
-    }
+    public float? progress;
+    public TrackDownloadingState? state;
+    [CanBeNull] public Sprite thumbnail;
+    [CanBeNull] public string eta;
 }

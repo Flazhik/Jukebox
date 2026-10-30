@@ -1,7 +1,6 @@
-namespace JukeboxCore.Exceptions
+namespace JukeboxCore.Exceptions;
+
+public class InvalidCookiesFileException : JukeboxException
 {
-    public class InvalidCookiesFileException : JukeboxException
-    {
-        public override string Message => "Invalid cookies.txt file";
-    }
+    public override string Message => "Invalid cookies.txt file";
 }

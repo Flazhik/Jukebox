@@ -8,51 +8,51 @@ using UnityEngine.Networking;
 using static UnityEngine.Networking.UnityWebRequestTexture;
 using static System.TimeSpan;
 
-namespace JukeboxCore.Utils
+namespace JukeboxCore.Utils;
+
+public static class NetworkUtils
 {
-    public static class NetworkUtils
+    private const int RetryAttempts = 3;
+
+    private static readonly HttpClient Client = new();
+
+    static NetworkUtils()
     {
-        private const int RetryAttempts = 3;
-        private static readonly HttpClient Client = new();
-        
-        static NetworkUtils()
-        {
-            Client.Timeout = FromSeconds(5);
-            Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            Client.DefaultRequestHeaders.UserAgent.TryParseAdd("com.google.android.youtube/17.36.4 (Linux; U; Android 12; GB) gzip");
-        }
+        Client.Timeout = FromSeconds(5);
+        Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        Client.DefaultRequestHeaders.UserAgent.TryParseAdd(
+            "com.google.android.youtube/17.36.4 (Linux; U; Android 12; GB) gzip");
+    }
 
-        public static async Task<string> GetRaw(string url)
-        {
-            for (var i = 0; i < RetryAttempts; i++)
+    public static async Task<string> GetRaw(string url)
+    {
+        for (var i = 0; i < RetryAttempts; i++)
+            try
             {
-                try
-                {
-                    var response = await Client.GetAsync(url);
-                    var raw = await response.Content.ReadAsStringAsync();
-                    if (raw == null)
-                        continue;
+                var response = await Client.GetAsync(url);
+                var raw = await response.Content.ReadAsStringAsync();
+                if (raw == null)
+                    continue;
 
-                    return raw;
-                }
-                catch (Exception)
-                {
-                    if (i == RetryAttempts - 1)
-                        throw;
-                }
+                return raw;
             }
-            throw new HttpRequestException();
-        }
+            catch (Exception)
+            {
+                if (i == RetryAttempts - 1)
+                    throw;
+            }
 
-        public static async Task<Texture2D> DownloadImage(string url) 
-        {
-            using var request = GetTexture(url);
-            await request.SendWebRequest();
+        throw new HttpRequestException();
+    }
 
-            if (request.error != null)
-                throw new ImageDownloadFailedException(url, request.error);
+    public static async Task<Texture2D> DownloadImage(string url)
+    {
+        using var request = GetTexture(url);
+        await request.SendWebRequest();
 
-            return DownloadHandlerTexture.GetContent(request);
-        }
+        if (request.error != null)
+            throw new ImageDownloadFailedException(url, request.error);
+
+        return DownloadHandlerTexture.GetContent(request);
     }
 }

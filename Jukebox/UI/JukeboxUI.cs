@@ -8,107 +8,103 @@ using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.GameObject;
 
-namespace Jukebox.UI
+namespace Jukebox.UI;
+
+public class JukeboxUI : MonoBehaviour
 {
-    public class JukeboxUI : MonoBehaviour
+    [SerializeField] public GameObject jukeboxMenuTemplate;
+    [SerializeField] public GameObject playbackMenuTemplate;
+    [SerializeField] public GameObject whatIsNewMenuTemplate;
+    [SerializeField] public GameObject nowPlayingHudTemplate;
+    [SerializeField] public GameObject nowPlayingHudClassicTemplate;
+
+    private GameObject jukeboxMenu;
+    private GameObject playbackMenu;
+    private GameObject whatIsNew;
+    private ReadOnlyCollection<JukeboxWindow> windows;
+
+    protected void Awake()
     {
-        [SerializeField] public GameObject jukeboxMenuTemplate;
-        [SerializeField] public GameObject playbackMenuTemplate;
-        [SerializeField] public GameObject whatIsNewMenuTemplate;
-        [SerializeField] public GameObject nowPlayingHudTemplate;
-        [SerializeField] public GameObject nowPlayingHudClassicTemplate;
-
-        private GameObject jukeboxMenu;
-        private GameObject playbackMenu;
-        private GameObject whatIsNew;
-
-        private ReadOnlyCollection<JukeboxWindow> windows;
-
-        public void OpenDownloader()
+        InstantiateUI();
+        windows = new ReadOnlyCollection<JukeboxWindow>(new List<JukeboxWindow>
         {
-            var jukeboxWindow = jukeboxMenu.GetComponent<JukeboxMenuWindow>();
-            jukeboxWindow.Open();
-            jukeboxWindow.OpenDownloader();
-        }
+            jukeboxMenu.GetComponent<JukeboxWindow>(),
+            playbackMenu.GetComponent<JukeboxPlaybackWindow>(),
+            whatIsNew.GetComponent<WhatsNew>()
+        });
 
-        protected void Awake()
-        {
-            InstantiateUI();
-            windows = new ReadOnlyCollection<JukeboxWindow>(new List<JukeboxWindow>
-            {
-                jukeboxMenu.GetComponent<JukeboxWindow>(),
-                playbackMenu.GetComponent<JukeboxPlaybackWindow>(),
-                whatIsNew.GetComponent<WhatsNew>()
-            });
-
-            foreach (var window in windows)
-                window.gameObject.SetActive(false);
-            StartCoroutine(WhatIsNewRoutine());
-        }
-
-        protected void Update()
-        {
-            ManageWindows();
-        }
-
-        private void ManageWindows()
-        {
-            if (GameIsPaused())
-                return;
-            
-            if (InputManager.Instance.InputSource.Pause.WasPerformedThisFrame)
-            {
-                foreach (var window in windows)
-                    if (window.IsOpened())
-                        window.Close();
-                return;
-            }
-
-            var requestedWindow = windows
-                .FirstOrDefault(w => w.hotkey != null && w.hotkey.ToInputAction().WasPerformedThisFrame());
-
-            if (requestedWindow != null)
-            {
-                foreach (var window in windows)
-                    if (window.hotkey != null && window.hotkey.ToInputAction().IsActionEqual(requestedWindow.hotkey.ToInputAction()))
-                        window.Toggle();
-                    else
-                        window.Close();
-            }
-            
-            if (!windows.Any(w => GameStateManager.Instance.IsStateActive(w.StateKey()))
-                && OptionsManager.Instance.paused)
-                JukeboxPauseManager.Instance.UnPause();
-        }
-
-        private void InstantiateUI()
-        {
-            var newCanvas = new GameObject
-            {
-                name = "JukeboxCanvas"
-            };
-            newCanvas.AddComponent<Canvas>();
-
-            var canvas = Find("/Canvas");
-            var canvasComponent = newCanvas.GetComponent<Canvas>();
-            canvasComponent.renderMode = RenderMode.ScreenSpaceCamera;
-            canvasComponent.sortingOrder = canvas.GetComponent<Canvas>().sortingOrder + 1;
-            newCanvas.AddComponent<CanvasScaler>();
-            newCanvas.AddComponent<GraphicRaycaster>();
-
-            jukeboxMenu = Instantiate(jukeboxMenuTemplate, canvas.transform);
-            playbackMenu = Instantiate(playbackMenuTemplate, canvas.transform);
-            whatIsNew = Instantiate(whatIsNewMenuTemplate, canvas.transform);
-            Instantiate(nowPlayingHudTemplate, Find("/Player/Main Camera/HUD Camera/HUD/GunCanvas").transform, false);
-            Instantiate(nowPlayingHudClassicTemplate, canvas.transform.Find("Crosshair Filler"), false);
-        }
-
-        private IEnumerator WhatIsNewRoutine()
-        {
-            yield return new WaitForSeconds(1.4f);
-            whatIsNew.GetComponent<WhatsNew>().Open();
-        }
-
-        private static bool GameIsPaused() => GameStateManager.Instance.IsStateActive("pause");
+        foreach (var window in windows)
+            window.gameObject.SetActive(false);
+        StartCoroutine(WhatIsNewRoutine());
     }
+
+    protected void Update()
+    {
+        ManageWindows();
+    }
+
+    public void OpenDownloader()
+    {
+        var jukeboxWindow = jukeboxMenu.GetComponent<JukeboxMenuWindow>();
+        jukeboxWindow.Open();
+        jukeboxWindow.OpenDownloader();
+    }
+
+    private void ManageWindows()
+    {
+        if (GameIsPaused())
+            return;
+
+        if (InputManager.Instance!.InputSource.Pause.WasPerformedThisFrame)
+        {
+            foreach (var window in windows.Where(static window => window.IsOpened()))
+                window.Close();
+            return;
+        }
+
+        var requestedWindow = windows
+            .FirstOrDefault(w => w.hotkey != null && w.hotkey.ToInputAction().WasPerformedThisFrame());
+
+        if (requestedWindow != null)
+            foreach (var window in windows)
+                if (window.hotkey != null &&
+                    window.hotkey.ToInputAction().IsActionEqual(requestedWindow.hotkey.ToInputAction()))
+                    window.Toggle();
+                else
+                    window.Close();
+
+        if (!windows.Any(w => GameStateManager.Instance.IsStateActive(w.StateKey()))
+            && OptionsManager.Instance.paused)
+            JukeboxPauseManager.Instance.UnPause();
+    }
+
+    private void InstantiateUI()
+    {
+        var newCanvas = new GameObject
+        {
+            name = "JukeboxCanvas"
+        };
+        newCanvas.AddComponent<Canvas>();
+
+        var canvas = Find("/Canvas");
+        var canvasComponent = newCanvas.GetComponent<Canvas>();
+        canvasComponent.renderMode = RenderMode.ScreenSpaceCamera;
+        canvasComponent.sortingOrder = canvas.GetComponent<Canvas>().sortingOrder + 1;
+        newCanvas.AddComponent<CanvasScaler>();
+        newCanvas.AddComponent<GraphicRaycaster>();
+
+        jukeboxMenu = Instantiate(jukeboxMenuTemplate, canvas.transform);
+        playbackMenu = Instantiate(playbackMenuTemplate, canvas.transform);
+        whatIsNew = Instantiate(whatIsNewMenuTemplate, canvas.transform);
+        Instantiate(nowPlayingHudTemplate, Find("/Player/Main Camera/HUD Camera/HUD/GunCanvas").transform, false);
+        Instantiate(nowPlayingHudClassicTemplate, canvas.transform.Find("Crosshair Filler"), false);
+    }
+
+    private IEnumerator WhatIsNewRoutine()
+    {
+        yield return new WaitForSeconds(1.4f);
+        whatIsNew.GetComponent<WhatsNew>().Open();
+    }
+
+    private static bool GameIsPaused() => GameStateManager.Instance.IsStateActive("pause");
 }

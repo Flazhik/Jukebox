@@ -1,30 +1,34 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
+using System.Threading.Tasks;
+using UnityEngine;
 
-namespace JukeboxCore
+namespace JukeboxCore;
+
+[ConfigureSingleton(SingletonFlags.HideAutoInstance)]
+public class MainThreadDispatcher : MonoSingleton<MainThreadDispatcher>
 {
-    [ConfigureSingleton(SingletonFlags.HideAutoInstance)]
-    public class MainThreadDispatcher : MonoSingleton<MainThreadDispatcher>
+    private static readonly ConcurrentQueue<Action> ExecutionQueue = new();
+
+    private void Update()
     {
-        private static readonly Queue<Action> ExecutionQueue = new();
+        while (ExecutionQueue.TryDequeue(out var action))
+            action();
+    }
 
-        public void Enqueue(Action action)
+    public void Enqueue(Action action) => ExecutionQueue.Enqueue(action);
+    
+    public void RunAsync(Func<Task> task, Action<Exception> onError = null)
+    {
+        Task.Run(task).ContinueWith(t =>
         {
-            lock (ExecutionQueue)
-            {
-                ExecutionQueue.Enqueue(action);
-            }
-        }
+            if (!t.IsFaulted)
+                return;
 
-        private void Update()
-        {
-            lock (ExecutionQueue)
-            {
-                while (ExecutionQueue.Count > 0)
-                {
-                    ExecutionQueue.Dequeue()?.Invoke();
-                }
-            }
-        }
+            if (onError != null)
+                Enqueue(() => onError(t.Exception));
+            else
+                Enqueue(() => Debug.LogException(t.Exception));
+        });
     }
 }

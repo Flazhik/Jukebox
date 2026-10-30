@@ -1,287 +1,357 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using Jukebox.Components.Player;
 using Jukebox.Input;
 using JukeboxCore.Components;
 using JukeboxCore.Events;
 using JukeboxCore.Models.Preferences;
-using JukeboxCore.Models.Song;
+using JukeboxCore.Playback;
+using JukeboxCore.Songs;
+using JukeboxCore.Songs.Models;
+using JukeboxCore.Subtitles;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static Playlist.LoopMode;
 using static Playlist;
-using Random = UnityEngine.Random;
+using static Playlist.LoopMode;
+using static JukeboxCore.Logging.JukeboxLogger;
 
-namespace Jukebox.Components
+namespace Jukebox.Components;
+
+public class JukeboxMusicPlayer : MonoBehaviour, IPlaybackController
 {
-    public class JukeboxMusicPlayer : MonoBehaviour
+    [SerializeField] private JukeboxPlaylistEditor playlistEditor;
+    [SerializeField] private JukeboxSongsLoader loader;
+    [SerializeField] private JukeboxMusicChanger changer;
+    
+    public PlaybackState State { get; } = new();
+    public AudioSource Source => changer.battle;
+
+    public event Action<ClipChangedArgs> OnNextAudioClip;
+    public event Action<IEnumerable<SongIdentifier>> OnOrderChange;
+    public event Action OnStop;
+    public event Action<string> OnSubtitleChanged;
+    
+    private static float VolumeBoostValue => PrefsManager.Instance!.GetFloatLocal("jukebox.volumeBoost");
+    private static bool IndividualBoostPerTrack => PrefsManager.Instance!.GetBoolLocal("jukebox.individualBoostPerTrack");
+    private static bool ResumeLastSong => PrefsManager.Instance!.GetBoolLocal("jukebox.resumeLastSong");
+
+    private PlaybackOrder playbackOrder;
+    private JukeboxTrackPlayer trackPlayer;
+    private Coroutine currentPlaylistRoutine;
+    private JukeboxSongSession currentSession;
+    private Command pendingPlayerCommand;
+    private int jumpTo;
+    private bool allowVolumeBoost;
+    private SubtitleTrack lastSubtitleTrack;
+    private int subtitleIndex = -1;
+    private Coroutine rewindRoutine;
+
+    public void Awake()
     {
-        private static float VolumeBoostValue => PrefsManager.Instance.GetFloatLocal("jukebox.volumeBoost");
-        private static bool AlwaysPlayIntro => PrefsManager.Instance.GetBoolLocal("jukebox.alwaysPlayIntro");
-        private static bool IndividualBoostPerTrack => PrefsManager.Instance.GetBoolLocal("jukebox.individualBoostPerTrack");
-        private static bool ResumeLastSong => PrefsManager.Instance.GetBoolLocal("jukebox.resumeLastSong");
-        private static bool NextTrackRequested => JukeboxInputs.Instance.NextTrack.WasPerformedThisFrame();
-        private static bool RandomTrackRequested => JukeboxInputs.Instance.RandomTrack.WasPerformedThisFrame();
+        changer = gameObject.GetComponent<JukeboxMusicChanger>();
+        trackPlayer = new JukeboxTrackPlayer(changer, State, NextAudioClip);
+        PrefsManager.onPrefChanged += OnPrefChanged;
         
-        [SerializeField]
-        private JukeboxPlaylistEditor playlistEditor;
+        JukeboxInputs.Instance!.DisablePlayer.performed += OnPlayerDisabled;
+        JukeboxInputs.Instance!.NextTrack.performed += OnNextTrack;
+        JukeboxInputs.Instance!.RandomTrack.performed += OnRandomTrack;
+    }
+
+    public void OnEnable()
+    {
+        StartPlaylist();
+    }
+
+    private void OnDisable()
+    {
+        if (!ResumeLastSong || State.Song == null)
+            return;
+
+        var preferences = JukeboxPreferencesManager.Instance;
         
-        [SerializeField]
-        private JukeboxSongsLoader loader;
-
-        [SerializeField]
-        private JukeboxMusicChanger changer;
+        if (preferences == null)
+            return;
         
-        public static event Action<ClipChangedArgs> OnNextAudioClip;
-        public static event Action<IEnumerable<SongIdentifier>> OnOrderChange;
-        public static event Action OnStop;
+        preferences.SetPlaybackPosition(State.Song.Id, State.ClipIndex, Source.time);
+        preferences.ForceSavePreferences();
+    }
 
-        public AudioSource Source => changer.battle;
-        public static JukeboxSong CurrentSong { get; private set; }
-        public static int CurrentSongIndex { get; private set; }
-        public static int CurrentClipIndex { get; private set; } = -1;
-        public float VolumeBoost { get; private set; }
+    public void OnDestroy()
+    {
+        PrefsManager.onPrefChanged -= OnPrefChanged;
+        JukeboxInputs.Instance!.DisablePlayer.performed -= OnPlayerDisabled;
+        JukeboxInputs.Instance.NextTrack.performed -= OnNextTrack;
+        JukeboxInputs.Instance.RandomTrack.performed -= OnRandomTrack;
+        StopCurrentRoutines();
+        State.Song = null;
+    }
 
-        private Coroutine playlistRoutine;
-        private bool forcedChange;
-        private bool stopped;
-        private bool allowVolumeBoost;
-
-        public void Awake()
+    private void Update()
+    {
+        var track = State.Subtitles;
+        if (!ReferenceEquals(track, lastSubtitleTrack))
         {
-            changer = gameObject.GetComponent<JukeboxMusicChanger>();
-            PrefsManager.onPrefChanged += OnPrefChanged;
-            JukeboxInputs.Instance.DisablePlayer.performed += OnPlayerDisabled;
+            lastSubtitleTrack = track;
+            subtitleIndex = -1;
         }
 
-        public void OnDestroy()
+        var index = track?.IndexAt(Source.time, subtitleIndex) ?? -1;
+        if (index == subtitleIndex)
+            return;
+
+        subtitleIndex = index;
+        State.SubtitleLine = index < 0 ? null : track.Lines[index].Text;
+        OnSubtitleChanged?.Invoke(State.SubtitleLine);
+    }
+
+    public void Stop()
+    {
+        State.Stopped = true;
+    }
+
+    public void ChangeTrack(int index)
+    {
+        jumpTo = index;
+        pendingPlayerCommand = Command.JumpTo;
+    }
+
+    public void RewindTo(float position)
+    {
+        if (rewindRoutine != null)
+            StopCoroutine(rewindRoutine);
+
+        rewindRoutine = StartCoroutine(RewindRoutine(position));
+    }
+
+    private IEnumerator RewindRoutine(float position)
+    {
+        if (currentSession is not JukeboxCustomSongSession session || State.ClipIndex < 0)
         {
-            PrefsManager.onPrefChanged -= OnPrefChanged;
-            JukeboxInputs.Instance.DisablePlayer.performed -= OnPlayerDisabled;
-            CurrentSong = null;
+            changer.RewindTo(position);
+            rewindRoutine = null;
+            yield break;
         }
 
-        public void OnEnable() => StartPlaylist();
-
-        private void OnDisable()
+        if (session.IsFullyLoaded(State.ClipIndex))
         {
-            if (NewMovement.Instance.dead || !ResumeLastSong || CurrentSong == null)
-                return;
-            
-            var preferences = JukeboxPreferencesManager.Instance;
-            preferences.SetPlaybackPosition(CurrentSong.Id, CurrentClipIndex, Source.time);
-            preferences.ForceSavePreferences();
+            changer.RewindTo(position);
+            rewindRoutine = null;
+            yield break;
         }
 
-        public void StartPlaylist()
-        {
-            stopped = false;
-            if (playlistEditor.playlist.Count < 1)
-                Debug.LogError("No songs in playlist, somehow. Not starting playlist routine...");
-            else
-                playlistRoutine = StartCoroutine(PlaylistRoutine());
-        }
-        
-        public void Stop()
-        {
-            stopped = true;
-        }
+        AudioClip battleClip = null;
+        AudioClip calmClip = null;
 
-        public void StopPlaylist()
+        yield return session.LoadFullyFor(State.ClipIndex, (battle, calm) =>
         {
-            Source.Stop();
-            StopCoroutine(playlistRoutine);
-            CurrentSong = null;
-            stopped = true;
-            CurrentClipIndex = -1;
+            battleClip = battle;
+            calmClip = calm;
+        });
+
+        if (battleClip == null)
+        {
+            changer.RewindTo(position);
+            rewindRoutine = null;
+            yield break;
         }
 
-        public void ChangeTrack(int index)
+        changer.ChangeTo(battleClip, calmClip, position);
+        rewindRoutine = null;
+    }
+
+    public void StartPlaylist()
+    {
+        if (playlistEditor.playlist.Count < 1)
         {
-            CurrentSongIndex = index;
-            forcedChange = true;
+            Log.LogError("No songs in playlist, somehow. Not starting playlist routine...");
+            return;
         }
-        
-        public void RewindTo(float position) => changer.RewindTo(position);
-        
 
-        private IEnumerator PlaylistRoutine()
+        StopCurrentRoutines();
+        State.Stopped = false;
+        pendingPlayerCommand = Command.None;
+        playbackOrder = new PlaybackOrder(playlistEditor.playlist);
+        currentPlaylistRoutine = StartCoroutine(PlaylistRoutine());
+    }
+
+    public void StopPlaylist()
+    {
+        Source.Stop();
+        StopCurrentRoutines();
+        State.Song = null;
+        State.Subtitles = null;
+        State.Stopped = true;
+        pendingPlayerCommand = Command.None;
+        State.ClipIndex = -1;
+        State.ClipCount = 0;
+    }
+
+    private void StopCurrentRoutines()
+    {
+        if (currentPlaylistRoutine != null)
         {
-            var songFinished = new WaitUntil(() => 
-                ((!Source.isPlaying && Application.isFocused)
-                || NextTrackRequested
-                || RandomTrackRequested
-                || forcedChange)
-                && !stopped);
+            StopCoroutine(currentPlaylistRoutine);
+            currentPlaylistRoutine = null;
+        }
 
-            var first = true;
-            var playlist = playlistEditor.playlist;
-            var shuffled = playlist.shuffled
-                ? new DeckShuffled<SongIdentifier>(playlist.ids).AsEnumerable()
-                : playlist.ids.AsEnumerable();
+        if (rewindRoutine != null)
+        {
+            StopCoroutine(rewindRoutine);
+            rewindRoutine = null;
+        }
 
-            var preferenceManager = JukeboxPreferencesManager.Instance;
-            var playbackPosition = preferenceManager.GetPlaybackPosition();
-            preferenceManager.ResetPlaybackPosition();
-            
-            while (!stopped)
+        currentSession?.Dispose();
+        currentSession = null;
+    }
+
+    private IEnumerator PlaylistRoutine()
+    {
+        var preferences = JukeboxPreferencesManager.Instance!;
+        var resume = preferences.GetPlaybackPosition();
+        preferences.ResetPlaybackPosition();
+
+        var first = true;
+        while (!State.Stopped)
+        {
+            var order = playbackOrder.BuildOrder();
+            OnOrderChange?.Invoke(order);
+
+            var index = playbackOrder.StartIndex(order);
+            JukeboxPreferences.PlayStartingFrom startFrom = null;
+
+            if (first && ResumeLastSong && resume != null)
             {
-                if (shuffled is DeckShuffled<SongIdentifier> deckShuffled)
-                    deckShuffled.Reshuffle();
-
-                var currentOrder = shuffled.ToList();
-                OnOrderChange?.Invoke(currentOrder);
-
-                JukeboxPreferences.PlayStartingFrom forceStartFrom = null;
-                if (ResumeLastSong
-                    && playbackPosition != null
-                    && currentOrder.Any(id => Equals(id.path, playbackPosition.Path)))
+                var resumeId = new SongIdentifier(resume.Path, resume.Type);
+                var resumeIndex = order.FindIndex(id => Equals(id, resumeId));
+                if (resumeIndex >= 0 && loader.Get(resumeId) != null)
                 {
-                    var requestedSongId = new SongIdentifier(playbackPosition.Path, playbackPosition.Type);
-                    var song = loader.Load(requestedSongId);
-                    if (song != null)
+                    index = resumeIndex;
+                    startFrom = resume;
+                    resume = null;
+                }
+            }
+
+            var unplayable = 0;
+            while (!State.Stopped)
+            {
+                State.SongIndex = index;
+
+                var session = loader.CreateSession(loader.Get(order[index]));
+                if (session == null)
+                {
+                    Log.LogWarning($"Unable to load {order[index].path}, skipping");
+
+                    if (++unplayable >= order.Count)
                     {
-                        forceStartFrom = playbackPosition;
-                        CurrentSongIndex = currentOrder.FindIndex(id => Equals(id, requestedSongId));
+                        Log.LogError("No playable tracks in the playlist, stopping");
+                        State.Stopped = true;
+                        break;
                     }
+
+                    var skip = ResolveNext(index, order.Count);
+                    if (skip < 0)
+                        break;
+
+                    index = skip;
+                    continue;
                 }
-                else
-                {
-                    CurrentSongIndex = playlist.loopMode == LoopOne 
-                        ? currentOrder.FindIndex(id => Equals(id, playlist.ids[playlist.selected]))
-                        : 0;
-                }
+
+                unplayable = 0;
+                currentSession = session;
+                PresenceController.UpdateCyberGrindWave(EndlessGrid.Instance!.currentWave);
+                yield return session.Load(trackPlayer.Play(session, first, startFrom, Interrupted, IsLoopOne));
                 
-                for (; CurrentSongIndex < currentOrder.Count; CurrentSongIndex++)
-                {
-                    forcedChange = false;
-                    var id = currentOrder[CurrentSongIndex];
-                    var song = loader.Load(id);
-                    PresenceController.UpdateCyberGrindWave(EndlessGrid.Instance.currentWave);
-                    yield return song.Acquire(Play(first));
-                    first = false;
+                currentSession = null;
+                first = false;
+                startFrom = null;
 
-                    IEnumerator Play(bool firstSong)
-                    {
-                        var newSong = true;
-                        var playIntro = firstSong || AlwaysPlayIntro;
-                        var forcePlayIntro = forceStartFrom == null || forceStartFrom.Clip == 0;
-                        
-                        if (playIntro && song.IntroClip != null && forcePlayIntro)
-                        {
-                            CurrentClipIndex = 0;
-                            if (forceStartFrom != null)
-                            {
-                                changer.ChangeTo(song.IntroClip, song.CalmIntroClip, forceStartFrom.StartFrom);
-                                forceStartFrom = null;
-                            }
-                            else
-                                changer.ChangeTo(song.IntroClip, song.CalmIntroClip);
-
-                            NextAudioClip(song, true);
-                            newSong = false;
-                            yield return songFinished;
-                        }
-
-                        if (SwitchTheTrack())
-                        {
-                            if (RandomTrackRequested)
-                                CurrentSongIndex = Random.Range(0, playlist.Count - 1);
-                            yield break;
-                        }
-
-                        do
-                        {
-                            var startFromClip = forceStartFrom != null
-                                                && forceStartFrom.Clip != 0
-                                                && song.Clips.Count >= forceStartFrom.Clip
-                                                && song.Clips[forceStartFrom.Clip - 1].length > forceStartFrom.StartFrom
-                                ? forceStartFrom.Clip - 1
-                                : 0;
-                            for (var i = startFromClip; i < song.Clips.Count; i++)
-                            {
-                                CurrentClipIndex = i + 1;
-                                if (stopped)
-                                    break;
-                                
-                                var calmClip = song.CalmClips?.Count > i
-                                    ? song.CalmClips[i]
-                                    : null;
-
-                                if (forceStartFrom != null)
-                                {
-                                    changer.ChangeTo(song.Clips[i], calmClip, forceStartFrom.StartFrom);
-                                    forceStartFrom = null;
-                                }
-                                else
-                                    changer.ChangeTo(song.Clips[i], calmClip);
-                                
-                                NextAudioClip(song, newSong);
-                                newSong = false;
-                                yield return songFinished;
-                                if (SwitchTheTrack())
-                                {
-                                    if (RandomTrackRequested)
-                                        CurrentSongIndex = Random.Range(0, playlist.Count - 1);
-                                    break;
-                                }
-                            }
-                        } while (playlist.loopMode == LoopOne && !SwitchTheTrack());
-                    }
-
-                    bool SwitchTheTrack() => NextTrackRequested || RandomTrackRequested || forcedChange || stopped;
-                }
-            }
-        }
-
-        private void OnPlayerDisabled(InputAction.CallbackContext _)
-        {
-            if (!stopped)
-            {
-                StopPlaylist();
-                OnStop?.Invoke();
-            }
-            else
-                StartPlaylist();
-        }
-
-        private void OnPrefChanged(string key, object value)
-        {
-            switch (key)
-            {
-                case "jukebox.volumeBoost":
-                {
-                    if (IndividualBoostPerTrack && CurrentSong is { IsCustom: true })
-                        JukeboxPreferencesManager.Instance.SetVolumeBoostFor(CurrentSong.Id.path, (float) value);
-                    VolumeBoost = (float)value;
+                var next = ResolveNext(index, order.Count);
+                if (next < 0)
                     break;
-                }
-                case "jukebox.individualBoostPerTrack":
-                    VolumeBoost = CalculateBoostFor(CurrentSong);
-                    break;
+
+                index = next;
             }
         }
-
-        private void NextAudioClip(JukeboxSong song, bool newSong)
+    }
+    
+    private int ResolveNext(int cursor, int count)
+    {
+        var next = pendingPlayerCommand switch
         {
-            CurrentSong = song;
-            allowVolumeBoost = song.IsCustom;
-            VolumeBoost = CalculateBoostFor(song);
-            OnNextAudioClip?.Invoke(new ClipChangedArgs(song, newSong));
-        }
+            Command.RandomTrack => PlaybackOrder.RandomIndex(count),
+            Command.JumpTo => jumpTo,
+            _ => cursor + 1
+        };
 
-        private float CalculateBoostFor(JukeboxSong song)
+        pendingPlayerCommand = Command.None;
+        return next < count ? next : -1;
+    }
+
+    private bool Interrupted() => pendingPlayerCommand != Command.None || State.Stopped;
+
+    private bool IsLoopOne() => playlistEditor.playlist.loopMode == LoopOne;
+
+    private void OnNextTrack(InputAction.CallbackContext _) => pendingPlayerCommand = Command.NextTrack;
+
+    private void OnRandomTrack(InputAction.CallbackContext _) => pendingPlayerCommand = Command.RandomTrack;
+
+    private void OnPlayerDisabled(InputAction.CallbackContext _)
+    {
+        if (!State.Stopped)
         {
-            if (!allowVolumeBoost)
-                return 0;
-
-            if (!IndividualBoostPerTrack
-                || song == null
-                || JukeboxPreferencesManager.Instance.GetVolumeBoostFor(song.Id.path) is not { } boost)
-                return VolumeBoostValue;
-
-            return boost;
+            StopPlaylist();
+            OnStop?.Invoke();
         }
+        else
+        {
+            StartPlaylist();
+        }
+    }
+
+    private void OnPrefChanged(string key, object value)
+    {
+        switch (key)
+        {
+            case "jukebox.volumeBoost":
+            {
+                if (IndividualBoostPerTrack && State.Song is { IsCustom: true })
+                    JukeboxPreferencesManager.Instance?.SetVolumeBoostFor(State.Song.Id.path, (float)value);
+                State.VolumeBoost = (float)value;
+                break;
+            }
+            case "jukebox.individualBoostPerTrack":
+                State.VolumeBoost = CalculateBoostFor(State.Song);
+                break;
+        }
+    }
+
+    private void NextAudioClip(JukeboxSong song, bool newSong)
+    {
+        State.Song = song;
+        allowVolumeBoost = song.IsCustom;
+        State.VolumeBoost = CalculateBoostFor(song);
+        OnNextAudioClip?.Invoke(new ClipChangedArgs(song, newSong));
+    }
+
+    private float CalculateBoostFor(JukeboxSong song)
+    {
+        if (!allowVolumeBoost)
+            return 0;
+
+        if (!IndividualBoostPerTrack
+            || song == null
+            || JukeboxPreferencesManager.Instance!.GetVolumeBoostFor(song.Id.path) is not { } boost)
+            return VolumeBoostValue;
+
+        return boost;
+    }
+
+    private enum Command
+    {
+        NextTrack,
+        RandomTrack,
+        JumpTo,
+        None,
     }
 }

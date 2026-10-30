@@ -827,8 +827,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 22
+  m_fontSizeBase: 22
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1832,14 +1832,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 0.6509804}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: abbbd5d543263854384aa3ecd9384818, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e7c785e3d7bf01646bab178e2aefde14, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1965,14 +1965,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 0.6509804}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: abbbd5d543263854384aa3ecd9384818, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e7c785e3d7bf01646bab178e2aefde14, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2815,8 +2815,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 22
+  m_fontSizeBase: 22
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3038,8 +3038,8 @@ MonoBehaviour:
 
     King Gizzard & The Lizard Wizard'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1ca2b326366fd5241bc72b1fd129a5ba, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: f9bd459e8ae58a66f9bdcef66b9f87a2, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c46ff981fb47acf44b1510efc5574f59, type: 2}
+  m_sharedMaterial: {fileID: 6181727056814520579, guid: c46ff981fb47acf44b1510efc5574f59, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

@@ -1,13 +1,12 @@
-namespace JukeboxCore.Models.Downloader
+namespace JukeboxCore.Models.Downloader;
+
+public enum TrackDownloadingState
 {
-    public enum TrackDownloadingState
-    {
-        None,
-        Enqueued,
-        PreProcessing,
-        Downloading,
-        PostProcessing,
-        Success,
-        Failed
-    }
+    None,
+    Enqueued,
+    PreProcessing,
+    Downloading,
+    PostProcessing,
+    Success,
+    Failed
 }

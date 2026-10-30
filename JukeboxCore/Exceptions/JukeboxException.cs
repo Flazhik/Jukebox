@@ -1,8 +1,5 @@
 using System;
 
-namespace JukeboxCore.Exceptions
-{
-    public abstract class JukeboxException : ArgumentException
-    {
-    }
-}
+namespace JukeboxCore.Exceptions;
+
+public abstract class JukeboxException : ArgumentException;

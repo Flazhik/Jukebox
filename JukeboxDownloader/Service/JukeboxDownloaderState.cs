@@ -1,8 +1,7 @@
-namespace JukeboxDownloader.Service
+namespace JukeboxDownloader.Service;
+
+public enum JukeboxDownloaderState
 {
-    public enum JukeboxDownloaderState
-    {
-        Idle,
-        LoadingMetadata
-    }
+    Idle,
+    LoadingMetadata
 }

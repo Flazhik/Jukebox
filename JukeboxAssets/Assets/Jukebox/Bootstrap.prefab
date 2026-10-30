@@ -959,7 +959,7 @@ MonoBehaviour:
   m_text: Really Very Extremely Superbly Long Title For Testing Purposes. That thang
     long, ain't it? I have to get this text long enough to fit 10pt.
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1ca2b326366fd5241bc72b1fd129a5ba, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c46ff981fb47acf44b1510efc5574f59, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: f9bd459e8ae58a66f9bdcef66b9f87a2, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1023,7 +1023,7 @@ MonoBehaviour:
   m_margin: {x: 5, y: 0, z: 5, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &402036106371711510
@@ -8853,7 +8853,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: King Gizzard & The Lizard Wizard - Supercell
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1ca2b326366fd5241bc72b1fd129a5ba, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c46ff981fb47acf44b1510efc5574f59, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: f9bd459e8ae58a66f9bdcef66b9f87a2, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -8917,7 +8917,7 @@ MonoBehaviour:
   m_margin: {x: 5, y: 0, z: 5, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &2712604462369460979
@@ -14554,6 +14554,7 @@ RectTransform:
   - {fileID: 3168842019501151196}
   - {fileID: 374083684931934953}
   - {fileID: 6614826889419344949}
+  - {fileID: 4832103485900253584}
   - {fileID: 596608856754631268}
   - {fileID: 144859743094644633}
   m_Father: {fileID: 0}
@@ -14576,6 +14577,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   songPanel: {fileID: 6272298345559279500}
+  subtitlesPanel: {fileID: 5748893966386651689}
   playlistEditor: {fileID: 7228929274956821744}
   player: {fileID: 2388080301442795792}
   terminalPanel: {fileID: 8364981174995463125}
@@ -23521,7 +23523,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Folder
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1ca2b326366fd5241bc72b1fd129a5ba, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c46ff981fb47acf44b1510efc5574f59, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: f9bd459e8ae58a66f9bdcef66b9f87a2, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -23585,7 +23587,7 @@ MonoBehaviour:
   m_margin: {x: 5, y: 0, z: 5, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &6927909717672224633
@@ -29595,6 +29597,113 @@ PrefabInstance:
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6696864591190595063, guid: 8026c719f2908b344b0513609ce4e884, type: 3}
   m_PrefabInstance: {fileID: 4631758231938950261}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4836029520684205737
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6967925032825061296}
+    m_Modifications:
+    - target: {fileID: 5088259913658169, guid: 7e42c3ea9f008bd4f8ad53b2b3c9b84c, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5088259913658169, guid: 7e42c3ea9f008bd4f8ad53b2b3c9b84c, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5088259913658169, guid: 7e42c3ea9f008bd4f8ad53b2b3c9b84c, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5088259913658169, guid: 7e42c3ea9f008bd4f8ad53b2b3c9b84c, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5088259913658169, guid: 7e42c3ea9f008bd4f8ad53b2b3c9b84c, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5088259913658169, guid: 7e42c3ea9f008bd4f8ad53b2b3c9b84c, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5088259913658169, guid: 7e42c3ea9f008bd4f8ad53b2b3c9b84c, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 5088259913658169, guid: 7e42c3ea9f008bd4f8ad53b2b3c9b84c, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 5088259913658169, guid: 7e42c3ea9f008bd4f8ad53b2b3c9b84c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5088259913658169, guid: 7e42c3ea9f008bd4f8ad53b2b3c9b84c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5088259913658169, guid: 7e42c3ea9f008bd4f8ad53b2b3c9b84c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5088259913658169, guid: 7e42c3ea9f008bd4f8ad53b2b3c9b84c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5088259913658169, guid: 7e42c3ea9f008bd4f8ad53b2b3c9b84c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5088259913658169, guid: 7e42c3ea9f008bd4f8ad53b2b3c9b84c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5088259913658169, guid: 7e42c3ea9f008bd4f8ad53b2b3c9b84c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5088259913658169, guid: 7e42c3ea9f008bd4f8ad53b2b3c9b84c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5088259913658169, guid: 7e42c3ea9f008bd4f8ad53b2b3c9b84c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -110
+      objectReference: {fileID: 0}
+    - target: {fileID: 5088259913658169, guid: 7e42c3ea9f008bd4f8ad53b2b3c9b84c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5088259913658169, guid: 7e42c3ea9f008bd4f8ad53b2b3c9b84c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5088259913658169, guid: 7e42c3ea9f008bd4f8ad53b2b3c9b84c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 924693266743665792, guid: 7e42c3ea9f008bd4f8ad53b2b3c9b84c, type: 3}
+      propertyPath: m_Name
+      value: SubtitlesPanel
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7e42c3ea9f008bd4f8ad53b2b3c9b84c, type: 3}
+--- !u!224 &4832103485900253584 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5088259913658169, guid: 7e42c3ea9f008bd4f8ad53b2b3c9b84c, type: 3}
+  m_PrefabInstance: {fileID: 4836029520684205737}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5748893966386651689 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 924693266743665792, guid: 7e42c3ea9f008bd4f8ad53b2b3c9b84c, type: 3}
+  m_PrefabInstance: {fileID: 4836029520684205737}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5014935198342064579
 PrefabInstance:

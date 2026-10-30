@@ -3,25 +3,23 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Jukebox.UI.Elements
-{
-    public class RewindSlider : MonoBehaviour, IEndDragHandler, IDragHandler
-    {
-        public event Action<float> OnValueChanged;
-        public bool beingDragged;
-        
-        [SerializeField]
-        public Slider slider;
-        
-        public void OnEndDrag(PointerEventData eventData)
-        {
-            OnValueChanged?.Invoke(slider.value);
-            beingDragged = false;
-        }
+namespace Jukebox.UI.Elements;
 
-        public void OnDrag(PointerEventData eventData)
-        {
-            beingDragged = true;
-        }
+public class RewindSlider : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+{
+    [SerializeField] public Slider slider;
+    [NonSerialized] public bool beingDragged;
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        beingDragged = true;
     }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        beingDragged = false;
+        OnValueChanged?.Invoke(slider.value);
+    }
+
+    public event Action<float> OnValueChanged;
 }

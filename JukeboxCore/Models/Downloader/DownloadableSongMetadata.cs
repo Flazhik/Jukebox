@@ -1,24 +1,19 @@
 using JetBrains.Annotations;
 
-namespace JukeboxCore.Models.Downloader
-{
-    public class DownloadableSongMetadata
-    {
-        public string Id { get; private set; }
-        public string Url { get; private set; }
-        public string ThumbnailUrl { get; private set; }
-        public string Title { get; private set; }
-        public string Artist { get; private set; }
-        [CanBeNull] public string Playlist { get; private set; }
+namespace JukeboxCore.Models.Downloader;
 
-        public DownloadableSongMetadata(string id, string url, string thumbnailUrl, string title, string artist, string playlist)
-        {
-            Id = id;
-            Url = url;
-            ThumbnailUrl = thumbnailUrl;
-            Title = title;
-            Artist = artist;
-            Playlist = playlist;
-        }
-    }
+public class DownloadableSongMetadata(
+    string id,
+    string url,
+    string thumbnailUrl,
+    string title,
+    string artist,
+    string playlist)
+{
+    public string Id { get; private set; } = id;
+    public string Url { get; private set; } = url;
+    public string ThumbnailUrl { get; private set; } = thumbnailUrl;
+    public string Title { get; private set; } = title;
+    public string Artist { get; private set; } = artist;
+    [CanBeNull] public string Playlist { get; private set; } = playlist;
 }

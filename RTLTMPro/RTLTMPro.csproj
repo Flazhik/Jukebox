@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <OutputType>Library</OutputType>
+        <RootNamespace>Jukebox.RTLTMPro</RootNamespace>
+        <AssemblyName>RTLTMPro</AssemblyName>
+        <LangVersion>latest</LangVersion>
+        <OutputPath>.bin\</OutputPath>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="0Harmony">
+            <HintPath>$(BepInExCoreDir)0Harmony.dll</HintPath>
+        </Reference>
+        <Reference Include="Assembly-CSharp">
+            <HintPath>$(ManagedDir)Assembly-CSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="BepInEx">
+            <HintPath>$(BepInExCoreDir)BepInEx.dll</HintPath>
+        </Reference>
+        <Reference Include="Newtonsoft.Json">
+            <HintPath>$(ManagedDir)Newtonsoft.Json.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath>$(ManagedDir)UnityEngine.CoreModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngineAudioModule">
+            <HintPath>$(ManagedDir)UnityEngine.AudioModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.Addressables">
+            <HintPath>$(ManagedDir)Unity.Addressables.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.AssetBundleModule">
+            <HintPath>$(ManagedDir)UnityEngine.AssetBundleModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.ResourceManager">
+            <HintPath>$(ManagedDir)Unity.ResourceManager.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UnityWebRequestModule">
+            <HintPath>$(ManagedDir)UnityEngine.UnityWebRequestModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UnityWebRequestAudioModule">
+            <HintPath>$(ManagedDir)UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UnityWebRequestTextureModule">
+            <HintPath>$(ManagedDir)UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.ImageConversionModule">
+            <HintPath>$(ManagedDir)UnityEngine.ImageConversionModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityTextMeshPro">
+            <HintPath>$(ManagedDir)Unity.TextMeshPro.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="ILRepack.targets"/>
+        <Content Include="lib\TagLibSharp.dll"/>
+        <Content Include="README.md"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="packages.config"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Models\Song\" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="SubtitlesParser" Version="1.5.1" />
+    </ItemGroup>
+    <Target Name="CopyModDlls" AfterTargets="CopyFilesToOutputDirectory">
+        <Copy SourceFiles="$(OutDir)/$(AssemblyName).dll" DestinationFolder="$(BepInExPluginsDir)Jukebox\"/>
+    </Target>
+</Project>

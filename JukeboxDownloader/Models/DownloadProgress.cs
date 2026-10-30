@@ -1,18 +1,10 @@
 using JukeboxCore.Models.Downloader;
 
-namespace JukeboxDownloader.Models
-{
-    public class DownloadProgress
-    {
-        public TrackDownloadingState State { get; private set; }
-        public float Progress { get; private set; }
-        public string Eta { get; private set; }
+namespace JukeboxDownloader.Models;
 
-        public DownloadProgress(TrackDownloadingState state, float progress, string eta)
-        {
-            State = state;
-            Progress = progress;
-            Eta = eta;
-        }
-    }
+public class DownloadProgress(TrackDownloadingState state, float progress, string eta)
+{
+    public TrackDownloadingState State { get; private set; } = state;
+    public float Progress { get; private set; } = progress;
+    public string Eta { get; private set; } = eta;
 }

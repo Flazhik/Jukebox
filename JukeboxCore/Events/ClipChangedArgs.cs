@@ -1,16 +1,9 @@
-﻿using JukeboxCore.Models.Song;
+﻿using JukeboxCore.Songs.Models;
 
-namespace JukeboxCore.Events
+namespace JukeboxCore.Events;
+
+public class ClipChangedArgs(JukeboxSong song, bool newSong)
 {
-    public class ClipChangedArgs
-    {
-        public JukeboxSong Song { get; private set; }
-        public bool NewSong { get; private set; }
-
-        public ClipChangedArgs(JukeboxSong song, bool newSong)
-        {
-            Song = song;
-            NewSong = newSong;
-        }
-    }
+    public JukeboxSong Song { get; private set; } = song;
+    public bool NewSong { get; private set; } = newSong;
 }

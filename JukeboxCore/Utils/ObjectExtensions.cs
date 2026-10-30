@@ -1,9 +1,8 @@
 using System.Linq;
 
-namespace JukeboxCore.Utils
+namespace JukeboxCore.Utils;
+
+public static class ObjectExtensions
 {
-    public static class ObjectExtensions
-    {
-        public static bool IsOneOf(this object v, params object[] options) => options.Any(o => o.Equals(v));
-    }
+    public static bool IsOneOf(this object v, params object[] options) => options.Any(o => o.Equals(v));
 }

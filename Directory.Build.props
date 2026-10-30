@@ -1,0 +1,9 @@
+<Project>
+    <PropertyGroup>
+        <ULTRAKILLPath>C:\Steam\steamapps\common\ULTRAKILL</ULTRAKILLPath>
+        <ManagedDir>$(ULTRAKILLPath)\ULTRAKILL_Data\Managed\</ManagedDir>
+        <BepInExRootDir>$(ULTRAKILLPath)\BepInEx\</BepInExRootDir>
+        <BepInExCoreDir>$(BepInExRootDir)\core\</BepInExCoreDir>
+        <BepInExPluginsDir>$(BepInExRootDir)\plugins\</BepInExPluginsDir>
+    </PropertyGroup>
+</Project>
